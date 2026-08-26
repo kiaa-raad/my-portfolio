@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-26T16:16:59.864Z",
+  "generated": "2026-08-26T20:31:06.591Z",
   "site": {
     "name": "Kiarash Farahmandrad",
     "role": "Multi-disciplinary designer",
@@ -23,7 +23,7 @@
     "caption": "KIARASH FARAHMANDRAD",
     "headline": "",
     "paragraphs": [
-      "I work across identity, typography, 3D, motion, and digital experiences, moving between mediums to find the right form for an idea. I'm interested in the space where disciplines overlap, where a graphic can become an object, a typeface can become an environment, and a visual identity can become something you can interact with. Most things start as an experiment, and usually end somewhere no one expects."
+      "I work across identity, typography, 3D, motion, and digital experiences, moving between mediums to find the right form for an idea. I'm interested in the space where disciplines overlap, where a graphic can become an object, a typeface can become an environment, and a visual identity can become something you can interact with. I like to start while an idea is still soft, and shape it with you rather than hand it back finished. Most things start as an experiment, and usually end somewhere no one expects."
     ],
     "skills": [
       {
@@ -208,7 +208,7 @@
     },
     "cv": {
       "src": "about/cv.pdf",
-      "hash": "5a069889",
+      "hash": "e2ba08c6",
       "updated": "2026-08-26",
       "size": "131 KB"
     }
@@ -320,14 +320,6 @@
       }
     ]
   },
-  "models": {
-    "primary": "logo.glb",
-    "alts": [
-      "02.glb",
-      "03.glb",
-      "04.glb"
-    ]
-  },
   "fields": [
     {
       "key": "LOGOS",
@@ -356,7 +348,7 @@
           "tag": "LOGO & VISUAL IDENTITY / 2026",
           "lb": "OVERVIEW",
           "la": "CONTRIBUTION",
-          "b": "Gravitas+ is a YouTube channel and website dedicated to educational and analytical content at the intersection of computational skills, physics, and modern scientific thought. The platform aims to make complex concepts accessible while maintaining intellectual depth and rigor.\nThe visual identity was developed to reflect clarity, precision, and intellectual sophistication, while balancing a modern, technology-oriented aesthetic with the depth and curiosity associated with fundamental science and the exploration of the universe.",
+          "b": "<a href=\"https://gravitasplus.com/\" target=\"_blank\" rel=\"noopener\" data-tag=\"GRAVITAS\">Gravitas+</a> is a YouTube channel and website dedicated to educational and analytical content at the intersection of computational skills, physics, and modern scientific thought. The platform aims to make complex concepts accessible while maintaining intellectual depth and rigor.\nThe visual identity was developed to reflect clarity, precision, and intellectual sophistication, while balancing a modern, technology-oriented aesthetic with the depth and curiosity associated with fundamental science and the exploration of the universe.",
           "a": "I was responsible for developing the logo, website, YouTube banner, and cohesive visual identity system across the platform. The identity is inspired by the Latin word “gravitas”, meaning heaviness, and the concept of gravity, particularly the bending of spacetime under gravitational force. The initial “G” serves as the core visual element, exploring the relationship between letterform, gravity, curvature, and space to create a distinctive and conceptually driven identity.",
           "credit": null,
           "roles": [

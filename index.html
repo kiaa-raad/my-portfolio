@@ -183,18 +183,27 @@
 
   /* ── top row ──────────────────────────────────────── */
   .top{display:flex;justify-content:space-between;align-items:flex-start;gap:24px}
-  /* --mark-h is the name line plus the sub line plus the gap between them, so
-     the glyph beside them is measured from the same numbers rather than eyeballed.
-     Every breakpoint that changes those font sizes restates it. */
   .mark{display:flex;align-items:flex-start;gap:12px;
-    --mark-h:calc(12.5px * 1.5 + 3px + 8.5px * 1.4)}
-  .mark-id{display:block;flex:none;height:var(--mark-h);width:auto}
-  /* The glyph is drawn light-on-dark; the light theme flips it black-on-paper. */
-  body.light .mark-id{filter:invert(1)}
+    --markh:calc(12.5px*1.5 + 3px + 8.5px*1.35)}
+
+  /* ── the mark ───────────────────────────────────
+     The glyph stands where the initials used to, and squares off against the
+     two lines beside it: --markh is their stacked height written out — the
+     name's 12.5/1.5 box, the 3px above the sub, the sub's 8.5/1.35 — which is
+     why .mark-sub is pinned to a ratio rather than left on 'normal'. Summing
+     it by hand beats height:100%, which cannot be resolved against a flex
+     line the image itself is sizing and so snaps back to the file's own 270px.
+     The art is black-on-transparent, which is the light-mode reading; dark
+     mode flips its polarity so the glyph holds the HUD's contrast either way,
+     on the same .7s as the body's own theme crossfade. */
+  .mark-id{flex:0 0 auto;display:block}
+  .mark-id img{height:var(--markh);width:auto;display:block;
+    filter:invert(1) drop-shadow(var(--tsh));transition:filter .7s ease}
+  body.light .mark-id img{filter:drop-shadow(var(--tsh))}
   .mark-name{display:block;font-weight:600;font-size:12.5px;letter-spacing:.16em;line-height:1.5;
     text-shadow:var(--tsh)}
   .mark-sub{display:block;font-family:'Azeret Mono',ui-monospace,monospace;font-weight:300;
-    font-size:8.5px;letter-spacing:.24em;line-height:1.4;color:var(--mute);margin-top:3px;
+    font-size:8.5px;line-height:1.35;letter-spacing:.24em;color:var(--mute);margin-top:3px;
     text-shadow:var(--tsh)}
 
   .menu{display:flex;gap:8px}
@@ -621,7 +630,7 @@
     .hud{padding:14px 14px max(14px,env(safe-area-inset-bottom))}
     .brackets{display:none}
     .top{gap:12px}
-    .mark{gap:9px;--mark-h:calc(10.5px * 1.5 + 2px + 7.5px * 1.4)}
+    .mark{gap:9px;--markh:calc(10.5px*1.5 + 2px + 7.5px*1.35)}
     .mark-name{font-size:10.5px;letter-spacing:.13em}
     .mark-sub{font-size:7.5px;letter-spacing:.2em;margin-top:2px}
     .menu{gap:6px}
@@ -670,7 +679,7 @@
   }
 
   @media (max-width:420px){
-    .mark{--mark-h:calc(10.5px * 1.5 + 2px + 7px * 1.4)}
+    .mark{--markh:calc(10.5px*1.5 + 2px + 7px*1.35)}
     .mark-sub{font-size:7px;letter-spacing:.16em}
     .hud .menu a,.hud .menu button{padding:8px 9px;font-size:8px}
     .hud .tgl b{display:none}
@@ -739,7 +748,7 @@
 
   <header class="top">
     <div class="mark">
-      <img class="mark-id" src="favicon.png" alt="" width="270" height="270" decoding="async">
+      <span class="mark-id"><img src="favicon.png" alt="" width="270" height="270" decoding="async"></span>
       <span>
         <h1 class="mark-name">KIARASH FARAHMANDRAD</h1>
         <span class="mark-sub">MULTI-DISCIPLINARY DESIGNER</span>
@@ -754,7 +763,7 @@
 
   <footer class="bot">
     <div class="readout">
-      <span><b>GEOMETRY</b><em>2,312 TRI / WATERTIGHT</em></span>
+      <span><b>MATERIAL</b><em id="material">GOO / UNSET</em></span>
       <span><b>PRACTICE</b><em id="practice">LOGOS / POSTERS / SPATIAL / MOTION</em></span>
       <span><b>RENDER</b><em id="fps">--</em> FPS</span>
     </div>
@@ -790,21 +799,13 @@
 
 <script type="module">
 import * as THREE from 'three';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import * as BufferGeometryUtils from 'three/addons/utils/BufferGeometryUtils.js';
-import { MeshSurfaceSampler } from 'three/addons/math/MeshSurfaceSampler.js';
 
-/* ══ model ════════════════════════════════════════════════════════════════
-   model/logo.glb is the form that is standing every time the page loads —
-   that filename is fixed, so the first thing a visitor sees never changes.
-   Every other .glb dropped into model/ becomes something the form can turn
-   into. tools/build-content.mjs scans the folder and lists them under
-   "models" in content.json, so nothing here has to know how many there are:
-   add a file, push, and the next tap can land on it. See model/README.md. */
-const MODEL_DIR   = 'model/';
-const MODEL_FIRST = 'logo.glb';       // the one on load — keep this name
-const MODEL_URL   = MODEL_DIR + MODEL_FIRST;
-const MAX_ALTS    = 12;               // how many extra forms are held in memory
+/* ══ the hero ═════════════════════════════════════════════════════════════
+   There is no model. Nothing is fetched, nothing is parsed, nothing waits on
+   the network — the form is a sphere the shader moves, and every shape it can
+   take is a function further down this file. The model/ folder and its
+   loaders are gone with it, and so is the first-paint cost of three's GLTF
+   loader, which was the largest thing this page used to download. */
 const FIT = 3.0;                      // on-screen height of the form, world units
 const BACK_Z = -6;
 
@@ -975,41 +976,199 @@ const uKeyC = { value: new THREE.Color(TH().key) };
 // since a touch device has no hover to give it
 const uReveal = { value: 0 };
 
+/* ══ goo: the one displacement every pass agrees on ═══════════════════════
+   The hero is a single sphere that never changes topology. What changes is
+   where each of its vertices is asked to stand: at rest they sit on a lump
+   of noise that keeps moving — clay that has not been touched — and under a
+   press they are pulled onto a geometric target that was worked out on the
+   CPU and handed over as an attribute. Every pass (solid, glass, cage,
+   nodes) runs the identical function, so the structure never slides off the
+   surface it is meant to be describing. */
+const uTime = { value: 0 };    // the goo's own clock — nothing else drives it
+const uSet  = { value: 0 };    // 0 loose goo, 1 the shape has taken
+const uWob  = { value: 1 };    // how much movement is left in it
+const uSag  = { value: 1 };    // the pull it feels downward
+const uFlat = { value: 0 };    // shade from the face, not the vertex
+
+/* simplex noise — Ian McEwan / Stefan Gustavson, MIT. Three octaves is all
+   that is needed to read as clay, and cheap enough to evaluate four times a
+   vertex, which is what an analytic normal costs. */
+const GOO_GLSL = [
+'attribute vec3 aShape;',
+'uniform float uTime;',
+'uniform float uSet;',
+'uniform float uWob;',
+'uniform float uSag;',
+'vec3 gmod289(vec3 x){ return x - floor(x*(1.0/289.0))*289.0; }',
+'vec4 gmod289(vec4 x){ return x - floor(x*(1.0/289.0))*289.0; }',
+'vec4 gperm(vec4 x){ return gmod289(((x*34.0)+1.0)*x); }',
+'vec4 gtis(vec4 r){ return 1.79284291400159 - 0.85373472095314*r; }',
+'float gsnoise(vec3 v){',
+'  const vec2 C = vec2(1.0/6.0, 1.0/3.0);',
+'  const vec4 D = vec4(0.0, 0.5, 1.0, 2.0);',
+'  vec3 i  = floor(v + dot(v, C.yyy));',
+'  vec3 x0 = v - i + dot(i, C.xxx);',
+'  vec3 g = step(x0.yzx, x0.xyz);',
+'  vec3 l = 1.0 - g;',
+'  vec3 i1 = min(g.xyz, l.zxy);',
+'  vec3 i2 = max(g.xyz, l.zxy);',
+'  vec3 x1 = x0 - i1 + C.xxx;',
+'  vec3 x2 = x0 - i2 + C.yyy;',
+'  vec3 x3 = x0 - D.yyy;',
+'  i = gmod289(i);',
+'  vec4 p = gperm(gperm(gperm(',
+'      i.z + vec4(0.0, i1.z, i2.z, 1.0))',
+'    + i.y + vec4(0.0, i1.y, i2.y, 1.0))',
+'    + i.x + vec4(0.0, i1.x, i2.x, 1.0));',
+'  float n_ = 0.142857142857;',
+'  vec3 ns = n_ * D.wyz - D.xzx;',
+'  vec4 j = p - 49.0 * floor(p * ns.z * ns.z);',
+'  vec4 x_ = floor(j * ns.z);',
+'  vec4 y_ = floor(j - 7.0 * x_);',
+'  vec4 x = x_ * ns.x + ns.yyyy;',
+'  vec4 y = y_ * ns.x + ns.yyyy;',
+'  vec4 h = 1.0 - abs(x) - abs(y);',
+'  vec4 b0 = vec4(x.xy, y.xy);',
+'  vec4 b1 = vec4(x.zw, y.zw);',
+'  vec4 s0 = floor(b0)*2.0 + 1.0;',
+'  vec4 s1 = floor(b1)*2.0 + 1.0;',
+'  vec4 sh = -step(h, vec4(0.0));',
+'  vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy;',
+'  vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww;',
+'  vec3 p0 = vec3(a0.xy, h.x);',
+'  vec3 p1 = vec3(a0.zw, h.y);',
+'  vec3 p2 = vec3(a1.xy, h.z);',
+'  vec3 p3 = vec3(a1.zw, h.w);',
+'  vec4 norm = gtis(vec4(dot(p0,p0), dot(p1,p1), dot(p2,p2), dot(p3,p3)));',
+'  p0 *= norm.x; p1 *= norm.y; p2 *= norm.z; p3 *= norm.w;',
+'  vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);',
+'  m = m * m;',
+'  return 42.0 * dot(m*m, vec4(dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3)));',
+'}',
+// the octaves fall away fast on purpose. Give the small ones any real weight
+// and the surface stops reading as something soft and starts reading as
+// crumpled stone — the lobes have to be large next to the form itself.
+'float gooField(vec3 p){',
+'  float t = uTime;',
+'  float n  = gsnoise(p*0.55 + vec3(0.0, t*0.26, 0.0));',
+'  n += 0.30 * gsnoise(p*1.15 + vec3(t*0.19, 0.0, -t*0.15));',
+'  n += 0.06 * gsnoise(p*2.30 - vec3(0.0, t*0.22, t*0.09));',
+'  return n * 0.735;',
+'}',
+// the lump: swollen along its own radius, and hanging a little, so it reads
+// as something with weight rather than a balloon
+'vec3 gooOnly(vec3 p){',
+'  vec3 q = p * (1.0 + gooField(p) * uWob * 0.30);',
+'  q.y -= uSag * uWob * 0.15 * (1.0 - normalize(p).y * 0.55);',
+'  return q;',
+'}',
+// while a shape is being held there is no goo left to evaluate, and the
+// branch is on a uniform — every vertex in the draw takes the same side of
+// it, so holding a form costs nothing at all rather than three octaves of
+// noise per vertex per frame
+'vec3 gooPos(vec3 p){',
+'  if(uSet > 0.999) return aShape;',
+'  if(uSet < 0.001) return gooOnly(p);',
+'  return mix(gooOnly(p), aShape, uSet);',
+'}',
+''
+].join('\n');
+
+/* The solid needs a normal for the noise it is standing on, and there is no
+   attribute that could carry one — the surface is different every frame. Two
+   more evaluations a hair away along the tangent plane give the real one. */
+const GOO_NRM_GLSL = [
+'attribute vec3 aShapeN;',
+'vec3 gooNormal(vec3 p){',
+'  if(uSet > 0.999) return normalize(aShapeN);',
+'  vec3 d = normalize(p);',
+'  vec3 t1 = normalize(cross(d, abs(d.y) < 0.9 ? vec3(0.0,1.0,0.0) : vec3(1.0,0.0,0.0)));',
+'  vec3 t2 = cross(d, t1);',
+'  float e = 0.05, r = length(p);',
+'  vec3 a = gooOnly(p);',
+'  vec3 b = gooOnly(normalize(p + t1*e) * r);',
+'  vec3 c = gooOnly(normalize(p + t2*e) * r);',
+'  vec3 gn = normalize(cross(b - a, c - a));',
+'  if(dot(gn, d) < 0.0) gn = -gn;',
+'  if(uSet < 0.001) return gn;',
+'  return normalize(mix(gn, normalize(aShapeN), uSet));',
+'}',
+''
+].join('\n');
+
 function zoneify(mat, mode2){
   mat.transparent = true;
   mat.onBeforeCompile = (sh)=>{
     sh.uniforms.uC = uC; sh.uniforms.uR1 = uR1; sh.uniforms.uR2 = uR2;
     sh.uniforms.uPC = uPC; sh.uniforms.uPR = uPR; sh.uniforms.uPI = uPI;
     sh.uniforms.uKeyC = uKeyC; sh.uniforms.uReveal = uReveal;
-    sh.vertexShader = 'varying vec3 vWP;\nvarying vec3 vOP;\nuniform vec3 uPC;\nuniform float uPR;\nuniform float uPI;\n' + sh.vertexShader.replace(
-      '#include <project_vertex>',
-      // a tap sends a ring out through the shell — the surface swells along
-      // it and settles back as the ring passes, rather than just glowing
-      '\n  float pdV = distance(transformed, uPC);' +
-      '\n  float ringV = exp(-pow((pdV - uPR) / 0.21, 2.0)) * uPI;' +
-      '\n  transformed += normalize(transformed - uPC + vec3(0.0001)) * ringV * 0.13;' +
-      '\n#include <project_vertex>\n  vWP = (modelMatrix * vec4(transformed, 1.0)).xyz;\n  vOP = transformed;'
-    );
+    sh.uniforms.uTime = uTime; sh.uniforms.uSet = uSet;
+    sh.uniforms.uWob = uWob; sh.uniforms.uSag = uSag;
+    sh.uniforms.uFlat = uFlat;
+
+    // lines and points have no normal stage to hook, and the replace simply
+    // finds nothing to do — which is why the same function serves all four
+    const lit = sh.vertexShader.indexOf('#include <beginnormal_vertex>') >= 0;
+    sh.vertexShader = 'varying vec3 vWP;\nvarying vec3 vOP;\nuniform vec3 uPC;\nuniform float uPR;\nuniform float uPI;\n'
+      + GOO_GLSL + (lit ? GOO_NRM_GLSL : '')
+      + sh.vertexShader
+        .replace('#include <beginnormal_vertex>', 'vec3 objectNormal = gooNormal(position);')
+        .replace(
+          '#include <project_vertex>',
+          // the vertex goes where the goo puts it before anything else looks
+          // at it, so the ring below travels over the shape that is actually
+          // on screen rather than the sphere underneath
+          '\n  transformed = gooPos(position);' +
+          // a tap sends a ring out through the shell — the surface swells along
+          // it and settles back as the ring passes, rather than just glowing
+          '\n  float pdV = distance(transformed, uPC);' +
+          '\n  float ringV = exp(-pow((pdV - uPR) / 0.21, 2.0)) * uPI;' +
+          '\n  transformed += normalize(transformed - uPC + vec3(0.0001)) * ringV * 0.13;' +
+          '\n#include <project_vertex>\n  vWP = (modelMatrix * vec4(transformed, 1.0)).xyz;\n  vOP = transformed;'
+        );
     // hovering (mouse only) does not just brighten the lens — it thins the
-    // shell everywhere and brings the wireframe up over the whole form, so
-    // what you get is the structure of the thing rather than a lit patch
-    // hover takes the solid all the way off rather than part way: the matte
-    // and the glass shell both go to nothing at full reveal, and the wireframe
-    // comes up to full, so what's left under the pointer is only the structure
+    // shell everywhere and brings the cage up over the whole form, so what
+    // you get is the structure of the thing rather than a lit patch
     const band = mode2 === 'in'
       ? 'a = (1.0 - smoothstep(uR1 - 0.13, uR1 + 0.13, d)) * (1.0 - uReveal);'
       : mode2 === 'out'
         ? 'a = smoothstep(uR1 - 0.13, uR1 + 0.13, d) * (1.0 - uReveal);'
-        : 'a = max(smoothstep(uR1 - 0.16, uR1 + 0.10, d) * (1.0 - smoothstep(uR2 - 0.16, uR2 + 0.16, d)), uReveal);';
+        : mode2 === 'none'
+          ? 'a = 1.0;'
+          : mode2 === 'node'
+            // a point sprite is a square unless it is told otherwise, and a
+            // grid of little squares over a ceramic surface reads as damage
+            ? 'vec2 pq = gl_PointCoord - 0.5;\n  float pr = dot(pq, pq);\n  if(pr > 0.25) discard;\n  a = smoothstep(0.25, 0.09, pr);'
+            : mode2 === 'cage'
+              ? 'a = max(max(smoothstep(uR1 - 0.16, uR1 + 0.10, d) * (1.0 - smoothstep(uR2 - 0.16, uR2 + 0.16, d)), uReveal), 0.62);'
+              : 'a = max(smoothstep(uR1 - 0.16, uR1 + 0.10, d) * (1.0 - smoothstep(uR2 - 0.16, uR2 + 0.16, d)), uReveal);';
     const wave =
       '\n  float pd = distance(vOP, uPC);' +
       '\n  float ring = exp(-pow((pd - uPR) / 0.21, 2.0)) * uPI;' +
       '\n  float wake = (1.0 - smoothstep(uPR - 0.5, uPR, pd)) * uPI * 0.22;' +
       '\n  diffuseColor.a = clamp(diffuseColor.a + ring * 0.92 + wake, 0.0, 1.0);' +
       '\n  diffuseColor.rgb = mix(diffuseColor.rgb, uKeyC, clamp(ring * 1.25, 0.0, 1.0));';
+    /* Two flat faces meeting at an edge cannot be shaded hard while they share
+       their vertices, and sharing them is what lets one mesh be every shape.
+       The face normal is recoverable in the fragment though — it is the cross
+       product of the screen derivatives of the view position — so a shape that
+       wants real facets asks for it, and gets an edge with no width at all.
+       It rides the set, so the goo is never faceted. */
+    const facet =
+      '\n  if(uFlat > 0.001){' +
+      '\n  vec3 ffdx = dFdx(vViewPosition);' +
+      '\n  vec3 ffdy = dFdy(vViewPosition);' +
+      '\n  vec3 flatN = normalize(cross(ffdx, ffdy));' +
+      '\n  if(dot(flatN, normal) < 0.0) flatN = -flatN;' +
+      '\n  normal = normalize(mix(normal, flatN, uFlat));' +
+      '\n  nonPerturbedNormal = normal;' +
+      '\n  }';
     sh.fragmentShader =
       'varying vec3 vWP;\nvarying vec3 vOP;\nuniform vec3 uC;\nuniform float uR1;\nuniform float uR2;\n' +
-      'uniform vec3 uPC;\nuniform float uPR;\nuniform float uPI;\nuniform vec3 uKeyC;\nuniform float uReveal;\n' + sh.fragmentShader.replace(
+      'uniform vec3 uPC;\nuniform float uPR;\nuniform float uPI;\nuniform vec3 uKeyC;\nuniform float uReveal;\n' +
+      'uniform float uFlat;\n' + sh.fragmentShader
+      .replace('#include <normal_fragment_begin>', '#include <normal_fragment_begin>' + facet)
+      .replace(
       '#include <color_fragment>',
       '#include <color_fragment>' +
       // the lens is a circle on the glass, not a ball in the world. Measuring
@@ -1103,89 +1262,570 @@ function updateField(ease, t, waveC, waveR, waveI){
   field.instanceMatrix.needsUpdate = true;
 }
 
-/* ══ the form ═════════════════════════════════════════════════════════════ */
+/* ══ the form ═════════════════════════════════════════════════════════════
+   One sphere, subdivided, standing in for a lump of clay. Left alone it is
+   shapeless: the vertex shader pushes every vertex along its own radius by
+   a slowly turning field of noise, so the surface never settles and never
+   repeats. Press and hold anywhere on it and the same vertices are pulled
+   onto a geometric target instead — the goo tightens, the cage over it
+   sharpens, the nodes come up — and it holds that shape for as long as the
+   press lasts. Let go and it slumps back.
+
+   Nothing is loaded to make this happen, and nothing is fetched: every shape
+   is a radius as a function of direction, worked out on the CPU the first
+   time it is asked for and then kept. Which one a press lands on is drawn
+   from a shuffled bag, so every shape is seen once before any is seen twice
+   and the order is different each round. */
 const group = new THREE.Group();
 scene.add(group);
 
-function normalize(geo){
-  geo.computeBoundingBox();
-  const size = geo.boundingBox.getSize(new THREE.Vector3());
-  const mid  = geo.boundingBox.getCenter(new THREE.Vector3());
-  geo.translate(-mid.x, -mid.y, -mid.z);
-  const k = FIT / Math.max(size.x, size.y);
-  geo.scale(k,k,k);
-  geo.computeBoundingBox(); geo.computeBoundingSphere();
-  const fitted = geo.boundingBox.getSize(new THREE.Vector3());
-  // every form is fitted to the same box, so the framing carries over and a
-  // morph never jumps in scale. The dims ride on the geometry rather than in
-  // a global, since forms are now normalized long before they are shown.
-  geo.userData.fitW = fitted.x;
-  geo.userData.fitH = fitted.y;
-  return geo;
-}
+const R0 = FIT / 2;              // the resting radius of the goo
+const SHAPE_R = R0 * 1.08;       // every shape is fitted to this, so nothing jumps
 
-function flatten(root){
-  const parts = [];
-  root.updateWorldMatrix(true, true);
-  root.traverse(o=>{
-    if(!o.isMesh) return;
-    const g = o.geometry.clone().applyMatrix4(o.matrixWorld);
-    for(const key of Object.keys(g.attributes)){
-      if(key !== 'position' && key !== 'normal') g.deleteAttribute(key);
+/* How finely the clay is divided. A shape is only ever as crisp as the mesh
+   under it: the fillet radii below are derived from this, so raising it makes
+   every seam tighter as well as every silhouette smoother. 6 is 40,962
+   vertices — four noise evaluations each, which a GPU does not notice next to
+   the transmission pass the glass shell already costs. */
+const DETAIL = reduce ? 3 : (coarse ? 4 : 5);
+const CAGE_DETAIL = 2;
+
+function sstep(x){
+  x = Math.min(1, Math.max(0, x));
+  return x*x*(3 - 2*x);
+}
+const idle = fn => (window.requestIdleCallback
+  ? requestIdleCallback(()=>fn(), { timeout:1500 })
+  : setTimeout(fn, 60));
+
+/* ── an icosphere, indexed ────────────────────────────────────────────────
+   three's own IcosahedronGeometry hands back a non-indexed soup — three
+   vertices per triangle, none of them shared — which at this subdivision is
+   six times the vertices to displace for no gain. Subdividing by hand with a
+   midpoint cache keeps every vertex once, which is what makes running four
+   noise evaluations per vertex affordable. */
+function icosphere(detail){
+  const t = (1 + Math.sqrt(5)) / 2;
+  let verts = [
+    [-1,t,0],[1,t,0],[-1,-t,0],[1,-t,0],
+    [0,-1,t],[0,1,t],[0,-1,-t],[0,1,-t],
+    [t,0,-1],[t,0,1],[-t,0,-1],[-t,0,1]
+  ].map(v=>{ const l = Math.hypot(v[0],v[1],v[2]); return [v[0]/l, v[1]/l, v[2]/l]; });
+  let faces = [
+    [0,11,5],[0,5,1],[0,1,7],[0,7,10],[0,10,11],
+    [1,5,9],[5,11,4],[11,10,2],[10,7,6],[7,1,8],
+    [3,9,4],[3,4,2],[3,2,6],[3,6,8],[3,8,9],
+    [4,9,5],[2,4,11],[6,2,10],[8,6,7],[9,8,1]
+  ];
+  for(let d=0; d<detail; d++){
+    const cache = new Map(), out = [];
+    const mid = (a,b)=>{
+      const k = a < b ? a*100000 + b : b*100000 + a;
+      const got = cache.get(k);
+      if(got !== undefined) return got;
+      const va = verts[a], vb = verts[b];
+      let x = va[0]+vb[0], y = va[1]+vb[1], z = va[2]+vb[2];
+      const l = Math.hypot(x,y,z);
+      const m = verts.length;
+      verts.push([x/l, y/l, z/l]);
+      cache.set(k, m);
+      return m;
+    };
+    for(let i=0;i<faces.length;i++){
+      const f = faces[i];
+      const a = mid(f[0],f[1]), b = mid(f[1],f[2]), c = mid(f[2],f[0]);
+      out.push([f[0],a,c],[f[1],b,a],[f[2],c,b],[a,b,c]);
     }
-    if(!g.attributes.normal) g.computeVertexNormals();
-    parts.push(g.toNonIndexed());
-  });
-  if(!parts.length) return null;
-  return parts.length === 1 ? parts[0] : BufferGeometryUtils.mergeGeometries(parts, false);
+    faces = out;
+  }
+  const dirs = new Float32Array(verts.length*3);
+  for(let i=0;i<verts.length;i++){
+    dirs[i*3] = verts[i][0]; dirs[i*3+1] = verts[i][1]; dirs[i*3+2] = verts[i][2];
+  }
+  const index = new Uint32Array(faces.length*3);
+  for(let i=0;i<faces.length;i++){
+    index[i*3] = faces[i][0]; index[i*3+1] = faces[i][1]; index[i*3+2] = faces[i][2];
+  }
+  // a single triangle decides which way the whole thing faces; if the seed
+  // list ever winds the other way the solid would be inside out
+  const a = 0, b = index[1]*3, c = index[2]*3;
+  const nx = dirs[b+1]*dirs[c+2] - dirs[b+2]*dirs[c+1];
+  const ny = dirs[b+2]*dirs[c]   - dirs[b]  *dirs[c+2];
+  const nz = dirs[b]  *dirs[c+1] - dirs[b+1]*dirs[c];
+  if(nx*dirs[a] + ny*dirs[a+1] + nz*dirs[a+2] < 0){
+    for(let i=0;i<index.length;i+=3){ const t2 = index[i+1]; index[i+1] = index[i+2]; index[i+2] = t2; }
+  }
+  return { dirs, index };
 }
 
-let matte, glass, outline, wire, wireThru, ready = false;
+const FINE = icosphere(DETAIL);
+const CAGE = icosphere(CAGE_DETAIL);
+const NV = FINE.dirs.length/3;
 
-function build(geo){
-  normalize(geo);
-  letterGeo = geo;
-  letterW = geo.userData.fitW; letterH = geo.userData.fitH;
+/* ── direction sets the shapes are built out of ───────────────────────────*/
+function fibDirs(n){
+  const out = new Float32Array(n*3);
+  const ga = Math.PI * (3 - Math.sqrt(5));
+  for(let i=0;i<n;i++){
+    const y = 1 - (i/(n-1))*2;
+    const r = Math.sqrt(Math.max(0, 1 - y*y));
+    const th = ga*i;
+    out[i*3] = Math.cos(th)*r; out[i*3+1] = y; out[i*3+2] = Math.sin(th)*r;
+  }
+  return out;
+}
+// the twenty face centres of an icosahedron — where a stellation puts its points
+function icoFaceDirs(){
+  const s = icosphere(0), out = new Float32Array(20*3);
+  for(let f=0; f<20; f++){
+    let x=0,y=0,z=0;
+    for(let k=0;k<3;k++){
+      const v = s.index[f*3+k]*3;
+      x += s.dirs[v]; y += s.dirs[v+1]; z += s.dirs[v+2];
+    }
+    const l = Math.hypot(x,y,z);
+    out[f*3] = x/l; out[f*3+1] = y/l; out[f*3+2] = z/l;
+  }
+  return out;
+}
+
+/* The counts are set by what the mesh under them can actually hold, not by
+   what looks right on paper: a feature narrower than two or three vertices
+   does not come out crisper, it comes out as noise. */
+const D_ICO20 = icoFaceDirs();
+const D_ICO12 = icosphere(0).dirs;          // the twelve corners themselves
+const D_SPINE = fibDirs(72);
+
+function maxDot(d, S){
+  let m = 0;
+  for(let i=0;i<S.length;i+=3){
+    const v = d[0]*S[i] + d[1]*S[i+1] + d[2]*S[i+2];
+    if(v > m) m = v;
+  }
+  return m;
+}
+
+/* ── soft unions ──────────────────────────────────────────────────────────
+   Every one of these forms is two or more solids added together, and taking
+   a plain max() where they meet asks for an edge of zero radius. No mesh can
+   draw that: the vertices never land on the seam itself, so the crease comes
+   out as a row of needles in the valleys and a sawtooth crown around the
+   stud rims — which is what the artefacts were, not bad topology and not too
+   few vertices. Subdivision does not fix it either, it only makes the teeth
+   smaller. A fillet does. These are the standard polynomial smooth min and
+   max: the seam is given a real radius the mesh can actually resolve. */
+function smin(a, b, k){
+  const h = Math.min(1, Math.max(0, 0.5 + 0.5*(b - a)/k));
+  return b*(1-h) + a*h - k*h*(1-h);
+}
+function smax(a, b, k){
+  const h = Math.min(1, Math.max(0, 0.5 + 0.5*(a - b)/k));
+  return a*h + b*(1-h) + k*h*(1-h);
+}
+
+/* How wide a fillet has to be is set by the mesh, not by taste: any radius
+   smaller than a couple of vertex spacings is back to being an edge nothing
+   can resolve. This is that spacing, in the same units the radii are in. */
+const VSPACE = 2.2 / Math.pow(2, DETAIL);      // ≈ mean angle between vertices
+
+// the closest two directions in a set come — what decides how fat a feature
+// can be grown on each of them before its neighbour runs into it
+function minSep(S){
+  let m = Math.PI;
+  for(let i=0;i<S.length;i+=3){
+    for(let j=i+3;j<S.length;j+=3){
+      const c = S[i]*S[j] + S[i+1]*S[j+1] + S[i+2]*S[j+2];
+      const a = Math.acos(Math.min(1, Math.max(-1, c)));
+      if(a < m) m = a;
+    }
+  }
+  return m;
+}
+
+// smooth max over a set of direction dots — a polyhedron built on this comes
+// out with its edges rounded rather than knife-sharp
+function smaxDot(d, S, k){
+  let m = -1;
+  for(let i=0;i<S.length;i+=3){
+    const v = d[0]*S[i] + d[1]*S[i+1] + d[2]*S[i+2];
+    m = m < -0.5 ? v : smax(m, v, k);
+  }
+  return m;
+}
+
+/* ── the shapes ───────────────────────────────────────────────────────────
+   Each one is a radius as a function of direction, which is the whole trick:
+   a sphere-topology target the same vertices can be pulled onto, no matter
+   how little it ends up looking like a sphere.
+
+   They are also chosen to be told apart at a glance, which is a harder
+   constraint than it sounds: almost every interesting radial function ends
+   up as "a ball with things sticking out of it", and three of those in a row
+   read as one shape wobbling. So the set is spread across families instead —
+   a merged blob, a star, a solid, a fluted body, a fine burst, cylinders,
+   and a wound ribbon. */
+const SHAPES = [
+  /* Four spheres pushed into each other until they are one thing. Each one
+     holds the origin inside it, so every ray out of the centre hits all four
+     and the union is a clean radial function; the soft max is what turns the
+     circles where they intersect into the soft saddles between the lobes. */
+  { key:'LOBE', nsmooth:2, rf:(function(){
+      const T = [[1,1,1],[1,-1,-1],[-1,1,-1],[-1,-1,1]].map(v=>{
+        const l = Math.sqrt(3); return [v[0]/l, v[1]/l, v[2]/l];
+      });
+      // the core is what makes the union star-shaped from the centre, which
+      // is what lets four separate balls be written as one radius; without it
+      // a ray pointing away from every lobe would have nothing to hit
+      const RC = 0.58, L = 0.84, RS = 0.68, K = VSPACE*4.6;
+      return d=>{
+        let r = RC;
+        for(let i=0;i<4;i++){
+          const dc = (d[0]*T[i][0] + d[1]*T[i][1] + d[2]*T[i][2]) * L;
+          const disc = dc*dc - L*L + RS*RS;
+          if(disc <= 0) continue;                    // this ray misses this lobe
+          r = smax(r, dc + Math.sqrt(disc), K);
+        }
+        return r;
+      };
+    })() },
+
+  /* Twelve points rather than twenty, and longer: at twenty they were close
+     enough in rhythm to the burst below that the two read as the same object
+     seen twice. Straight-sided pyramids, falling off linearly in the angle
+     away from each point, which is what keeps the flanks flat and the tips
+     sharp — the difference between a stellation and a flower. */
+  { key:'STELLA', rf:(function(){
+      const S = D_ICO12, base = 0.62, A = 2.35, A0 = 0.56, K = VSPACE*2.2;
+      return d=>{
+        let r = base;
+        for(let i=0;i<S.length;i+=3){
+          const c = d[0]*S[i] + d[1]*S[i+1] + d[2]*S[i+2];
+          if(c <= 0.1) continue;
+          const k = 1 - Math.acos(Math.min(1, c))/A0;
+          if(k <= -0.3) continue;
+          r = smax(r, base + (A - base)*k, K);
+        }
+        return r;
+      };
+    })() },
+
+  /* A convex polyhedron, but taken over a soft max of its face planes rather
+     than a hard one, so the edges carry a real bevel instead of being knife
+     edges that the shading then has to apologise for. */
+  { key:'FACET', rf:d => 1 / Math.max(0.05, smaxDot(d, D_ICO20, 0.075)) },
+
+  /* Fluted, like a melon — the one shape here whose relief runs in lines
+     rather than in points, which is what makes it read as its own thing next
+     to the star and the burst. The ribs have to fade out at the poles or
+     they all converge on one vertex and tear it apart, and the slight flatten
+     top and bottom is what stops it looking like a ball wearing stripes. */
+  { key:'FLUTE', rf:(function(){
+      const N = 9;
+      return d=>{
+        const lon = Math.atan2(d[2], d[0]);
+        const eq = Math.pow(Math.max(0, 1 - d[1]*d[1]), 0.7);
+        const g = 0.5 + 0.5*Math.cos(N*lon);
+        return (0.84 + 0.34*g*eq) * (1 - 0.11*d[1]*d[1]);
+      };
+    })() },
+
+  { key:'SPINE', rf:d => 0.62 + 1.05*Math.pow(maxDot(d, D_SPINE), 140) },
+
+  /* A stud is a cylinder capped by a plane, so that is what it is built from:
+     the distance to the cap plane met with the distance to the side wall by a
+     soft min for the rim, then set into the ball with a soft max for the
+     fillet at its foot.
+
+     Where they sit matters as much as how they are built. A Fibonacci spiral
+     is even on average and crowded in places, and the crowded pairs grew into
+     each other — the two studs that had merged. These twenty directions are
+     the faces of an icosahedron, so every neighbour is exactly the same
+     distance away, and the radius is then clamped to whatever leaves a real
+     gap at that separation. No pair can run into another. */
+  { key:'STUD', nsmooth:2, rf:(function(){
+      const S = D_ICO20, base = 0.86, H = 1.26;
+      /* The side wall of a cylinder is close to edge-on from the centre of
+         the ball, which is the worst case for a radial mesh — few vertices
+         land on it and any error there is magnified. Keeping the studs short
+         and their fillets fat is what takes the banding off them. */
+      const KR = VSPACE*3.0;        // the rim, where cap meets side
+      const KF = VSPACE*3.8;        // the foot, where the stud meets the ball
+      /* What can actually collide is the cylinders themselves, and that is a
+         question about angles: two studs are clear of each other as long as
+         the half-angle each subtends is under half the angle between their
+         axes. The fillets at the foot are allowed to run into one another —
+         that is them sitting in the same ball, not two studs merging. */
+      const half = Math.min(Math.atan2(0.33, H), minSep(S)*0.5*0.86);
+      const RHO = H * Math.tan(half);
+      return d=>{
+        let r = base;
+        for(let i=0;i<S.length;i+=3){
+          const c = d[0]*S[i] + d[1]*S[i+1] + d[2]*S[i+2];
+          if(c <= 0.5) continue;
+          const sn = Math.sqrt(Math.max(1e-6, 1 - c*c));
+          r = smax(r, smin(H/c, RHO/sn, KR), KF);
+        }
+        return r;
+      };
+    })() },
+
+  /* One ribbon wound pole to pole, standing proud of a core that has been cut
+     back — the gap between the turns is what makes it read as a coil. Four
+     turns, not five: a ribbon thinner than a few vertices across stops being
+     a ribbon and breaks up into a row of points. The shoulder is deliberately
+     wide, so the ribbon rolls into the core rather than standing on a step. */
+  /* Three bars through a core. This is the shape the clay used to be pressed
+     over a .glb to get, and building it outright is better in every way the
+     drape was not: the faces are exactly flat, the arms exactly square, and
+     the edges carry a real round-over instead of the ridges a radius map
+     reconstructed. A box is a plain radial function — the nearest of its
+     three face planes — and rounding it is just meeting those three with a
+     soft min rather than a hard one. */
+  { key:'CROSS', rf:(function(){
+      const BOX = [[0.62,0.62,0.62],[1.18,0.30,0.30],[0.30,1.18,0.30],[0.30,0.30,1.18]];
+      const KE = VSPACE*2.4;        // the edges of each bar
+      const KJ = VSPACE*3.4;        // where the bars run into the core
+      const face = (h, a)=> h / Math.max(1e-4, Math.abs(a));
+      return d=>{
+        let r = -1;
+        for(let i=0;i<BOX.length;i++){
+          const h = BOX[i];
+          const t = smin(smin(face(h[0],d[0]), face(h[1],d[1]), KE), face(h[2],d[2]), KE);
+          r = r < 0 ? t : smax(r, t, KJ);
+        }
+        return r;
+      };
+    })() },
+
+  { key:'COIL', nsmooth:2, rf:(function(){
+      const T = 4, TAU = Math.PI*2;
+      return d=>{
+        const lat = Math.asin(Math.min(1, Math.max(-1, d[1])));
+        const lon = Math.atan2(d[2], d[0]);
+        const ph = (lon - (lat + Math.PI/2)*2*T) / TAU;
+        /* A raised cosine of the phase rather than a shoulder on the distance
+           to the ribbon centre: the old form measured how far a point was from
+           the turn and rolled off over a window, which meant a corner where
+           the two nearest turns met. This has no corner anywhere on it, at any
+           magnification — the rate of change goes to zero at the crest and at
+           the valley both. The exponent is what keeps a ribbon rather than a
+           sine wave, and the taper stops the turns piling up at the poles. */
+        const band = 0.5 + 0.5*Math.cos(TAU*ph);
+        const taper = Math.pow(Math.max(0, 1 - d[1]*d[1]), 0.30);
+        return 0.80 + 0.38*Math.pow(band, 1.7)*taper;
+      };
+    })() }
+];
+
+/* ── turning a radius function into vertex targets ────────────────────────*/
+function targetsFor(rf, scale, mesh){
+  const dirs = mesh.dirs, n = dirs.length/3;
+  const pos = new Float32Array(n*3);
+  const d = [0,0,0];
+  for(let i=0;i<n;i++){
+    d[0] = dirs[i*3]; d[1] = dirs[i*3+1]; d[2] = dirs[i*3+2];
+    const r = rf(d) * scale;
+    pos[i*3] = d[0]*r; pos[i*3+1] = d[1]*r; pos[i*3+2] = d[2]*r;
+  }
+  return pos;
+}
+
+/* Every shape is fitted to the same box so the framing never jumps between
+   them. Fitting to the peak alone is right for the geometric shapes, whose
+   points are the shape — but it punishes a model with one long arm, which
+   would shrink everything else to nothing to keep that arm inside. For those
+   the fit is taken from the ninetieth percentile instead, with the peak still
+   allowed to overrun it by a bounded amount. */
+function fitScale(rf, mesh, soft){
+  const dirs = mesh.dirs, n = dirs.length/3, d = [0,0,0];
+  const all = soft ? new Float64Array(n) : null;
+  let mx = 0;
+  for(let i=0;i<n;i++){
+    d[0] = dirs[i*3]; d[1] = dirs[i*3+1]; d[2] = dirs[i*3+2];
+    const r = rf(d);
+    if(all) all[i] = r;
+    if(r > mx) mx = r;
+  }
+  if(!soft) return SHAPE_R / mx;
+  all.sort();
+  const p90 = all[Math.min(n-1, Math.floor(n*0.90))];
+  return SHAPE_R / Math.max(mx*0.72, p90*0.94);
+}
+
+/* A radial surface always has its normal on the outward side of the radius,
+   whatever the winding — so the sign test here is exact rather than a guess. */
+function normalsFor(pos, index, dirs){
+  const n = new Float32Array(pos.length);
+  for(let f=0; f<index.length; f+=3){
+    const a = index[f]*3, b = index[f+1]*3, c = index[f+2]*3;
+    const e1x = pos[b]-pos[a], e1y = pos[b+1]-pos[a+1], e1z = pos[b+2]-pos[a+2];
+    const e2x = pos[c]-pos[a], e2y = pos[c+1]-pos[a+1], e2z = pos[c+2]-pos[a+2];
+    const nx = e1y*e2z - e1z*e2y, ny = e1z*e2x - e1x*e2z, nz = e1x*e2y - e1y*e2x;
+    n[a]+=nx; n[a+1]+=ny; n[a+2]+=nz;
+    n[b]+=nx; n[b+1]+=ny; n[b+2]+=nz;
+    n[c]+=nx; n[c+1]+=ny; n[c+2]+=nz;
+  }
+  for(let i=0;i<n.length;i+=3){
+    let x = n[i], y = n[i+1], z = n[i+2];
+    let l = Math.hypot(x,y,z);
+    if(l < 1e-9){ x = dirs[i]; y = dirs[i+1]; z = dirs[i+2]; l = 1; }
+    if(x*dirs[i] + y*dirs[i+1] + z*dirs[i+2] < 0){ x = -x; y = -y; z = -z; }
+    n[i] = x/l; n[i+1] = y/l; n[i+2] = z/l;
+  }
+  return n;
+}
+
+function warmShapes(i){
+  if(i >= SHAPES.length) return;
+  idle(()=>{ try{ shapeData(i); }catch(e){} warmShapes(i+1); });
+}
+
+/* Who each vertex touches, worked out once. Only the normals need it, but
+   they need it badly: a radial function evaluated per vertex gives a surface
+   whose facets are exact and whose shading is not, and the banding that shows
+   up on a cylinder wall or along a spiral is that difference. One pass of
+   averaging over the neighbours takes it out without moving anything. */
+let ADJ = null;
+function adjacency(){
+  if(ADJ) return ADJ;
+  const n = FINE.dirs.length/3, idx = FINE.index;
+  const list = new Array(n);
+  for(let i=0;i<n;i++) list[i] = [];
+  const add = (a,b)=>{ if(list[a].indexOf(b) < 0) list[a].push(b); };
+  for(let f=0; f<idx.length; f+=3){
+    const a = idx[f], b = idx[f+1], c = idx[f+2];
+    add(a,b); add(b,a); add(b,c); add(c,b); add(c,a); add(a,c);
+  }
+  ADJ = list;
+  return ADJ;
+}
+
+function smoothNormals(n, passes){
+  const A = adjacency();
+  for(let p=0; p<passes; p++){
+    const out = new Float32Array(n.length);
+    for(let i=0;i<A.length;i++){
+      let x = n[i*3], y = n[i*3+1], z = n[i*3+2];
+      const nb = A[i];
+      for(let k=0;k<nb.length;k++){
+        const j = nb[k]*3;
+        x += n[j]; y += n[j+1]; z += n[j+2];
+      }
+      const l = Math.hypot(x,y,z) || 1;
+      out[i*3] = x/l; out[i*3+1] = y/l; out[i*3+2] = z/l;
+    }
+    n = out;
+  }
+  return n;
+}
+
+// worked out the first time a shape is asked for, then kept
+function shapeData(i){
+  const S = SHAPES[i];
+  if(!S) return null;
+  if(!S.data){
+    const scale = fitScale(S.rf, FINE, !!S.soft);
+    const fp = targetsFor(S.rf, scale, FINE);
+    S.data = {
+      fp,
+      fn: smoothNormals(normalsFor(fp, FINE.index, FINE.dirs),
+                        S.nsmooth === undefined ? 1 : S.nsmooth),
+      cp: targetsFor(S.rf, scale, CAGE)
+    };
+  }
+  return S.data;
+}
+
+/* ── the meshes ───────────────────────────────────────────────────────────*/
+let matte, glass, outline, wire, wireThru, ready = false;
+let fineGeo = null, cageGeo = null, nodeGeo = null;
+let formFade = 1;
+let letterGeo = null;
+
+function buildForm(){
   const T = TH();
 
-  matte = new THREE.Mesh(geo, zoneify(new THREE.MeshStandardMaterial({
-    color:T.matte, roughness:T.matteRough, metalness:T.matteMetal, envMapIntensity:1.15
+  const pos = new Float32Array(NV*3);
+  for(let i=0;i<NV*3;i++) pos[i] = FINE.dirs[i] * R0;
+  const cagePos = new Float32Array(CAGE.dirs.length);
+  for(let i=0;i<cagePos.length;i++) cagePos[i] = CAGE.dirs[i] * R0;
+
+  fineGeo = new THREE.BufferGeometry();
+  fineGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  fineGeo.setAttribute('normal',   new THREE.BufferAttribute(FINE.dirs.slice(), 3));
+  fineGeo.setAttribute('aShape',   new THREE.BufferAttribute(pos.slice(), 3));
+  fineGeo.setAttribute('aShapeN',  new THREE.BufferAttribute(FINE.dirs.slice(), 3));
+  fineGeo.setIndex(new THREE.BufferAttribute(FINE.index, 1));
+  // the vertices move in the shader, so a bound worked out from the buffer
+  // would cull the form the moment it grew past its resting radius
+  fineGeo.boundingSphere = new THREE.Sphere(new THREE.Vector3(), R0*2.4);
+  letterGeo = fineGeo;
+
+  // the cage rides the same field, so it stays welded to the surface it draws
+  const cagePosAttr  = new THREE.BufferAttribute(cagePos, 3);
+  const cageShape    = new THREE.BufferAttribute(cagePos.slice(), 3);
+  const edges = (function(){
+    const seen = new Set(), out = [];
+    const add = (a,b)=>{
+      const k = a < b ? a*100000 + b : b*100000 + a;
+      if(seen.has(k)) return;
+      seen.add(k); out.push(a,b);
+    };
+    for(let f=0; f<CAGE.index.length; f+=3){
+      add(CAGE.index[f], CAGE.index[f+1]);
+      add(CAGE.index[f+1], CAGE.index[f+2]);
+      add(CAGE.index[f+2], CAGE.index[f]);
+    }
+    return new Uint32Array(out);
+  })();
+
+  cageGeo = new THREE.BufferGeometry();
+  cageGeo.setAttribute('position', cagePosAttr);
+  cageGeo.setAttribute('aShape', cageShape);
+  cageGeo.setIndex(new THREE.BufferAttribute(edges, 1));
+  cageGeo.boundingSphere = new THREE.Sphere(new THREE.Vector3(), R0*2.4);
+
+  // the nodes are the same vertices drawn as points — the attributes are
+  // shared outright, so one write feeds both
+  nodeGeo = new THREE.BufferGeometry();
+  nodeGeo.setAttribute('position', cagePosAttr);
+  nodeGeo.setAttribute('aShape', cageShape);
+  nodeGeo.boundingSphere = new THREE.Sphere(new THREE.Vector3(), R0*2.4);
+
+  matte = new THREE.Mesh(fineGeo, zoneify(new THREE.MeshStandardMaterial({
+    color:T.matte, roughness:T.matteRough, metalness:T.matteMetal, envMapIntensity:1.15,
+    flatShading:false
   }), 'out'));
   matte.renderOrder = 1;
   group.add(matte);
 
-  outline = new THREE.LineSegments(new THREE.EdgesGeometry(geo, 20), new THREE.LineBasicMaterial({
-    color:T.line, transparent:true, opacity:T.lineOp, depthWrite:false
-  }));
-  outline.scale.setScalar(1.002);
+  outline = new THREE.LineSegments(cageGeo, zoneify(new THREE.LineBasicMaterial({
+    color:T.line, transparent:true, depthWrite:false
+  }), 'cage'));
+  outline.material.opacity = T.lineOp;
   outline.renderOrder = 2;
   group.add(outline);
 
-  const wireGeo = new THREE.WireframeGeometry(geo);
-  wire = new THREE.LineSegments(wireGeo, zoneify(new THREE.LineBasicMaterial({
-    color:T.line, depthWrite:false
-  }), 'band'));
-  wire.scale.setScalar(1.006);
+  wire = new THREE.Points(nodeGeo, zoneify(new THREE.PointsMaterial({
+    color:T.line, size:0.14, sizeAttenuation:true, transparent:true, depthWrite:false
+  }), 'node'));
   wire.renderOrder = 3;
   group.add(wire);
 
-  // the same lines a second time, with no depth test, carried entirely by the
-  // hover reveal. The matte goes to zero alpha on hover but still writes depth,
-  // which would leave the far side of the mesh masked by a shell you can no
-  // longer see — this pass puts the hidden lines back. Riding the reveal means
-  // it fades up with the shell rather than snapping in, and at rest it is off.
-  wireThru = new THREE.LineSegments(wireGeo, new THREE.LineBasicMaterial({
+  // the same cage a second time with no depth test, carried entirely by the
+  // hover reveal. The solid goes to zero alpha on hover but still writes
+  // depth, which would leave the far side masked by a shell you can no
+  // longer see — this pass puts the hidden lines back.
+  wireThru = new THREE.LineSegments(cageGeo, zoneify(new THREE.LineBasicMaterial({
     color:T.line, transparent:true, opacity:0, depthTest:false, depthWrite:false
-  }));
-  wireThru.scale.setScalar(1.006);
+  }), 'none'));
   wireThru.renderOrder = 3.5;
   wireThru.visible = false;
   group.add(wireThru);
 
-  const depth = geo.boundingBox.getSize(new THREE.Vector3()).z;
-  glass = new THREE.Mesh(geo, zoneify(new THREE.MeshPhysicalMaterial({
+  glass = new THREE.Mesh(fineGeo, zoneify(new THREE.MeshPhysicalMaterial({
     color:0xffffff, metalness:0, roughness:0.02, transmission:1,
-    thickness:Math.max(depth,0.6), ior:1.6, clearcoat:1, clearcoatRoughness:0.02,
+    thickness:R0*1.6, ior:1.6, clearcoat:1, clearcoatRoughness:0.02,
     iridescence:0.3, iridescenceIOR:1.28, iridescenceThicknessRange:[180,420],
     // the shell only shows through the lens, and at 1.7 it mirrored the bright bar
     // of the environment straight back — the circle filled with a flat white wash
@@ -1193,466 +1833,185 @@ function build(geo){
     // where fresnel drives reflectance to one. Enough is left for a rim of sheen.
     envMapIntensity:0.35, depthWrite:false
   }), 'in'));
-  glass.scale.setScalar(1.004);
   glass.renderOrder = 4;
   group.add(glass);
 
   ready = true;
-  // slot zero of the bench is whatever loaded first, and it already owns the
-  // edge and wireframe passes — no need to cut them a second time
-  forms[0] = { url:MODEL_URL, geo, edges:outline.geometry, wireGeo:wire.geometry };
-  formIx = 0;
-  try{ resize(); }catch(e){}     // refit now that the real proportions are known
-  // the grains are only needed on the first tap, so they can wait a couple of frames
-  setTimeout(()=>{ try{ buildDust(); }catch(e){} }, 90);
-  // the rest of the folder loads behind the intro, so the first paint is unaffected
-  setTimeout(loadBench, 1200);
+  try{ resize(); }catch(e){}
+  // every target is worked out behind the intro, one per idle slice, so no
+  // press ever has to stop and build one — at this density that would be a
+  // visible hitch rather than a dropped frame
+  warmShapes(0);
 }
+
+buildForm();
 
 const boot = document.getElementById('boot');
 const bootmsg = document.getElementById('bootmsg');
 const bootfill = document.getElementById('bootfill');
 const bootpct = document.getElementById('bootpct');
 
-new GLTFLoader().load(
-  MODEL_URL,
-  gltf=>{
-    const geo = flatten(gltf.scene);
-    if(geo) build(geo);
-    else bootmsg.textContent = 'MODEL NOT FOUND';
-  },
-  undefined,
-  ()=>{
-    bootmsg.textContent = 'MODEL NOT FOUND';
-  }
-);
+/* ── working the clay ─────────────────────────────────────────────────────
+   Press and it sets; let go and it slumps. Both are the same spring run with
+   different weights — stiff and lightly damped on the way in, so the shape
+   arrives with a snap and overshoots a hair before it settles; slack and
+   heavy on the way out, so it sags rather than springs. A tap is just a very
+   short press, and MIN_HOLD is what stops one being over before it has been
+   seen. */
+const MIN_HOLD = 1.15;
 
-/* ══ the bench: every form the letter can become ══════════════════════════
-   Slot zero is model/logo.glb and is what stands on load. The others arrive
-   afterwards, one at a time and only once the first form is up, so a folder
-   with a dozen models still costs the visitor nothing at first paint. The
-   count is never hard-coded anywhere — the list comes from content.json.
+let shapeIx = -1, pressed = false;
 
-   Each slot carries its geometry plus the two derived passes a swap needs
-   (edges, wireframe). Cutting those on load rather than mid-flight is the
-   difference between a morph that lands clean and one that hitches on the
-   frame it hands over. */
-
-const forms = [];                 // { url, geo, edges, wireGeo }
-let formIx = 0;                   // which one is standing right now
-let nextIx = -1;                  // which one the next tap will bring in
-let benchList = null, benchLoading = false;
-
-const idle = fn => (window.requestIdleCallback
-  ? requestIdleCallback(()=>fn(), { timeout:1500 })
-  : setTimeout(fn, 60));
-
-/* content.json is the source of truth; model/models.json is a hand-written
-   fallback for anyone serving the folder without running the build script. */
-function setBench(list){
-  benchList = (list || [])
-    .filter(n => typeof n === 'string' && /\.(glb|gltf)$/i.test(n))
-    .map(n => n.indexOf('/') >= 0 ? n : MODEL_DIR + n)
-    .filter(u => u !== MODEL_URL);
-  loadBench();
-}
-
-function loadBench(){
-  if(benchLoading || !benchList || !benchList.length || !ready) return;
-  benchLoading = true;
-  const queue = benchList.slice(0, MAX_ALTS);
-  const loader = new GLTFLoader();
-
-  (function next(){
-    const url = queue.shift();
-    if(!url){ benchLoading = false; return; }
-    loader.load(url, gltf=>{
-      try{
-        const geo = flatten(gltf.scene);
-        if(geo){
-          normalize(geo);
-          const f = { url, geo, edges:null, wireGeo:null };
-          forms.push(f);
-          // the two heavy derivations, spread over separate idle slices
-          idle(()=>{
-            f.edges = new THREE.EdgesGeometry(geo, 20);
-            idle(()=>{ f.wireGeo = new THREE.WireframeGeometry(geo); });
-          });
-          if(nextIx < 0) chooseNext();       // the first arrival unlocks morphing
-        }
-      }catch(err){ console.warn('[model]', url, err); }
-      idle(next);
-    }, undefined, ()=>{
-      console.warn('[model] could not load ' + url);
-      idle(next);
-    });
-  })();
-}
-
-/* The next destination is drawn as soon as the current one lands, not at the
-   moment of the tap — which leaves a whole idle window to sample its cloud
-   and pair the grains, so the tap itself is free. The current form is left
-   out of the draw, so nothing ever morphs into what it already is. */
-function chooseNext(){
-  const pool = [];
-  for(let i=0;i<forms.length;i++) if(i !== formIx && forms[i] && forms[i].geo) pool.push(i);
-  nextIx = pool.length ? pool[(Math.random()*pool.length)|0] : -1;
-  if(nextIx >= 0) idle(()=>{ if(dustReady) pairFor(cid(formIx,0), cid(nextIx,0)); });
-}
-
-// handed over halfway through the flight, while the solid is fully faded out
-function swapForm(i){
-  const f = forms[i];
-  if(!f || !f.geo || !ready) return;
-  formIx = i;
-  letterGeo = f.geo;
-  letterW = f.geo.userData.fitW || letterW;
-  letterH = f.geo.userData.fitH || letterH;
-
-  matte.geometry = f.geo;
-  glass.geometry = f.geo;
-  glass.material.thickness = Math.max(f.geo.boundingBox.getSize(new THREE.Vector3()).z, 0.6);
-
-  if(!f.edges)   f.edges   = new THREE.EdgesGeometry(f.geo, 20);
-  if(!f.wireGeo) f.wireGeo = new THREE.WireframeGeometry(f.geo);
-  outline.geometry  = f.edges;
-  wire.geometry     = f.wireGeo;
-  wireThru.geometry = f.wireGeo;
-
-  try{ resize(); }catch(e){}     // proportions differ between forms
-}
-
-
-/* ══ dust: the letter comes apart and puts itself back together ═══════════
-   The form is sampled twice into two clouds of equal size. A kd-tree walks
-   both clouds down the same splits, so every grain is paired with the grain
-   that sits in the same corner of the shape — the swarm shifts rather than
-   scatters, and the letter stays readable the whole way through. What you
-   see is the lift off the surface, the twist about the standing axis and the
-   breath outward; the letter is always on its way back to itself.
-
-   Grain count is the one per-frame cost this adds, so it is kept lean and
-   cut further on phones and when motion is asked to be reduced. */
-
-const PN = reduce ? 3200 : (coarse ? 5200 : 9000);
-const MORPH_T = reduce ? 0.85 : 1.35;
-
-let letterGeo = null, formFade = 1;
-let dust = null, dustMat = null, dustReady = false;
-let morph = null, queued = 0;
-
-/* A cloud belongs to a form, not to the morph, so it is cut once and kept.
-   `variant` exists only for the case of a single model in the folder, where
-   the departure and arrival clouds have to be two different samplings of the
-   same surface or every grain would already be home. */
-const clouds = new Map();     // "form#variant" -> { pos, nrm }
-const pairs  = new Map();     // "from>to"      -> permutation
-const cid = (i, v) => i + '#' + v;
-
-function cloudById(id){
-  let c = clouds.get(id);
-  if(c) return c;
-  const parts = id.split('#'), i = +parts[0], v = +parts[1];
-  const f = forms[i];
-  if(!f || !f.geo) return null;
-  c = sampleCloud(f.geo, 9001 + i*7919 + v*4703);
-  clouds.set(id, c);
-  return c;
-}
-
-function pairFor(idA, idB){
-  const k = idA + '>' + idB;
-  let p = pairs.get(k);
-  if(p) return p;
-  const A = cloudById(idA), B = cloudById(idB);
-  if(!A || !B) return null;
-  p = kdPair(A.pos, B.pos);
-  if(pairs.size > 40) pairs.clear();      // n forms have n² routes between them
-  pairs.set(k, p);
-  return p;
-}
-
-function sstep(x){
-  x = Math.min(1, Math.max(0, x));
-  return x*x*(3 - 2*x);
-}
-
-function sampleCloud(geo, seed){
-  const s = new MeshSurfaceSampler(new THREE.Mesh(geo, new THREE.MeshBasicMaterial())).build();
-  s.randomFunction = mulberry32(seed);
-  const pos = new Float32Array(PN*3), nrm = new Float32Array(PN*3);
-  const p = new THREE.Vector3(), n = new THREE.Vector3();
-  for(let i=0;i<PN;i++){
-    s.sample(p, n);
-    pos[i*3] = p.x; pos[i*3+1] = p.y; pos[i*3+2] = p.z;
-    nrm[i*3] = n.x; nrm[i*3+1] = n.y; nrm[i*3+2] = n.z;
-  }
-  return { pos, nrm };
-}
-
-// recursive median split of both clouds at once — O(n log n), and the halves
-// always correspond, so nothing has to cross the letter to reach its place
-function kdPair(A, B){
-  const n = A.length/3;
-  const ia = new Int32Array(n), ib = new Int32Array(n), perm = new Int32Array(n);
-  for(let i=0;i<n;i++){ ia[i] = i; ib[i] = i; }
-
-  function span(arr, idx, lo, hi, ax){
-    let mn = Infinity, mx = -Infinity;
-    for(let k=lo;k<hi;k++){ const v = arr[idx[k]*3+ax]; if(v<mn) mn=v; if(v>mx) mx=v; }
-    return mx - mn;
-  }
-  function select(arr, idx, lo, hi, ax, k){
-    while(hi - lo > 1){
-      const pivot = arr[idx[(lo+hi)>>1]*3+ax];
-      let i = lo, j = hi-1;
-      while(i <= j){
-        while(arr[idx[i]*3+ax] < pivot) i++;
-        while(arr[idx[j]*3+ax] > pivot) j--;
-        if(i <= j){ const t = idx[i]; idx[i] = idx[j]; idx[j] = t; i++; j--; }
-      }
-      if(k <= j) hi = j+1;
-      else if(k >= i) lo = i;
-      else return;
+/* The order is shuffled, not cycled and not drawn fresh each time. Drawing at
+   random means a shape can turn up three presses running while another has
+   still not been seen; cycling means the same procession every visit. A bag
+   gives both: every shape comes out exactly once before any comes out twice,
+   and the order inside that is different each round. The only thing carried
+   across the seam between two rounds is that the last of one and the first of
+   the next are never the same — otherwise a press would appear to do nothing. */
+function bagDraw(bag, n, last){
+  if(!bag.length){
+    for(let i=0;i<n;i++) bag.push(i);
+    for(let i=bag.length-1;i>0;i--){
+      const j = (Math.random()*(i+1))|0;
+      const t = bag[i]; bag[i] = bag[j]; bag[j] = t;
+    }
+    if(bag.length > 1 && bag[0] === last){
+      const t = bag[0]; bag[0] = bag[1]; bag[1] = t;
     }
   }
-
-  const stack = [[0,n,0,n]];
-  while(stack.length){
-    const s = stack.pop();
-    const a0 = s[0], a1 = s[1], b0 = s[2], b1 = s[3];
-    const c = a1 - a0;
-    if(c === 1){ perm[ia[a0]] = ib[b0]; continue; }
-    let ax = 0, best = -1;
-    for(let k=0;k<3;k++){
-      const e = span(A,ia,a0,a1,k) + span(B,ib,b0,b1,k);
-      if(e > best){ best = e; ax = k; }
-    }
-    const mid = c >> 1;
-    select(A, ia, a0, a1, ax, a0+mid);
-    select(B, ib, b0, b1, ax, b0+mid);
-    stack.push([a0, a0+mid, b0, b0+mid]);
-    stack.push([a0+mid, a1, b0+mid, b1]);
-  }
-  return perm;
+  return bag.shift();
 }
+const shapeBag = [];
+let lastDrawn = -1;
+let flatNow = 0;                    // whether this shape wants hard facets
+let setV = 0, setVel = 0, holding = false, pressAt = 0, landed = false;
+let pending = -1;                   // a shape waiting for the surface to clear
+let scriptTimer = null;
+const matOut = document.getElementById('material');
+let matState = '';
 
-const DUST_VERT = `
-attribute vec3 aTo;
-attribute vec3 aNrm;
-attribute vec2 aRnd;
-uniform float uT;
-uniform float uFade;
-uniform float uSize;
-uniform float uPx;
-uniform float uLift;
-uniform float uSwirl;
-uniform float uPuff;
-uniform vec3  uHit;
-varying float vG;
-
-void main(){
-  // grains nearest the strike let go first, the far side hangs on
-  float sweep = clamp(distance(position, uHit) / 3.2, 0.0, 1.0);
-  float d = mix(sweep, aRnd.x, 0.45) * 0.34;
-  float k = clamp((uT - d) / 0.66, 0.0, 1.0);
-
-  float e = k*k*k*(k*(k*6.0 - 15.0) + 10.0);        // smootherstep
-  float b = sin(k * 3.14159265);                     // 0 -> 1 -> 0 across the flight
-  b = b*b*(3.0 - 2.0*b);
-
-  vec3 p = mix(position, aTo, e);
-  p += aNrm * (b * uLift * (0.45 + aRnd.y));         // lift off the surface
-  p *= 1.0 + b * uPuff;                              // and breathe outward
-
-  float ang = b * uSwirl * (0.55 + aRnd.y);          // twist about the standing axis
-  float ca = cos(ang), sa = sin(ang);
-  vec2 q = p.xz;
-  p.x = q.x*ca - q.y*sa;
-  p.z = q.x*sa + q.y*ca;
-
-  vec4 mv = modelViewMatrix * vec4(p, 1.0);
-  gl_Position = projectionMatrix * mv;
-  float ps = uSize * (0.55 + aRnd.y) * (1.0 + b*0.9) * uPx / max(0.02, -mv.z);
-  gl_PointSize = clamp(ps, 1.0, 18.0);
-  vG = uFade * (0.55 + 0.45*b);
-}
-`;
-
-const DUST_FRAG = `
-uniform vec3 uCol;
-varying float vG;
-void main(){
-  vec2 q = gl_PointCoord - 0.5;
-  float r = dot(q, q);
-  if(r > 0.25) discard;
-  gl_FragColor = vec4(uCol, smoothstep(0.25, 0.05, r) * vG);
-}
-`;
-
-function dustColor(){
-  // written straight to the framebuffer, so keep the theme colour in display space
-  const c = new THREE.Color();
-  c.setHex(TH().key, THREE.LinearSRGBColorSpace);
-  return c;
-}
-
-function buildDust(){
-  if(dustReady || dust || !ready || !letterGeo) return;
-
-  const g = new THREE.BufferGeometry();
-  g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(PN*3), 3));
-  g.setAttribute('aTo',      new THREE.BufferAttribute(new Float32Array(PN*3), 3));
-  g.setAttribute('aNrm',     new THREE.BufferAttribute(new Float32Array(PN*3), 3));
-  const rnd = new Float32Array(PN*2);
-  const r = mulberry32(0x9e3779b);
-  for(let i=0;i<PN;i++){ rnd[i*2] = r(); rnd[i*2+1] = r(); }
-  g.setAttribute('aRnd', new THREE.BufferAttribute(rnd, 2));
-  g.boundingSphere = new THREE.Sphere(new THREE.Vector3(), 6);
-
-  dustMat = new THREE.ShaderMaterial({
-    uniforms:{
-      uT:{value:0}, uFade:{value:0}, uSize:{value:0.016}, uPx:{value:900},
-      uLift:{value:reduce?0.14:0.30}, uSwirl:{value:reduce?0.11:0.24}, uPuff:{value:reduce?0.05:0.11},
-      uHit:{value:new THREE.Vector3()}, uCol:{value:dustColor()}
-    },
-    vertexShader:DUST_VERT, fragmentShader:DUST_FRAG,
-    transparent:true, depthWrite:false, toneMapped:false,
-    blending: TH().additive ? THREE.AdditiveBlending : THREE.NormalBlending
-  });
-
-  dust = new THREE.Points(g, dustMat);
-  dust.frustumCulled = false;
-  dust.renderOrder = 6;
-  dust.visible = false;
-  group.add(dust);
-
-  // sampling and pairing are chunked so the frames right after boot stay smooth.
-  // What is warmed here is the standing form's own departure cloud plus the
-  // self-morph fallback, which is all that can be needed before the rest of
-  // the folder has arrived; cross-form pairs are warmed by chooseNext().
-  const jobs = [
-    ()=>{ cloudById(cid(formIx,0)); },
-    ()=>{ cloudById(cid(formIx,1)); },
-    ()=>{ pairFor(cid(formIx,0), cid(formIx,1)); },
-    ()=>{
-      dustReady = true;
-      sizeDust(); syncDust();
-      if(queued){ queued = 0; startMorph(null); }   // a tap that beat the grains here
-    }
-  ];
-  (function next(){
-    const job = jobs.shift();
-    if(!job) return;
-    try{ job(); }catch(e){ return; }
-    setTimeout(next, 0);
-  })();
-}
-
-function syncDust(){
-  if(!dustMat) return;
-  dustMat.uniforms.uCol.value.copy(dustColor());
-  dustMat.blending = TH().additive ? THREE.AdditiveBlending : THREE.NormalBlending;
-  dustMat.needsUpdate = true;
-}
-
-function sizeDust(){
-  if(dustMat) dustMat.uniforms.uPx.value = VH * DPR / (2*Math.tan(FOV*Math.PI/360));
-}
-
-function armDust(hit, idA, idB){
-  if(!dust) return false;
-  const A = cloudById(idA), B = cloudById(idB);
-  if(!A || !B) return false;
-  const perm = pairFor(idA, idB);
-  if(!perm) return false;
-  const g = dust.geometry;
-  const p = g.attributes.position.array, t = g.attributes.aTo.array, n = g.attributes.aNrm.array;
-  p.set(A.pos); n.set(A.nrm);
-  for(let i=0;i<PN;i++){
-    const j = perm[i]*3, o = i*3;
-    t[o] = B.pos[j]; t[o+1] = B.pos[j+1]; t[o+2] = B.pos[j+2];
-  }
-  g.attributes.position.needsUpdate = true;
-  g.attributes.aTo.needsUpdate = true;
-  g.attributes.aNrm.needsUpdate = true;
-  dustMat.uniforms.uHit.value.copy(hit || new THREE.Vector3());
-  dustMat.uniforms.uT.value = 0;
-  dustMat.uniforms.uFade.value = 0;
+function applyShape(i){
+  const S = shapeData(i);
+  if(!S || !ready) return false;
+  /* Only ever called while the clay is back to being goo, which is what lets
+     there be one target on the card instead of two crossfading. Two meant
+     four buffers going up to the GPU on every change of shape, and at the
+     density this was running at that upload was the stall being felt when a
+     discipline was opened. */
+  const f = fineGeo.attributes, c = cageGeo.attributes;
+  f.aShape.array.set(S.fp);
+  f.aShapeN.array.set(S.fn);
+  c.aShape.array.set(S.cp);
+  f.aShape.needsUpdate = f.aShapeN.needsUpdate = true;
+  c.aShape.needsUpdate = true;
+  flatNow = SHAPES[i].flat || 0;
+  shapeIx = i;
   return true;
 }
 
-function startMorph(hit){
-  if(!ready) return;
-  if(morph){ queued = 1; return; }              // a tap mid-flight still counts
-  if(!dustReady){ queued = 1; return; }         // the grains are still being cut
-
-  // where it is going was decided when the last morph landed. With only one
-  // model in the folder there is nowhere to go, and the form comes apart and
-  // puts itself back together as before — the folder can grow later.
-  const to = (nextIx >= 0 && forms[nextIx] && forms[nextIx].geo) ? nextIx : -1;
-  const idA = cid(formIx, 0);
-  const idB = to >= 0 ? cid(to, 0) : cid(formIx, 1);
-  if(!armDust(hit, idA, idB)) return;
-
-  morph = { t:0, sealed:false, swapped:false, to };
-  dustMat.uniforms.uSwirl.value *= -1;          // the twist alternates, so no two are alike
-  dust.visible = true;
-  formFade = 1;
+/* A new target can only be swapped in while the goo has the surface back —
+   above that there is nothing to hide the handover with. So a press that
+   lands on a shape still slumping does not fight it: the form drops the rest
+   of the way first, quickly, and takes the new shape on the way up. It reads
+   as the piece collapsing under the hand before being worked again, which is
+   what clay would actually do. */
+function startForm(){
+  if(!ready || !SHAPES.length) return;
+  const want = bagDraw(shapeBag, SHAPES.length, lastDrawn);
+  lastDrawn = want;
+  stepVerb();
+  holding = true;
+  pressed = true;
+  landed = false;
+  clearTimeout(scriptTimer);
+  if(setV < 0.15 && applyShape(want)){
+    pending = -1;
+    pressAt = performance.now();
+  }else{
+    pending = want;             // taken as soon as the surface is clear
+  }
   morphSound();
 }
 
+function endForm(){
+  holding = false;
+}
+
+// a hand that leaves the window mid-press may never send the pointerup that
+// would let the clay go, and a shape stuck set is worse than one released early
+addEventListener('blur', endForm);
+document.addEventListener('visibilitychange', ()=>{ if(document.hidden) endForm(); });
+
+// the archive reaching for a discipline works the clay too, so the mark
+// behind the panel is never the one that was standing when they arrived
+function startMorph(){
+  if(!ready) return;
+  startForm();
+  scriptTimer = setTimeout(()=>{ holding = false; }, 1700);
+}
+
 function stepMorph(dt){
-  if(!morph) return;
-  morph.t += dt;
-  const k = Math.min(1, morph.t / MORPH_T);
-  const u = dustMat.uniforms;
-  u.uT.value = k;
-  u.uFade.value = Math.min(sstep(k/0.09), sstep((1-k)/0.14));
+  uTime.value += dt * (reduce ? 0.22 : 1);
+  if(!ready) return;
 
-  // the solid lets go early and is back before the grains have finished settling
-  formFade = Math.max(1 - sstep(k/0.17), sstep((k - 0.78)/0.22));
+  // a shape waiting its turn keeps the form falling, and falling faster than
+  // an ordinary release, so the collapse reads as intent rather than delay
+  if(pending >= 0 && setV < 0.12 && applyShape(pending)){
+    pending = -1;
+    pressAt = performance.now();      // the hold is counted from here, so a
+  }                                   // tap during a slump still gets its shape
+  const hold = pending < 0 &&
+    (holding || (pressAt > 0 && performance.now() - pressAt < MIN_HOLD*1000));
+  const goal = hold ? 1 : 0;
+  const stiff = goal ? 46 : (pending >= 0 ? 40 : 16);
+  const damp  = goal ? 10.5 : (pending >= 0 ? 13 : 7.4);
+  setVel += ((goal - setV)*stiff - setVel*damp) * dt;
+  setV += setVel * dt;
+  if(setV < -0.05){ setV = -0.05; setVel = 0; }
+  if(setV > 1.13){ setV = 1.13; setVel *= 0.35; }
 
-  // the handover happens in the gap where the solid is fully out — from 0.17
-  // to 0.78 there is nothing on screen but grains, so the geometry underneath
-  // can be exchanged without anything being seen to change
-  if(!morph.swapped && k > 0.45){
-    morph.swapped = true;
-    if(morph.to >= 0) swapForm(morph.to);
-  }
+  uSet.value = setV;
+  uWob.value = 1 - sstep(setV/0.82);
+  uSag.value = 1;
+  // faceting arrives with the shape and leaves with it — a faceted lump of
+  // goo would look like a rendering fault rather than a decision
+  uFlat.value = flatNow * sstep((setV - 0.22)/0.5);
 
-  if(!morph.sealed && k > 0.83){                // the letter locks back in
-    morph.sealed = true;
-    chime();
-  }
-  if(k >= 1){
-    morph = null;
-    dust.visible = false;
-    formFade = 1;
-    chooseNext();                               // and the next draw begins warming
-    if(queued){ queued = 0; startMorph(null); }
+  if(!landed && setV > 0.9){ landed = true; chime(); }
+  if(landed && setV < 0.35) landed = false;
+
+  // the readout says what the clay is doing, in the same register as the
+  // frame rate beside it — unset, being worked, or holding a shape
+  const state = setV < 0.06 ? 'GOO / UNSET'
+              : setV > 0.86 ? 'GOO / SET — ' + (SHAPES[shapeIx] ? SHAPES[shapeIx].key : 'FORM')
+              : 'GOO / WORKING';
+  if(state !== matState){
+    matState = state;
+    if(matOut) matOut.textContent = state;
   }
 }
 
-// one place decides how solid the form looks, so the morph and the intro agree
+/* one place decides how solid the form looks, so the set and the intro agree.
+   The cage is always there — a net over jelly at rest — but it only sharpens,
+   and the nodes only appear, once the shape has actually taken. */
 function applyFade(ease){
   if(!ready) return;
-  const v = formFade, T = TH();
-  matte.material.opacity = v;
-  matte.material.depthWrite = v > 0.5;         // or the solid would mask its own dust
-  wire.material.opacity = v;
-  outline.material.opacity = T.lineOp * ease * v;
-  wire.visible = v > 0.02;
-  outline.visible = v > 0.02;
-  glass.visible = v > 0.9;                     // transmission doesn't fade cleanly
-  glass.material.opacity = v;
-  const s = 0.986 + 0.014*v;                   // the solid contracts a hair as it lets go
-  matte.scale.setScalar(s);
-  outline.scale.setScalar(1.002*s);
-  wire.scale.setScalar(1.006*s);
-  wireThru.scale.setScalar(1.006*s);
-  glass.scale.setScalar(1.004*s);
+  const T = TH(), s = Math.min(1, Math.max(0, setV));
+  matte.material.opacity = 1;
+  glass.material.opacity = 1;
+  glass.visible = true;
+  outline.material.opacity = T.lineOp * ease * (0.30 + 0.70*s);
+  wire.material.opacity = ease * sstep((s - 0.30)/0.55);
+  wire.visible = wire.material.opacity > 0.02;
+  wire.material.size = 0.075 + 0.055*s;
+  formFade = 1;
 }
+
+// the dust that used to carry a swap between models is gone with the models;
+// these are what the theme and the resize still reach for
+function syncDust(){}
+function sizeDust(){}
 
 /* ══ audio ════════════════════════════════════════════════════════════════ */
 // everything here is synthesised in the browser — no audio files, nothing streamed.
@@ -2203,9 +2562,12 @@ function openPage(k){
 }
 
 function openField(i){
-  // reaching for a discipline turns the form too, so the mark behind the panel
-  // is never the one that was standing when the visitor arrived
-  startMorph(null);
+  /* Reaching for a discipline works the clay too, so the mark behind the panel
+     is never the one that was standing when the visitor arrived — but not in
+     this frame. Building the grid below is the heaviest main-thread moment on
+     the page, and handing the new target to the GPU in the same frame put the
+     two costs on top of each other, which is what was felt as a stutter. */
+  requestAnimationFrame(()=>requestAnimationFrame(startMorph));
   fieldIx = i; workIx = -1;
   const f = FIELDS[i];
   haltMedia(gridEl);
@@ -2812,14 +3174,35 @@ const ndc = new THREE.Vector3();
 let mx=0, my=0, px=0, py=0, touched=false, clock=0, intro=0, radius=0, rGoal=0;
 let pointerX = innerWidth/2, pointerY = innerHeight/2, retX = pointerX, retY = pointerY;
 let VX = 0, VY = 0, VW = innerWidth, VH = innerHeight, visH = 4.5, centreY = 0, formScale = 1, formScaleGoal = 1;
-let letterW = 2.1, letterH = FIT;
+// the goo is fitted to the same box whatever shape it is holding, so these
+// no longer move — they are kept because fitView still frames against them
+let letterW = SHAPE_R*2, letterH = SHAPE_R*2;
 const cxMid = ()=> VX + VW/2;
 const cyMid = ()=> VY + VH/2;
 let spin = 0, spinV = 0, groupX = 0;
 
-// the reticle invites you in, then tells you what a tap will do
+/* The reticle teaches the gesture once and then stops explaining itself. Press
+   and hold is not a thing a visitor guesses at, so the first approach says so
+   outright; from the moment they have done it once the tag stops instructing
+   and starts naming the act instead, a different verb each time the clay is
+   worked. Same word under the pointer as the one the press is about to carry
+   out — it is a label, not a caption. */
+const VERBS = ['MORPH','TRANSFORM','RESHAPE','EVOLVE','REFINE',
+               'VISUALIZE','MATERIALIZE','ANIMATE','BUILD','DEFINE'];
+let verbIx = -1;
+const verbBag = [];
+
+// the verbs are drawn the same way as the shapes, and for the same reason —
+// so the tag is not a list being read out in order, and so no press ever
+// repeats the word the one before it used
+function stepVerb(){
+  verbIx = bagDraw(verbBag, VERBS.length, verbIx);
+  syncTag();
+}
+
 function syncTag(){
-  retTag.textContent = hoverForm ? (started ? 'MORPH' : 'INTERACT') : '';
+  if(!hoverForm){ retTag.textContent = ''; return; }
+  retTag.textContent = verbIx < 0 ? 'PRESS & HOLD' : VERBS[verbIx];
 }
 
 function toWorld(cx, cy){
@@ -2879,14 +3262,14 @@ addEventListener('pointerleave', ()=>{
   hoverForm = false; refreshExplore();
 });
 
-/* ── drag to turn the form, tap to change it ──────────────────────────────
-   One gesture, two readings. Travel past a small threshold is a turn: sideways
-   spins the form about its standing axis, up and down tips it, and letting go
-   carries the momentum on. Anything under the threshold is a tap, which strikes
-   the surface and starts the morph. Touch and mouse take the same path, so a
-   phone gets the turn without the click having to be given up for it. */
-const TAP_SLOP = coarse ? 14 : 6;        // px of travel still read as a tap
-const TAP_MS = 700;
+/* ── press to shape it, drag to turn it ───────────────────────────────────
+   One gesture doing both, which is what makes the clay feel like clay: the
+   moment a hand lands on the goo it starts setting, and it goes on setting
+   whether or not the hand then moves. Travel past a small threshold turns the
+   form as well — sideways spins it about its standing axis, up and down tips
+   it, and letting go carries the momentum on — so a shape can be held and
+   walked around in the same motion. Lifting off is what releases it. Touch and
+   mouse take the same path, so a phone gets both without either being given up. */
 const SPIN_PER_PX = 0.0070;
 const TILT_PER_PX = 0.0042;
 let tilt = 0, tiltV = 0, grab = null;
@@ -2912,9 +3295,20 @@ addEventListener('pointerdown', e=>{
   if(e.target.closest && (e.target.closest('[data-tag]') || e.target.closest('.panel,.lens'))) return;
   exploreIntro = false;
   grab = { id:e.pointerId, x:e.clientX, y:e.clientY, lx:e.clientX, ly:e.clientY,
-           travel:0, t:performance.now(), turning:false, fx:0, fy:0 };
+           travel:0, t:performance.now(), turning:false, fx:0, fy:0, onForm:false };
   try{ canvas.setPointerCapture(e.pointerId); }catch(err){}
-  if(pick(e.clientX, e.clientY)){ hoverForm = true; refreshExplore(); }
+
+  // landing on the goo is the whole gesture — it begins setting here and goes
+  // on setting until the hand comes off, however much it moves in between
+  const hit = pick(e.clientX, e.clientY);
+  if(hit){
+    grab.onForm = true;
+    hoverForm = true;
+    strikeAt(hit);
+    startForm();
+    syncTag();
+    refreshExplore();
+  }
 });
 
 addEventListener('pointermove', e=>{
@@ -2922,7 +3316,7 @@ addEventListener('pointermove', e=>{
   const dx = e.clientX - grab.lx, dy = e.clientY - grab.ly;
   grab.lx = e.clientX; grab.ly = e.clientY;
   grab.travel += Math.abs(dx) + Math.abs(dy);
-  if(grab.travel <= TAP_SLOP) return;            // still inside tap territory
+  if(grab.travel <= 4) return;                   // a hand resting still is not a turn
   grab.turning = true;
   grab.fx = dx * SPIN_PER_PX;
   grab.fy = dy * TILT_PER_PX;
@@ -2941,18 +3335,14 @@ function letGo(e){
   // moment, so lifting it has to do the same job or the last touch stays lit
   if(coarse){ rGoal = 0; mx = 0; my = 0; }
 
+  // lifting off is what lets the clay go; the shape slumps from wherever it
+  // had got to, and MIN_HOLD keeps a quick tap from being over unseen
+  if(g.onForm) endForm();
+
   if(g.turning){                                 // a flick keeps turning after release
     spinV = THREE.MathUtils.clamp(g.fx * 0.85, -0.085, 0.085);
     tiltV = THREE.MathUtils.clamp(g.fy * 0.55, -0.05, 0.05);
-    return;
   }
-  if(performance.now() - g.t > TAP_MS) return;   // a long hold is not a tap
-
-  const hit = pick(g.lx, g.ly);
-  if(!hit){ refreshExplore(); return; }
-  strikeAt(hit);
-  startMorph(matte ? matte.worldToLocal(hit.point.clone()) : null);
-  hoverForm = true;
   refreshExplore();
 }
 addEventListener('pointerup', letGo);
@@ -3159,14 +3549,20 @@ function frame(now){
     // beside the archive, and pointing at it should do what it always does.
     // On a narrow one the panel covers the form outright, and the hover test
     // already refuses anything inside .panel, so there is nothing to guard.
-    const wantReveal = !coarse && !morph && hoverForm;
+    const wantReveal = !coarse && hoverForm;
     reveal += ((wantReveal ? 1 : 0) - reveal) * (wantReveal ? 0.13 : 0.09);
     if(reveal < 0.002) reveal = 0;
-    uReveal.value = reveal;
+    // pressing means the pointer is on the form, so the hover reveal would
+    // otherwise be holding the solid open for the whole time the clay is
+    // being worked — and a shape you can only see the armature of is not a
+    // shape. It closes as the form sets: point at it and you get the
+    // structure, press and you get the object.
+    const revEff = reveal * (1 - sstep(setV/0.55));
+    uReveal.value = revEff;
     // the hidden-line pass follows the reveal, a little under the front lines
     // so the near side of the mesh still reads as the near side
-    wireThru.material.opacity = reveal * 0.42 * formFade;
-    wireThru.visible = reveal > 0.01 && formFade > 0.02;
+    wireThru.material.opacity = revEff * 0.42 * formFade;
+    wireThru.visible = revEff > 0.01 && formFade > 0.02;
 
     // the turn about the local up axis, with weight — wheel, drag or flick
     spin += spinV;
@@ -3375,24 +3771,7 @@ document.addEventListener('click', e=>{
 const yearEl = document.getElementById('year');
 if(yearEl) yearEl.textContent = String(new Date().getFullYear());
 
-/* the model folder is inventoried by the same build step as everything else,
-   so a new .glb needs no edit here. The fallback covers a folder served
-   without the build script having run. */
-function bootBench(c){
-  const m = c && c.models;
-  let list = [];
-  if(Array.isArray(m)) list = m;
-  else if(m && typeof m === 'object') list = m.alts || m.models || [];
-  if(list.length){ setBench(list); return; }
-
-  fetch(MODEL_DIR + 'models.json', { cache:'no-cache' })
-    .then(r => r.ok ? r.json() : null)
-    .then(j => { if(j) setBench(Array.isArray(j) ? j : (j.alts || j.models || [])); })
-    .catch(()=>{});
-}
-
 function applyContent(c){
-  bootBench(c);
   FIELDS = c.fields || [];
   PAGES = buildPages(c);
 
@@ -3410,7 +3789,6 @@ fetch('content.json', { cache: 'no-cache' })
   .then(applyContent)
   .catch(err=>{
     console.error('[content]', err);
-    bootBench(null);          // the forms are independent of the site index
     document.getElementById('practice').textContent = 'CONTENT UNAVAILABLE';
     PAGES = { ABOUT: { sub:'UNAVAILABLE', html:()=>
       '<p class="lede">The site index could not be loaded.</p>' +
@@ -3425,7 +3803,7 @@ fetch('content.json', { cache: 'no-cache' })
 <p class="seo-name">Kiarash Farahmandrad</p>
 <p class="seo-role">Multi-disciplinary designer · Tehran, Iran</p>
 
-<p>I work across identity, typography, 3D, motion, and digital experiences, moving between mediums to find the right form for an idea. I'm interested in the space where disciplines overlap, where a graphic can become an object, a typeface can become an environment, and a visual identity can become something you can interact with. Most things start as an experiment, and usually end somewhere no one expects.</p>
+<p>I work across identity, typography, 3D, motion, and digital experiences, moving between mediums to find the right form for an idea. I'm interested in the space where disciplines overlap, where a graphic can become an object, a typeface can become an environment, and a visual identity can become something you can interact with. I like to start while an idea is still soft, and shape it with you rather than hand it back finished. Most things start as an experiment, and usually end somewhere no one expects.</p>
 
 <h2>Skills</h2>
 <h3>DISCIPLINES</h3>
@@ -3519,7 +3897,7 @@ fetch('content.json', { cache: 'no-cache' })
       "alternateName": "Kiarad Space",
       "url": "https://kiarad.space/",
       "jobTitle": "Multi-disciplinary designer",
-      "description": "I work across identity, typography, 3D, motion, and digital experiences, moving between mediums to find the right form for an idea. I'm interested in the space where disciplines overlap, where a graphic can become an object, a typeface can become an environment, and a visual identity can become something you can interact with. Most things start as an experiment, and usually end somewhere no one expects.",
+      "description": "I work across identity, typography, 3D, motion, and digital experiences, moving between mediums to find the right form for an idea. I'm interested in the space where disciplines overlap, where a graphic can become an object, a typeface can become an environment, and a visual identity can become something you can interact with. I like to start while an idea is still soft, and shape it with you rather than hand it back finished. Most things start as an experiment, and usually end somewhere no one expects.",
       "knowsAbout": [
         "Logo Design",
         "Poster Design",
