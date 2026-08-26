@@ -167,6 +167,19 @@
   .ret.lock .tag{transform:translate(0,-50%);opacity:.92}
   .ret .tag:empty{display:none}
 
+  /* a phone has no reticle to hang the instruction off, so it goes under the
+     form instead — same sentence, same job, and gone the moment it has been
+     acted on. Sized and clipped like the chips so it reads as one of them. */
+  .cue{position:fixed;left:0;top:0;z-index:13;pointer-events:none;
+    transform:translate(-50%,-50%) translateY(7px);opacity:0;
+    font-family:'Azeret Mono',ui-monospace,monospace;font-size:8.5px;letter-spacing:.26em;
+    color:var(--ice);background:var(--sheet);border:1px solid var(--hair);
+    -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+    padding:7px 10px;white-space:nowrap;
+    clip-path:polygon(7px 0,100% 0,100% calc(100% - 7px),calc(100% - 7px) 100%,0 100%,0 7px);
+    transition:opacity .5s cubic-bezier(.2,.8,.3,1),transform .5s cubic-bezier(.2,.8,.3,1)}
+  .cue.on{opacity:.92;transform:translate(-50%,-50%)}
+
   /* ── hud shell ────────────────────────────────────── */
   .hud{position:relative;z-index:3;height:100vh;height:100dvh;display:flex;flex-direction:column;
     justify-content:space-between;padding:clamp(20px,3vw,36px);pointer-events:none}
@@ -706,6 +719,8 @@
   </svg>
   <span class="tag" id="rettag">INTERACT</span>
 </div>
+
+<div class="cue" id="cue" aria-hidden="true">PRESS &amp; HOLD</div>
 
 <div class="explore" id="explore" aria-hidden="true"></div>
 
@@ -2505,12 +2520,44 @@ function setActive(i){
   chips.forEach((c,k)=>c.classList.toggle('hot', k === i));
 }
 
+/* The desktop learns the gesture from the reticle tag, which a touch screen
+   never gets — there is no pointer to hang a word off. So on a coarse pointer
+   the instruction is placed under the form itself: it waits for the shape to
+   finish standing up, says the gesture once, and the first press on the clay
+   retires it for the rest of the session. Nothing repeats it, because by then
+   the hand has already done the thing it was asking for. */
+const cue = document.getElementById('cue');
+let cueDone = !coarse, cueLive = false, cueTimer = null;
+
+function syncCue(){
+  if(cueDone) return;
+  if(!cueLive){
+    // holding it back until the intro has settled — a line of type arriving
+    // over a form that is still assembling reads as part of the loading
+    if(!ready || cueTimer) return;
+    cueTimer = setTimeout(()=>{ cueLive = true; syncCue(); }, 1400);
+    return;
+  }
+  cue.style.left = (VX + VW/2) + 'px';
+  cue.style.top  = (VY + cueY) + 'px';
+  cue.classList.toggle('on', !panelOpen && !lensOpen());
+}
+
+// the press landed, so the sentence has served its purpose
+function dismissCue(){
+  if(cueDone) return;
+  cueDone = true;
+  clearTimeout(cueTimer);
+  cue.classList.remove('on');
+}
+
 let hoverForm = false, hoverChips = false, exploreTimer = null;
 // the work is the point of the place, so the wheel shows itself as soon as the
 // form is standing and stays out until the visitor has reached for it once —
 // after that it goes back to answering the pointer
 let exploreIntro = true;
 function refreshExplore(){
+  syncCue();                 // the cue answers to the same moments the ring does
   clearTimeout(exploreTimer);
   if(panelOpen || !ready){ exploreEl.classList.remove('on'); return; }
   if(stacked()){ exploreEl.classList.add('on'); return; }   // always there on a phone
@@ -3173,7 +3220,7 @@ let reveal = 0;   // how open the wireframe reveal is — mouse hover only, neve
 const ndc = new THREE.Vector3();
 let mx=0, my=0, px=0, py=0, touched=false, clock=0, intro=0, radius=0, rGoal=0;
 let pointerX = innerWidth/2, pointerY = innerHeight/2, retX = pointerX, retY = pointerY;
-let VX = 0, VY = 0, VW = innerWidth, VH = innerHeight, visH = 4.5, centreY = 0, formScale = 1, formScaleGoal = 1;
+let VX = 0, VY = 0, VW = innerWidth, VH = innerHeight, visH = 4.5, centreY = 0, formScale = 1, formScaleGoal = 1, cueY = 0;
 // the goo is fitted to the same box whatever shape it is holding, so these
 // no longer move — they are kept because fitView still frames against them
 let letterW = SHAPE_R*2, letterH = SHAPE_R*2;
@@ -3304,6 +3351,7 @@ addEventListener('pointerdown', e=>{
   if(hit){
     grab.onForm = true;
     hoverForm = true;
+    dismissCue();
     strikeAt(hit);
     startForm();
     syncTag();
@@ -3482,6 +3530,9 @@ function fitView(){
   // put the form in the middle of the free band rather than the middle of the glass
   const centrePx = band.t + freeH/2;
   centreY = (VH/2 - centrePx) * (visH / VH);
+
+  // the touch cue sits centred on the form itself
+  cueY = centrePx;
 }
 
 function fitPoster(){
