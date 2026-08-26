@@ -183,13 +183,19 @@
 
   /* ── top row ──────────────────────────────────────── */
   .top{display:flex;justify-content:space-between;align-items:flex-start;gap:24px}
-  .mark{display:flex;align-items:flex-start;gap:12px}
-  .mark-id{font-weight:700;font-size:12px;letter-spacing:.02em;
-    color:var(--void);background:var(--ice);padding:5px 7px;line-height:1}
+  /* --mark-h is the name line plus the sub line plus the gap between them, so
+     the glyph beside them is measured from the same numbers rather than eyeballed.
+     Every breakpoint that changes those font sizes restates it. */
+  .mark{display:flex;align-items:flex-start;gap:12px;
+    --mark-h:calc(12.5px * 1.5 + 3px + 8.5px * 1.4)}
+  .mark-id{display:block;flex:none;height:var(--mark-h);width:auto}
+  /* The glyph is drawn light-on-dark; the light theme flips it black-on-paper. */
+  body.light .mark-id{filter:invert(1)}
   .mark-name{display:block;font-weight:600;font-size:12.5px;letter-spacing:.16em;line-height:1.5;
     text-shadow:var(--tsh)}
   .mark-sub{display:block;font-family:'Azeret Mono',ui-monospace,monospace;font-weight:300;
-    font-size:8.5px;letter-spacing:.24em;color:var(--mute);margin-top:3px;text-shadow:var(--tsh)}
+    font-size:8.5px;letter-spacing:.24em;line-height:1.4;color:var(--mute);margin-top:3px;
+    text-shadow:var(--tsh)}
 
   .menu{display:flex;gap:8px}
   .hud .menu a,.hud .menu button{position:relative;display:flex;align-items:center;gap:9px;
@@ -615,8 +621,7 @@
     .hud{padding:14px 14px max(14px,env(safe-area-inset-bottom))}
     .brackets{display:none}
     .top{gap:12px}
-    .mark{gap:9px;align-items:center}
-    .mark-id{font-size:10px;padding:4px 6px}
+    .mark{gap:9px;--mark-h:calc(10.5px * 1.5 + 2px + 7.5px * 1.4)}
     .mark-name{font-size:10.5px;letter-spacing:.13em}
     .mark-sub{font-size:7.5px;letter-spacing:.2em;margin-top:2px}
     .menu{gap:6px}
@@ -665,6 +670,7 @@
   }
 
   @media (max-width:420px){
+    .mark{--mark-h:calc(10.5px * 1.5 + 2px + 7px * 1.4)}
     .mark-sub{font-size:7px;letter-spacing:.16em}
     .hud .menu a,.hud .menu button{padding:8px 9px;font-size:8px}
     .hud .tgl b{display:none}
@@ -733,7 +739,7 @@
 
   <header class="top">
     <div class="mark">
-      <span class="mark-id">KF</span>
+      <img class="mark-id" src="favicon.png" alt="" width="270" height="270" decoding="async">
       <span>
         <h1 class="mark-name">KIARASH FARAHMANDRAD</h1>
         <span class="mark-sub">MULTI-DISCIPLINARY DESIGNER</span>
