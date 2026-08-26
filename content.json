@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-26T13:02:08.917Z",
+  "generated": "2026-08-26T16:16:59.864Z",
   "site": {
     "name": "Kiarash Farahmandrad",
     "role": "Multi-disciplinary designer",
@@ -289,7 +289,7 @@
         "year": "2024"
       },
       {
-        "name": "AETHERA PHARMACEUTICALS",
+        "name": "AETHERA",
         "scope": "CREATIVE DIRECTION",
         "year": "2023"
       },
@@ -304,7 +304,7 @@
         "year": "2023"
       },
       {
-        "name": "WILLOW BEAUTY PRODUCTS",
+        "name": "WILLOW BEAUTY",
         "scope": "CREATIVE DIRECTION",
         "year": "2023"
       },
@@ -557,8 +557,8 @@
         },
         {
           "slug": "aethera",
-          "t": "AETHERA PHARMACEUTICALS",
-          "c": "Aethera Pharmaceuticals",
+          "t": "AETHERA",
+          "c": "Aethera",
           "y": "2023",
           "r": "Creative Director & Designer",
           "img": "projects/01-logos/aethera/cover.webp",
@@ -649,7 +649,7 @@
         {
           "slug": "willow",
           "t": "WILLOW",
-          "c": "Willow Beauty Products",
+          "c": "Willow Beauty",
           "y": "2023",
           "r": "Creative Director & Designer",
           "img": "projects/01-logos/willow/cover.webp",
@@ -679,8 +679,8 @@
         },
         {
           "slug": "threeptych",
-          "t": "THREEPTYCH DESIGN STUDIO",
-          "c": "Threeptych",
+          "t": "THREEPTYCH STUDIO",
+          "c": "",
           "y": "2022",
           "r": "Creative Director & Designer",
           "img": "projects/01-logos/threeptych/cover.webp",
@@ -698,6 +698,10 @@
           "b": "Threeptych Design Studio is a design studio focused on developing creative visual solutions across different disciplines.",
           "a": "I developed the logo and visual identity around the number “3”. The numeral is divided into three distinct sections, following the proportions and visual logic of traditional triptych paintings. The resulting mark creates a direct connection between the studio's name and the history of three-panel compositions, while providing a simple and recognizable visual system that can be extended across the studio's identity and applications.",
           "credit": null,
+          "clients": [
+            "Threeptych",
+            "Threeptych Studio"
+          ],
           "roles": [
             "Creative Direction",
             "Logo Design",
