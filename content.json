@@ -1,0 +1,941 @@
+{
+  "generated": "2026-08-25T21:20:53.497Z",
+  "site": {
+    "name": "Kiarash Farahmandrad",
+    "role": "Multi-disciplinary designer",
+    "email": {
+      "user": "k.farahmandrad",
+      "domain": "gmail",
+      "tld": "com"
+    },
+    "links": {
+      "LINKEDIN": "https://www.linkedin.com/in/kia-rad/",
+      "LETTERBOXD": "https://letterboxd.com/kia_rad/"
+    },
+    "details": {
+      "BASED IN": "Tehran, Iran",
+      "AVAILABILITY": "Open to commissions",
+      "RESPONSE": "Within a few days"
+    }
+  },
+  "about": {
+    "portrait": "about/me.jpg",
+    "caption": "KIARASH FARAHMANDRAD",
+    "headline": "",
+    "paragraphs": [
+      "I work across identity, typography, 3D, motion, and digital experiences, moving between mediums to find the right form for an idea. I'm interested in the space where disciplines overlap, where a graphic can become an object, a typeface can become an environment, and a visual identity can become something you can interact with. Most things start as an experiment, and usually end somewhere no one expects."
+    ],
+    "skills": [
+      {
+        "label": "DISCIPLINES",
+        "items": [
+          "Logo Design",
+          "Poster Design",
+          "3D Design",
+          "UI/UX Design",
+          "XR Experience Design"
+        ]
+      },
+      {
+        "label": "SOFTWARE",
+        "items": [
+          "Adobe Photoshop",
+          "Adobe Illustrator",
+          "Adobe InDesign",
+          "Adobe Premiere Pro",
+          "Adobe After Effects",
+          "Figma",
+          "Blender 3D",
+          "Cinema 4D"
+        ]
+      },
+      {
+        "label": "ALSO",
+        "items": [
+          "Creative Coding",
+          "AI Visualization",
+          "Photography",
+          "Teaching"
+        ]
+      }
+    ],
+    "practice": null,
+    "resume": {
+      "experience": [
+        {
+          "role": "Multi-disciplinary Designer",
+          "org": "DEEEZ Design Studio · Full-time",
+          "dates": "Dec 2024 – Dec 2025 · 1 yr",
+          "link": "https://deeez.co/",
+          "bullets": [
+            "Created 3D visualizations and XR assets in collaboration with product and marketing teams to support prototyping, improve usability, and enhance user engagement."
+          ]
+        },
+        {
+          "role": "Graphic Designer",
+          "org": "Snapp Group · Contract",
+          "dates": "Sep 2024 – Present · Occasional",
+          "link": "https://snapp.ir/",
+          "bullets": [
+            "Created recruitment campaigns, onboarding materials, and internal communications while managing multiple design requests efficiently."
+          ]
+        },
+        {
+          "role": "Graphic Designer",
+          "org": "Divar · Contract",
+          "dates": "Feb 2024 – Present · Occasional",
+          "link": "https://divar.ir",
+          "bullets": [
+            "Designed visuals and contributed to various HR projects and events, improving employee experience and engagement."
+          ]
+        },
+        {
+          "role": "Graphic Designer",
+          "org": "Rushin · Full-time",
+          "dates": "Nov 2023 – Dec 2024 · 1 yr 2 mos",
+          "link": "https://www.rushinco.com/",
+          "bullets": [
+            "Developed brand identity and led end-to-end design projects, ensuring quality and timely delivery while mentoring junior designers."
+          ]
+        },
+        {
+          "role": "Graphic Designer",
+          "org": "SciSchool · Full-time",
+          "dates": "Dec 2020 – Nov 2023 · 3 yrs",
+          "link": "https://scischool.ir",
+          "bullets": [
+            "Led 50+ educational and marketing design projects and mentored junior designers to improve team performance and creativity."
+          ]
+        },
+        {
+          "role": "Graphic Design Teacher",
+          "org": "Allameh Helli 1 High School · Part-time",
+          "dates": "Sep 2021 – Sep 2022 · 1 yr",
+          "link": null,
+          "bullets": [
+            "Delivered graphic design curriculum and organized workshops and exhibitions to boost student engagement and showcase their work."
+          ]
+        }
+      ],
+      "education": [
+        {
+          "degree": "Master of Arts, Visual Communication",
+          "school": "Tarbiat Modares University",
+          "dates": "2020 – 2023 · GPA 4.00/4.00",
+          "link": "https://en.modares.ac.ir/",
+          "bullets": [
+            "MA Thesis: \"Investigating Typography Features in AR/VR Environments (A Case Study of Selected Persian Typefaces)\" — accompanied by a practical project, \"Designing Twelve Posters Using 3D Typography.\""
+          ]
+        }
+      ],
+      "certifications": [
+        {
+          "title": "Packaging Design",
+          "org": "Inverse School",
+          "date": "Dec 2024",
+          "link": null
+        },
+        {
+          "title": "Programming with JavaScript",
+          "org": "Meta",
+          "date": "Feb 2023",
+          "link": "https://www.coursera.org/account/accomplishments/verify/DCMMFGU8CY2F"
+        },
+        {
+          "title": "Foundations of User Experience (UX) Design",
+          "org": "Google",
+          "date": "Jan 2023",
+          "link": "https://www.coursera.org/account/accomplishments/verify/QS3CLYHCFEXC"
+        },
+        {
+          "title": "Persian Logotype Design",
+          "org": "Inverse School",
+          "date": "Jun 2022",
+          "link": null
+        },
+        {
+          "title": "Poster Design",
+          "org": "Inverse School",
+          "date": "Feb 2022",
+          "link": null
+        },
+        {
+          "title": "Fundamentals of Graphic Design",
+          "org": "California Institute of the Arts",
+          "date": "Oct 2021",
+          "link": "https://www.coursera.org/account/accomplishments/verify/B23MS95274SJ"
+        }
+      ],
+      "volunteering": [
+        {
+          "role": "Deputy Secretary",
+          "org": "K. N. Toosi University of Technology — Cinema & Photography Club",
+          "dates": "Oct 2015 – Oct 2018 · 3 yrs",
+          "link": null
+        },
+        {
+          "role": "Editor & Layout Designer",
+          "org": "Namaye Nazdik Magazine — Cinema & Photography",
+          "dates": "Oct 2015 – Oct 2018 · 3 yrs",
+          "link": null
+        }
+      ],
+      "languages": [
+        {
+          "name": "English",
+          "level": "Full professional proficiency",
+          "bullets": [
+            "Academic IELTS 7.5 — Listening 8.0, Reading 9.0, Writing 6.5, Speaking 7.0"
+          ]
+        },
+        {
+          "name": "French",
+          "level": "Elementary proficiency",
+          "bullets": []
+        },
+        {
+          "name": "Persian",
+          "level": "Native",
+          "bullets": []
+        }
+      ],
+      "contact": {
+        "email": "k.farahmandrad@gmail.com",
+        "phone": "+98 919 335 4762",
+        "linkedin": "https://www.linkedin.com/in/kia-rad/",
+        "website": "https://kiaa-raad.github.io/my-portfolio/"
+      }
+    },
+    "cv": {
+      "src": "about/cv.pdf",
+      "hash": "60e6734b",
+      "updated": "2026-08-25",
+      "size": "131 KB"
+    }
+  },
+  "clients": {
+    "lede": "The list runs from technology platforms to cultural institutions. Some arrived for a single mark; others for a system a whole team would go on to run.",
+    "logos": [
+      {
+        "name": "Divar",
+        "src": "clients/Divar.png"
+      },
+      {
+        "name": "Nodet",
+        "src": "clients/Nodet.png"
+      },
+      {
+        "name": "Snapp Group",
+        "src": "clients/Snapp Group.png"
+      },
+      {
+        "name": "Tardid   Virtual Philosophy School",
+        "src": "clients/Tardid - Virtual Philosophy School.png"
+      },
+      {
+        "name": "Tehran University",
+        "src": "clients/Tehran University.png"
+      }
+    ],
+    "engagements": [
+      {
+        "name": "GRAVITAS+",
+        "scope": "CREATIVE DIRECTION",
+        "year": "2026"
+      },
+      {
+        "name": "ARCHA",
+        "scope": "CREATIVE DIRECTION",
+        "year": "2025"
+      },
+      {
+        "name": "DIVAR",
+        "scope": "CREATIVE DIRECTION",
+        "year": "2025"
+      },
+      {
+        "name": "CHILDREN'S CAPITAL OF CULTURE",
+        "scope": "3D ARTIST",
+        "year": "2025"
+      },
+      {
+        "name": "LATENT SPACE",
+        "scope": "CREATIVE DIRECTION",
+        "year": "2024"
+      },
+      {
+        "name": "MOKHTARZADE CONSTRUCTION COMPANY",
+        "scope": "CREATIVE DIRECTION",
+        "year": "2024"
+      },
+      {
+        "name": "RUSHIN",
+        "scope": "CREATIVE DIRECTION",
+        "year": "2024"
+      },
+      {
+        "name": "XENSE",
+        "scope": "CREATIVE DIRECTION",
+        "year": "2024"
+      },
+      {
+        "name": "DIVAR",
+        "scope": "CREATIVE DIRECTION",
+        "year": "2024"
+      },
+      {
+        "name": "RUSHIN",
+        "scope": "ART DIRECTION",
+        "year": "2024"
+      },
+      {
+        "name": "AETHERA PHARMACEUTICALS",
+        "scope": "CREATIVE DIRECTION",
+        "year": "2023"
+      },
+      {
+        "name": "TROID",
+        "scope": "CREATIVE DIRECTION",
+        "year": "2023"
+      },
+      {
+        "name": "UPZONE",
+        "scope": "CREATIVE DIRECTION",
+        "year": "2023"
+      },
+      {
+        "name": "WILLOW BEAUTY PRODUCTS",
+        "scope": "CREATIVE DIRECTION",
+        "year": "2023"
+      },
+      {
+        "name": "THREEPTYCH",
+        "scope": "CREATIVE DIRECTION",
+        "year": "2022"
+      },
+      {
+        "name": "MOLKO",
+        "scope": "CREATIVE DIRECTION",
+        "year": "2021"
+      }
+    ]
+  },
+  "models": {
+    "primary": "logo.glb",
+    "alts": [
+      "02.glb",
+      "03.glb",
+      "04.glb"
+    ]
+  },
+  "fields": [
+    {
+      "key": "LOGOS",
+      "sub": "MARKS & IDENTITY",
+      "kind": 0,
+      "order": 0,
+      "works": [
+        {
+          "slug": "gravitas+",
+          "t": "GRAVITAS+",
+          "c": "Gravitas+",
+          "y": "2026",
+          "r": "Creative Director & Designer",
+          "img": "projects/01-logos/gravitas+/cover.webp",
+          "video": null,
+          "gallery": [
+            "projects/01-logos/gravitas+/01.webp",
+            "projects/01-logos/gravitas+/02.webp",
+            "projects/01-logos/gravitas+/03.webp",
+            "projects/01-logos/gravitas+/04.webp",
+            "projects/01-logos/gravitas+/05.webp",
+            "projects/01-logos/gravitas+/06.webp",
+            "projects/01-logos/gravitas+/07.webp"
+          ],
+          "link": null,
+          "tag": "LOGO & VISUAL IDENTITY / 2026",
+          "lb": "OVERVIEW",
+          "la": "CONTRIBUTION",
+          "b": "Gravitas+ is a YouTube channel and website dedicated to educational and analytical content at the intersection of computational skills, physics, and modern scientific thought. The platform aims to make complex concepts accessible while maintaining intellectual depth and rigor.\nThe visual identity was developed to reflect clarity, precision, and intellectual sophistication, while balancing a modern, technology-oriented aesthetic with the depth and curiosity associated with fundamental science and the exploration of the universe.",
+          "a": "I was responsible for developing the logo, website, YouTube banner, and cohesive visual identity system across the platform. The identity is inspired by the Latin word “gravitas”, meaning heaviness, and the concept of gravity, particularly the bending of spacetime under gravitational force. The initial “G” serves as the core visual element, exploring the relationship between letterform, gravity, curvature, and space to create a distinctive and conceptually driven identity.",
+          "credit": null,
+          "roles": [
+            "Creative Direction",
+            "Logo Design",
+            "Website Design",
+            "YouTube Banner",
+            "Visual Identity Design"
+          ]
+        },
+        {
+          "slug": "archa",
+          "t": "ARCHA",
+          "c": "Archa",
+          "y": "2025",
+          "r": "Creative Director & Designer",
+          "img": "projects/01-logos/archa/cover.webp",
+          "video": null,
+          "gallery": [
+            "projects/01-logos/archa/01.webp",
+            "projects/01-logos/archa/02.webp",
+            "projects/01-logos/archa/03.webp",
+            "projects/01-logos/archa/04.webp",
+            "projects/01-logos/archa/05.webp",
+            "projects/01-logos/archa/06.webp",
+            "projects/01-logos/archa/07.webp",
+            "projects/01-logos/archa/08.webp",
+            "projects/01-logos/archa/09.webp"
+          ],
+          "link": null,
+          "tag": "LOGO & VISUAL IDENTITY / 2025",
+          "lb": "OVERVIEW",
+          "la": "CONTRIBUTION",
+          "b": "Archa is a construction company focused on building and developing urban spaces. The brand identity was developed to communicate ideas of progress, reliability, construction, and long-term growth.",
+          "a": "The logo combines several symbolic elements into a unified mark: a hand representing the contractor and the act of building, an ascending line representing progress, an urban skyline representing construction and the city, and a column representing strength, support, and trust.\nThe letter “آ” serves as another fundamental element of the mark, directly representing Archa while integrating with the architectural language of the symbol. Together, these elements create an identity that connects the company's name with its values and field of work.",
+          "credit": null,
+          "roles": [
+            "Creative Direction",
+            "Logo Design",
+            "Visual Identity Design"
+          ]
+        },
+        {
+          "slug": "latentspace",
+          "t": "LATENT SPACE",
+          "c": "Latent Space",
+          "y": "2024",
+          "r": "Creative Director & Designer",
+          "img": "projects/01-logos/latentspace/cover.webp",
+          "video": null,
+          "gallery": [
+            "projects/01-logos/latentspace/01.webp",
+            "projects/01-logos/latentspace/02.webp",
+            "projects/01-logos/latentspace/03.webp",
+            "projects/01-logos/latentspace/05.webp",
+            "projects/01-logos/latentspace/06.webp",
+            "projects/01-logos/latentspace/07.webp",
+            "projects/01-logos/latentspace/08.webp",
+            "projects/01-logos/latentspace/09.webp"
+          ],
+          "link": null,
+          "tag": "LOGO & VISUAL IDENTITY / 2024",
+          "lb": "OVERVIEW",
+          "la": "CONTRIBUTION",
+          "b": "Latent Space is a technology-driven company specializing in advanced AI solutions, data visualization, and predictive analytics. The project focused on developing a visual identity that reflects the brand's approach to uncovering hidden insights, navigating complex datasets, and enabling new possibilities through technology.",
+          "a": "The identity explores the relationship between exploration, location, and data, combining a cursive “L” with a location marker to create a distinctive and memorable visual symbol.\nThe design direction focused on balancing technological innovation with simplicity, precision, and elegance.",
+          "credit": null,
+          "roles": [
+            "Creative Direction",
+            "Logo Design",
+            "Visual Identity Design"
+          ]
+        },
+        {
+          "slug": "mokhtarzade",
+          "t": "MOKHTARZADE",
+          "c": "Mokhtarzade Construction Company",
+          "y": "2024",
+          "r": "Creative Director & Designer",
+          "img": "projects/01-logos/mokhtarzade/cover.webp",
+          "video": null,
+          "gallery": [
+            "projects/01-logos/mokhtarzade/01.webp",
+            "projects/01-logos/mokhtarzade/02.webp",
+            "projects/01-logos/mokhtarzade/03.webp",
+            "projects/01-logos/mokhtarzade/04.webp",
+            "projects/01-logos/mokhtarzade/05.webp",
+            "projects/01-logos/mokhtarzade/06.webp",
+            "projects/01-logos/mokhtarzade/07.webp",
+            "projects/01-logos/mokhtarzade/08.webp",
+            "projects/01-logos/mokhtarzade/09.webp",
+            "projects/01-logos/mokhtarzade/10.webp",
+            "projects/01-logos/mokhtarzade/11.webp",
+            "projects/01-logos/mokhtarzade/12.webp",
+            "projects/01-logos/mokhtarzade/13.webp",
+            "projects/01-logos/mokhtarzade/14.webp",
+            "projects/01-logos/mokhtarzade/15.webp",
+            "projects/01-logos/mokhtarzade/16.webp",
+            "projects/01-logos/mokhtarzade/17.webp",
+            "projects/01-logos/mokhtarzade/18.webp",
+            "projects/01-logos/mokhtarzade/19.webp",
+            "projects/01-logos/mokhtarzade/20.webp",
+            "projects/01-logos/mokhtarzade/21.webp",
+            "projects/01-logos/mokhtarzade/22.webp"
+          ],
+          "link": null,
+          "tag": "LOGO & VISUAL IDENTITY / 2024",
+          "lb": "OVERVIEW",
+          "la": "CONTRIBUTION",
+          "b": "Mokhtarzade is a construction company branding project, developed as a flexible identity system for use across both digital and architectural applications. The identity was designed for social media as well as physical applications throughout buildings, including metal doors, glass surfaces, stone, and other architectural elements.",
+          "a": "I developed a dynamic identity centered around a simplified “m” that can stretch vertically or horizontally depending on its context and application.\nThe visual language draws inspiration from the urban landscape, incorporating simplified forms of towers, villas, and even the negative spaces created by cement between bricks. These architectural references are translated into a flexible graphic system that allows the identity to adapt naturally across different scales, materials, and surfaces.",
+          "credit": null,
+          "roles": [
+            "Creative Direction",
+            "Logo Design",
+            "Visual Identity Design"
+          ]
+        },
+        {
+          "slug": "rushin",
+          "t": "RUSHIN",
+          "c": "Rushin",
+          "y": "2024",
+          "r": "Creative Director & Designer",
+          "img": "projects/01-logos/rushin/cover.webp",
+          "video": null,
+          "gallery": [
+            "projects/01-logos/rushin/01.webp",
+            "projects/01-logos/rushin/02.webp",
+            "projects/01-logos/rushin/03.webp",
+            "projects/01-logos/rushin/04.webp",
+            "projects/01-logos/rushin/05.webp",
+            "projects/01-logos/rushin/06.webp",
+            "projects/01-logos/rushin/07.webp",
+            "projects/01-logos/rushin/08.webp"
+          ],
+          "link": null,
+          "tag": "LOGO & VISUAL IDENTITY / 2024",
+          "lb": "OVERVIEW",
+          "la": "CONTRIBUTION",
+          "b": "Rushin is an educational and research-focused event platform designed to support academic and intellectual development through workshops, courses, field visits, camps, and hands-on learning experiences.\nThe visual identity explores the connection between the human mind, nature, and generative systems. The central concept draws from the visual language of the brain and tree structures, using the branching logic of a fractal canopy as a metaphor for learning, growth, and the continuous expansion of knowledge.",
+          "a": "The design system was built around the idea of a “fractal canopy”, combining organic branching structures with the visual complexity of the brain and generative patterns.\nThe identity translates these ideas into a flexible visual language that represents knowledge as a growing, interconnected system, where each new idea creates the potential for further exploration and discovery.",
+          "credit": null,
+          "roles": [
+            "Creative Direction",
+            "Logo Design",
+            "Visual Identity Design"
+          ]
+        },
+        {
+          "slug": "xense",
+          "t": "XENSE",
+          "c": "Xense",
+          "y": "2024",
+          "r": "Creative Director & Designer",
+          "img": "projects/01-logos/xense/cover.webp",
+          "video": null,
+          "gallery": [
+            "projects/01-logos/xense/01.webp",
+            "projects/01-logos/xense/02.webp",
+            "projects/01-logos/xense/03.webp",
+            "projects/01-logos/xense/04.webp",
+            "projects/01-logos/xense/05.webp",
+            "projects/01-logos/xense/06.webp",
+            "projects/01-logos/xense/07.webp",
+            "projects/01-logos/xense/08.webp",
+            "projects/01-logos/xense/09.webp",
+            "projects/01-logos/xense/10.webp",
+            "projects/01-logos/xense/11.webp",
+            "projects/01-logos/xense/12.webp",
+            "projects/01-logos/xense/13.webp",
+            "projects/01-logos/xense/14.webp",
+            "projects/01-logos/xense/15.webp",
+            "projects/01-logos/xense/16.webp",
+            "projects/01-logos/xense/17.webp",
+            "projects/01-logos/xense/18.webp",
+            "projects/01-logos/xense/19.webp",
+            "projects/01-logos/xense/20.webp",
+            "projects/01-logos/xense/21.webp",
+            "projects/01-logos/xense/22.webp",
+            "projects/01-logos/xense/23.webp",
+            "projects/01-logos/xense/24.webp",
+            "projects/01-logos/xense/25.webp",
+            "projects/01-logos/xense/26.webp"
+          ],
+          "link": null,
+          "tag": "LOGO & VISUAL IDENTITY / 2024",
+          "lb": "OVERVIEW",
+          "la": "CONTRIBUTION",
+          "b": "Xense is a Canadian company focused on the development and production of biosensors for the detection and measurement of target substances. Its technologies have applications across fields including medicine, agriculture, and industrial wastewater treatment, bringing sensing and measurement technologies into a range of scientific and practical contexts.",
+          "a": "The identity brings together four core concepts connected to the company's name and field: the letter “X” as the first letter of Xense, light as the fundamental medium that allows us to see, the atom as the basic building block of chemistry, and the eye as the sensory organ associated with sight.\nThese elements were combined into a unified visual language that connects sensing, visibility, and the microscopic world of chemistry, creating a distinctive identity rooted in the scientific nature of the company.",
+          "credit": null,
+          "roles": [
+            "Creative Direction",
+            "Logo Design",
+            "Visual Identity Design"
+          ]
+        },
+        {
+          "slug": "aethera",
+          "t": "AETHERA PHARMACEUTICALS",
+          "c": "Aethera Pharmaceuticals",
+          "y": "2023",
+          "r": "Creative Director & Designer",
+          "img": "projects/01-logos/aethera/cover.webp",
+          "video": null,
+          "gallery": [
+            "projects/01-logos/aethera/01.webp",
+            "projects/01-logos/aethera/02.webp",
+            "projects/01-logos/aethera/03.webp",
+            "projects/01-logos/aethera/04.webp",
+            "projects/01-logos/aethera/05.webp",
+            "projects/01-logos/aethera/06.webp",
+            "projects/01-logos/aethera/07.webp"
+          ],
+          "link": null,
+          "tag": "LOGO & VISUAL IDENTITY / 2023",
+          "lb": "OVERVIEW",
+          "la": "CONTRIBUTION",
+          "b": "Aethera Pharmaceuticals is a pharmaceutical company focused on improving human health through innovation, integrity, and transparency. The brand aims to build trust through forward-thinking healthcare solutions while maintaining a strong commitment to patients and ethical practices.",
+          "a": "The logo concept combines the familiar visual language of pharmaceutical capsules with a minimal approach to negative space.\nThe shape of pills is used to construct a bold, clean “A” within the negative space, directly connecting the symbol to Aethera's name and its focus on healthcare. The resulting identity balances simplicity and recognition while creating a distinctive visual mark rooted in the pharmaceutical context.",
+          "credit": null,
+          "roles": [
+            "Creative Direction",
+            "Logo Design",
+            "Visual Identity Design"
+          ]
+        },
+        {
+          "slug": "troid",
+          "t": "TROID",
+          "c": "Troid",
+          "y": "2023",
+          "r": "Creative Director & Designer",
+          "img": "projects/01-logos/troid/Cover.webp",
+          "video": null,
+          "gallery": [
+            "projects/01-logos/troid/01.webp",
+            "projects/01-logos/troid/02.webp",
+            "projects/01-logos/troid/03.webp",
+            "projects/01-logos/troid/04.webp",
+            "projects/01-logos/troid/05.webp",
+            "projects/01-logos/troid/06.webp",
+            "projects/01-logos/troid/07.webp",
+            "projects/01-logos/troid/08.webp",
+            "projects/01-logos/troid/09.webp"
+          ],
+          "link": null,
+          "tag": "LOGO & VISUAL IDENTITY / 2023",
+          "lb": "OVERVIEW",
+          "la": "CONTRIBUTION",
+          "b": "Troid was a gaming platform focused on buying and selling video games across console and PC platforms. Alongside its online store, the brand also developed content around gaming culture through YouTube and Instagram, including reviews, analysis, and other video content related to the world of games.",
+          "a": "The logo concept was built around the first Persian letter of the brand name (ت), combining its distinctive form with a reference to one of the iconic characters from <em>Space Invaders</em>.\nThis combination created a visual identity that connects the brand's Persian name with a recognizable element of gaming culture, resulting in a playful and distinctive mark suitable for both the gaming platform and its digital content.",
+          "credit": null,
+          "roles": [
+            "Creative Direction",
+            "Logo Design",
+            "Visual Identity Design"
+          ]
+        },
+        {
+          "slug": "upzone",
+          "t": "UPZONE",
+          "c": "UpZone",
+          "y": "2023",
+          "r": "Creative Director & Designer",
+          "img": "projects/01-logos/upzone/cover.webp",
+          "video": null,
+          "gallery": [
+            "projects/01-logos/upzone/01.webp",
+            "projects/01-logos/upzone/02.webp",
+            "projects/01-logos/upzone/03.webp",
+            "projects/01-logos/upzone/04.webp",
+            "projects/01-logos/upzone/05.webp",
+            "projects/01-logos/upzone/06.webp"
+          ],
+          "link": null,
+          "tag": "LOGO & VISUAL IDENTITY / 2023",
+          "lb": "OVERVIEW",
+          "la": "CONTRIBUTION",
+          "b": "UpZone is an interior architecture and design platform that helps clients design, renovate, and transform their homes. The service provides interior design and renovation solutions through its website, helping users improve their living spaces with professional guidance.",
+          "a": "The logo combines three core elements: the letter “U”, a simplified representation of a house, and an upward arrow.\nThe combination connects the brand name with its purpose, using the house to represent the client's living space and the arrow to communicate improvement, transformation, and moving a space to a new level. The resulting identity is designed to feel simple, contemporary, and relevant to the field of interior architecture.",
+          "credit": null,
+          "roles": [
+            "Creative Direction",
+            "Logo Design",
+            "Visual Identity Design"
+          ]
+        },
+        {
+          "slug": "willow",
+          "t": "WILLOW",
+          "c": "Willow Beauty Products",
+          "y": "2023",
+          "r": "Creative Director & Designer",
+          "img": "projects/01-logos/willow/cover.webp",
+          "video": null,
+          "gallery": [
+            "projects/01-logos/willow/01.webp",
+            "projects/01-logos/willow/02.webp",
+            "projects/01-logos/willow/03.webp",
+            "projects/01-logos/willow/04.webp",
+            "projects/01-logos/willow/05.webp",
+            "projects/01-logos/willow/06.webp",
+            "projects/01-logos/willow/07.webp",
+            "projects/01-logos/willow/08.webp"
+          ],
+          "link": null,
+          "tag": "LOGO & VISUAL IDENTITY / 2023",
+          "lb": "OVERVIEW",
+          "la": "CONTRIBUTION",
+          "b": "Willow is a beauty brand dedicated to natural, plant-based skincare. The brand's ethos centers on the idea that true beauty comes from nature, with products crafted using sustainable botanical ingredients to nourish and enhance the skin.\nThe visual identity was developed to reflect Willow's natural, eco-conscious values while creating a sense of elegance, serenity, and refined beauty.",
+          "a": "The core concept combines the essence of a flower with the brand's initial “W”, creating a distinctive symbol that connects the identity to its botanical foundation.\nThe design direction focused on creating a balance between organic forms and modern simplicity, resulting in an identity that feels natural, sophisticated, and suitable for a luxury skincare brand.",
+          "credit": null,
+          "roles": [
+            "Creative Direction",
+            "Logo Design",
+            "Visual Identity Design"
+          ]
+        },
+        {
+          "slug": "threeptych",
+          "t": "THREEPTYCH DESIGN STUDIO",
+          "c": "Threeptych",
+          "y": "2022",
+          "r": "Creative Director & Designer",
+          "img": "projects/01-logos/threeptych/cover.webp",
+          "video": null,
+          "gallery": [
+            "projects/01-logos/threeptych/02.webp",
+            "projects/01-logos/threeptych/03.webp",
+            "projects/01-logos/threeptych/04.webp",
+            "projects/01-logos/threeptych/05.webp"
+          ],
+          "link": null,
+          "tag": "LOGO & VISUAL IDENTITY / 2022",
+          "lb": "OVERVIEW",
+          "la": "CONTRIBUTION",
+          "b": "Threeptych Design Studio is a design studio focused on developing creative visual solutions across different disciplines.",
+          "a": "I developed the logo and visual identity around the number “3”. The numeral is divided into three distinct sections, following the proportions and visual logic of traditional triptych paintings. The resulting mark creates a direct connection between the studio's name and the history of three-panel compositions, while providing a simple and recognizable visual system that can be extended across the studio's identity and applications.",
+          "credit": null,
+          "roles": [
+            "Creative Direction",
+            "Logo Design",
+            "Visual Identity Design"
+          ]
+        },
+        {
+          "slug": "molko",
+          "t": "MOLKO",
+          "c": "Molko",
+          "y": "2021",
+          "r": "Creative Director & Designer",
+          "img": "projects/01-logos/molko/cover.webp",
+          "video": null,
+          "gallery": [
+            "projects/01-logos/molko/01.webp",
+            "projects/01-logos/molko/02.webp",
+            "projects/01-logos/molko/03.webp"
+          ],
+          "link": null,
+          "tag": "LOGO & VISUAL IDENTITY / 2021",
+          "lb": "OVERVIEW",
+          "la": "CONTRIBUTION",
+          "b": "Molko is an educational website focused on chemistry, created to make chemistry-related knowledge and learning resources more accessible through a digital platform.",
+          "a": "The logo concept combines the Persian letter “م”, the first letter of the brand name, with the molecular structure of benzene.\nThe combination creates a visual connection between the brand name and its educational focus, using the familiar geometric structure of benzene as a foundation for a distinctive and conceptually relevant identity.",
+          "credit": null,
+          "roles": [
+            "Creative Direction",
+            "Logo Design",
+            "Visual Identity Design"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "POSTERS",
+      "sub": "PRINT & EDITORIAL",
+      "kind": 1,
+      "order": 1,
+      "works": [
+        {
+          "slug": "divar-hackathon2025",
+          "t": "DIVAR'S HACKATHON 2025",
+          "c": "Divar",
+          "y": "2025",
+          "r": "Creative Director & Designer",
+          "img": "projects/02-posters/divar-hackathon2025/cover.webp",
+          "video": null,
+          "gallery": [
+            "projects/02-posters/divar-hackathon2025/01.webp",
+            "projects/02-posters/divar-hackathon2025/02.webp",
+            "projects/02-posters/divar-hackathon2025/03.webp",
+            "projects/02-posters/divar-hackathon2025/04.webp"
+          ],
+          "link": null,
+          "tag": "EVENT IDENTITY / HACKATHON / 2025",
+          "lb": "OVERVIEW",
+          "la": "CONTRIBUTION",
+          "b": "Divar Hackathon 2025 was an event organized by Divar, bringing together participants to collaborate, experiment, and develop solutions around real-world challenges. The main theme of this edition was security, with participants working intensively throughout the hackathon to explore ideas and build practical solutions.",
+          "a": "I was responsible for developing the visual identity of the event. The concept was built around the line, an important visual element in Divar's identity, reimagined as a tangled thread representing a complex problem.\nThroughout the visual system, the thread gradually becomes untangled and transforms into a shield, symbolizing the process of solving problems and the central theme of security. This visual element was extended across the event identity and used to design participant hoodies and other event applications, creating a cohesive system throughout the hackathon.",
+          "credit": null,
+          "roles": [
+            "Creative Direction",
+            "Visual Identity Design",
+            "Event Branding",
+            "Apparel Design"
+          ]
+        },
+        {
+          "slug": "divar-yalda2025",
+          "t": "DIVAR'S YALDA 2024",
+          "c": "Divar",
+          "y": "2024",
+          "r": "Creative Director & Designer",
+          "img": "projects/02-posters/divar-yalda2025/cover.webp",
+          "video": null,
+          "gallery": [
+            "projects/02-posters/divar-yalda2025/DYP-04.webp",
+            "projects/02-posters/divar-yalda2025/DYP-05.webp"
+          ],
+          "link": null,
+          "tag": "EVENT IDENTITY / YALDA / 2024",
+          "lb": "OVERVIEW",
+          "la": "CONTRIBUTION",
+          "b": "Divar Yalda is an internal celebration organized for Divar employees around Yalda Night, one of the most important Iranian cultural traditions. The event brings together the team to celebrate Yalda Night.",
+          "a": "I combined traditional Yalda elements such as pomegranates, nuts, Hafez's poetry, and music with the existing visual language of Divar.\nThe goal was to create a visual that felt distinctly connected to Yalda while remaining consistent with Divar's brand identity. These cultural references were reinterpreted through Divar's visual system to create a cohesive and contemporary event graphic.",
+          "credit": null,
+          "roles": [
+            "Creative Direction",
+            "Poster Design",
+            "Visual Identity Design"
+          ]
+        },
+        {
+          "slug": "rushin-workshops",
+          "t": "RUSHIN WORKSHOPS",
+          "c": "Rushin",
+          "y": "2024",
+          "r": "Art Director & Designer",
+          "img": "projects/02-posters/rushin-workshops/cover.webp",
+          "video": null,
+          "gallery": [
+            "projects/02-posters/rushin-workshops/01.webp",
+            "projects/02-posters/rushin-workshops/02.webp",
+            "projects/02-posters/rushin-workshops/03.webp",
+            "projects/02-posters/rushin-workshops/04.webp",
+            "projects/02-posters/rushin-workshops/05.webp",
+            "projects/02-posters/rushin-workshops/06.webp"
+          ],
+          "link": null,
+          "tag": "POSTER DESIGN / AI-GENERATED PHOTOGRAPHY / 2024",
+          "lb": "OVERVIEW",
+          "la": "CONTRIBUTION",
+          "b": "Rushin Workshops is a series of educational and scientific workshops designed for students, covering different subjects and hands-on learning experiences. Each workshop introduces participants to a specific scientific field through practical activities, experiments, and exploration.",
+          "a": "I developed the poster series for the Rushin workshops using AI-generated photography and photomanipulation as the main visual approaches. For each workshop, I extracted distinctive elements from its scientific activities and combined them into unexpected compositions to create curious and engaging images that encourage students to explore the workshop.\nAlongside the visual development, I designed a workflow that could turn workshop information into a ready-to-publish poster through a structured process. This approach allowed the posters to move efficiently from workshop brief to final assets ready for digital publishing and print.",
+          "credit": null,
+          "roles": [
+            "Art Direction",
+            "Poster Design",
+            "Photomanipulation",
+            "AI Image Generation",
+            "Visual Concept Development"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "SPATIAL",
+      "sub": "3D & XR",
+      "kind": 3,
+      "order": 2,
+      "works": [
+        {
+          "slug": "appear",
+          "t": "APPEAR",
+          "c": "",
+          "y": "2025",
+          "r": "3D Artist",
+          "img": "projects/03-spatial/appear/cover.webp",
+          "video": null,
+          "gallery": [],
+          "link": "https://www.instagram.com/p/DXoPIy8iJ07/",
+          "tag": "XR / AUGMENTED REALITY / 2025",
+          "lb": "OVERVIEW",
+          "la": "CONTRIBUTION",
+          "b": "AppeaR is a location-based augmented reality experience that brings the creativity of children and young people across Rotherham, UK, into public space. Drawings, crafts, stories, and music created during a two-year workshop program were transformed into interactive AR experiences, allowing visitors to explore the city through a new generation's perspective.",
+          "a": "As a 3D Artist, I was responsible for creating and optimizing real-time assets for the AR experience. The work focused on translating children's artwork into engaging three-dimensional content while maintaining visual clarity and performance for mobile AR.",
+          "credit": "Project developed under the art direction of <a href=\"https://www.instagram.com/seyyedebrahimi/\" target=\"_blank\" rel=\"noopener\" data-tag=\"MOSTAFA SEYYED EBRAHIMI\">Mostafa Seyyed Ebrahimi</a> at <a href=\"https://deeez.co/\" target=\"_blank\" rel=\"noopener\" data-tag=\"DEEEZ\">DEEEZ</a> design studio.",
+          "clients": [
+            "Children's Capital of Culture",
+            "Rotherham Music"
+          ],
+          "roles": [
+            "3D Artist",
+            "Real-time Asset Creation",
+            "AR Content Production"
+          ]
+        },
+        {
+          "slug": "threads",
+          "t": "3D THREADS LOGO",
+          "c": "Self-Initiated",
+          "y": "2023",
+          "r": "3D Artist & Designer",
+          "img": "projects/03-spatial/threads/cover.webp",
+          "video": null,
+          "gallery": [
+            "projects/03-spatial/threads/01.webp"
+          ],
+          "link": null,
+          "tag": "3D / EXPERIMENTAL / 2023",
+          "lb": "OVERVIEW",
+          "la": "CONTRIBUTION",
+          "b": "3D Threads Logo is a self-initiated exploration of the Threads logo through a three-dimensional approach. The project investigates how an existing digital brand mark can be reinterpreted as a physical-looking 3D object while incorporating elements of Instagram's visual language.",
+          "a": "I recreated and experimented with the Threads logo in Blender, transforming the flat mark into a three-dimensional form. The 3D treatment allowed me to explore Instagram's brand DNA through its visual language, materials, lighting, and color palette, creating a new interpretation of the logo beyond its original two-dimensional form.",
+          "credit": null,
+          "roles": [
+            "3D Design",
+            "Blender",
+            "Experimental Branding"
+          ],
+          "self": true
+        }
+      ]
+    },
+    {
+      "key": "MOTION",
+      "sub": "TIME & SEQUENCE",
+      "kind": 4,
+      "order": 3,
+      "works": [
+        {
+          "slug": "gravitas+",
+          "t": "GRAVITAS+",
+          "c": "Gravitas+",
+          "y": "2026",
+          "r": "Creative Director & Designer",
+          "img": null,
+          "video": "projects/04-motion/gravitas+/motion.mp4",
+          "gallery": [],
+          "link": null,
+          "tag": "LOGO & VISUAL IDENTITY / 2026",
+          "lb": "OVERVIEW",
+          "la": "CONTRIBUTION",
+          "b": "Gravitas+ is a YouTube channel and website dedicated to educational and analytical content at the intersection of computational skills, physics, and modern scientific thought. The platform aims to make complex concepts accessible while maintaining intellectual depth and rigor.\nThe visual identity was developed to reflect clarity, precision, and intellectual sophistication, while balancing a modern, technology-oriented aesthetic with the depth and curiosity associated with fundamental science and the exploration of the universe.",
+          "a": "I was responsible for developing the logo, website, YouTube banner, and cohesive visual identity system across the platform. The identity is inspired by the Latin word “gravitas”, meaning heaviness, and the concept of gravity, particularly the bending of spacetime under gravitational force. The initial “G” serves as the core visual element, exploring the relationship between letterform, gravity, curvature, and space to create a distinctive and conceptually driven identity.",
+          "credit": null,
+          "roles": [
+            "Creative Direction",
+            "Logo Design",
+            "Website Design",
+            "YouTube Banner",
+            "Visual Identity Design"
+          ]
+        },
+        {
+          "slug": "rushin",
+          "t": "RUSHIN",
+          "c": "Rushin",
+          "y": "2024",
+          "r": "Creative Director & Designer",
+          "img": null,
+          "video": "projects/04-motion/rushin/motion.mp4",
+          "gallery": [],
+          "link": null,
+          "tag": "LOGO & VISUAL IDENTITY / 2024",
+          "lb": "OVERVIEW",
+          "la": "CONTRIBUTION",
+          "b": "Rushin is an educational and research-focused event platform designed to support academic and intellectual development through workshops, courses, field visits, camps, and hands-on learning experiences.\nThe visual identity explores the connection between the human mind, nature, and generative systems. The central concept draws from the visual language of the brain and tree structures, using the branching logic of a fractal canopy as a metaphor for learning, growth, and the continuous expansion of knowledge.",
+          "a": "The design system was built around the idea of a “fractal canopy”, combining organic branching structures with the visual complexity of the brain and generative patterns.\nThe identity translates these ideas into a flexible visual language that represents knowledge as a growing, interconnected system, where each new idea creates the potential for further exploration and discovery.",
+          "credit": null,
+          "roles": [
+            "Creative Direction",
+            "Logo Design",
+            "Visual Identity Design"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,3345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kiarash Farahmandrad — multi-disciplinary designer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700&family=Azeret+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#070708;
+    --ice:#f3f3f3;
+    --mute:#b7babc;
+    --dim:#83878a;
+    --key:#ffffff;
+    --line:rgba(255,255,255,.26);
+    --hair:rgba(255,255,255,.12);
+    --plate:rgba(8,9,10,.62);
+    --sheet:rgba(9,10,11,.86);
+    --tsh:0 1px 10px rgba(0,0,0,.95);
+    --scan:rgba(255,255,255,.045);
+    --scan-op:.4;
+    --sweep:rgba(255,255,255,.05);
+    --scrim-a:rgba(0,0,0,.55);
+    --scrim-b:rgba(0,0,0,.70);
+    --vig:rgba(0,0,0,.82);
+    --grain-op:.11;
+    --glow:rgba(255,255,255,.6);
+    --lens:rgba(4,4,5,.93);
+    /* placeholder artwork palette */
+    --ph0:#0c0d0f; --ph1:#191b1e; --ph2:#2e3338; --ph3:#e9eaec;
+  }
+  body.light{
+    --void:#edebe6;
+    --ice:#16171a;
+    --mute:#4c5052;
+    --dim:#7d8184;
+    --key:#0b0b0c;
+    --line:rgba(12,12,14,.32);
+    --hair:rgba(12,12,14,.16);
+    --plate:rgba(255,255,255,.55);
+    --sheet:rgba(245,243,239,.9);
+    --tsh:0 1px 10px rgba(255,255,255,.85);
+    --scan:rgba(0,0,0,.03);
+    --scan-op:.35;
+    --sweep:rgba(255,255,255,.55);
+    --scrim-a:rgba(150,146,138,.16);
+    --scrim-b:rgba(150,146,138,.22);
+    --vig:rgba(122,118,110,.30);
+    --grain-op:.07;
+    --glow:rgba(0,0,0,.35);
+    --lens:rgba(238,236,231,.95);
+    --ph0:#e3e0d9; --ph1:#d4d0c7; --ph2:#b6b1a6; --ph3:#17181a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:var(--void);color:var(--ice);
+    font-family:'Archivo',system-ui,sans-serif;
+    overflow:hidden;-webkit-font-smoothing:antialiased;
+    transition:background .7s ease,color .7s ease;
+  }
+  @media (pointer:fine){
+    html,body,#gl,.hud,.hud a,.fx,.chip,.panel,.panel *,.lens,.lens *,button{cursor:none}
+
+    /* ── the pointer comes back for fullscreen video ────
+       The reticle that stands in for the cursor is an element of the page,
+       and a fullscreen <video> paints over the page entirely — so inside
+       fullscreen there was nothing to aim with at all: the custom cursor was
+       covered along with everything else, and the real one was suppressed by
+       the rule above. That left the browser's own control bar as the only way
+       back out and no way to point at it, so Esc was the only exit. While
+       anything is fullscreen the real cursor is handed back. Both the
+       standard and the -webkit- selector are written as separate rules, since
+       a browser that does not know one of them would drop the whole list. */
+    :fullscreen,:fullscreen *{cursor:auto}
+    :-webkit-full-screen,:-webkit-full-screen *{cursor:auto}
+    body.fs,body.fs *{cursor:auto}
+  }
+  #gl{position:fixed;left:0;top:0;width:100vw;height:100vh;height:100dvh;
+    display:block;z-index:0;touch-action:none}
+
+  /* ── the photographs are not for taking ───────────────
+     no drag ghost on the desktop, no long-press callout on iOS, no
+     selection handles. The contextmenu handler in the script closes the
+     right-click and long-press menus themselves. */
+  img{-webkit-user-select:none;user-select:none;-webkit-user-drag:none;
+    -webkit-touch-callout:none}
+  .lens,.lens *{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+
+  /* ── screen treatment ─────────────────────────────── */
+  .fx{position:fixed;left:0;top:0;width:100vw;height:100vh;height:100dvh;
+    z-index:2;pointer-events:none;overflow:hidden}
+  .scan{position:absolute;inset:0;opacity:var(--scan-op);mix-blend-mode:screen;
+    background:repeating-linear-gradient(to bottom,var(--scan) 0 1px,transparent 1px 3px)}
+  body.light .scan{mix-blend-mode:multiply}
+  .scrim{position:absolute;inset:0;background:linear-gradient(to bottom,
+    var(--scrim-a) 0,rgba(0,0,0,0) 24%,rgba(0,0,0,0) 58%,var(--scrim-b) 100%)}
+  .sweep{position:absolute;left:0;right:0;height:140px;top:-140px;
+    background:linear-gradient(to bottom,transparent,var(--sweep),transparent);
+    animation:sweep 11s linear infinite}
+  @keyframes sweep{0%{transform:translateY(0)}100%{transform:translateY(calc(100vh + 280px))}}
+  .vig{position:absolute;inset:0;background:radial-gradient(115% 85% at 50% 46%,transparent 38%,var(--vig) 100%)}
+  .grain{position:fixed;inset:0;z-index:2;pointer-events:none;opacity:var(--grain-op);mix-blend-mode:overlay;
+    background-repeat:repeat;background-size:180px 180px}
+
+  /* ── reticle ──────────────────────────────────────── */
+  .ret{position:fixed;left:0;top:0;z-index:14;pointer-events:none;opacity:0;
+    transform:translate(-50%,-50%);transition:opacity .25s}
+  .ret.on{opacity:1}
+  .ret svg{display:block;overflow:visible;transform:scale(.62) rotate(0deg);
+    transition:transform .28s cubic-bezier(.2,.8,.3,1)}
+  .ret path{fill:none;stroke:var(--mute);stroke-width:1.4;transition:stroke .25s}
+  .ret circle{fill:var(--mute);transition:fill .25s}
+  .ret.lock svg{transform:scale(1) rotate(45deg)}
+  .ret.lock path,.ret.lock circle{stroke:var(--key);fill:var(--key)}
+  .ret .tag{position:absolute;left:46px;top:50%;transform:translate(6px,-50%);
+    font-family:'Azeret Mono',ui-monospace,monospace;font-size:8.5px;letter-spacing:.26em;
+    color:var(--ice);background:var(--sheet);border:1px solid var(--hair);
+    padding:5px 8px;opacity:0;white-space:nowrap;
+    transition:opacity .25s,transform .25s}
+  .ret.lock .tag{transform:translate(0,-50%);opacity:.92}
+  .ret .tag:empty{display:none}
+
+  /* ── hud shell ────────────────────────────────────── */
+  .hud{position:relative;z-index:3;height:100vh;height:100dvh;display:flex;flex-direction:column;
+    justify-content:space-between;padding:clamp(20px,3vw,36px);pointer-events:none}
+  .brackets{position:absolute;inset:0;pointer-events:none}
+  .brackets i{position:absolute;width:24px;height:24px;border:1px solid var(--line)}
+  .brackets .tl{left:clamp(12px,1.8vw,20px);top:clamp(12px,1.8vw,20px);border-right:0;border-bottom:0}
+  .brackets .tr{right:clamp(12px,1.8vw,20px);top:clamp(12px,1.8vw,20px);border-left:0;border-bottom:0}
+  .brackets .bl{left:clamp(12px,1.8vw,20px);bottom:clamp(12px,1.8vw,20px);border-right:0;border-top:0}
+  .brackets .br{right:clamp(12px,1.8vw,20px);bottom:clamp(12px,1.8vw,20px);border-left:0;border-top:0}
+
+  .hud a,.hud button{pointer-events:auto;text-decoration:none;color:inherit;
+    font:inherit;background:none;border:0;-webkit-tap-highlight-color:transparent}
+  .hud a:focus-visible,.hud button:focus-visible{outline:1px solid var(--ice);outline-offset:5px}
+
+  /* ── top row ──────────────────────────────────────── */
+  .top{display:flex;justify-content:space-between;align-items:flex-start;gap:24px}
+  .mark{display:flex;align-items:flex-start;gap:12px}
+  .mark-id{font-weight:700;font-size:12px;letter-spacing:.02em;
+    color:var(--void);background:var(--ice);padding:5px 7px;line-height:1}
+  .mark-name{display:block;font-weight:600;font-size:12.5px;letter-spacing:.16em;line-height:1.5;
+    text-shadow:var(--tsh)}
+  .mark-sub{display:block;font-family:'Azeret Mono',ui-monospace,monospace;font-weight:300;
+    font-size:8.5px;letter-spacing:.24em;color:var(--mute);margin-top:3px;text-shadow:var(--tsh)}
+
+  .menu{display:flex;gap:8px}
+  .hud .menu a,.hud .menu button{position:relative;display:flex;align-items:center;gap:9px;
+    padding:9px 14px 9px 12px;
+    font-family:'Azeret Mono',ui-monospace,monospace;font-size:9.5px;letter-spacing:.2em;
+    color:var(--mute);background:var(--plate);border:1px solid var(--hair);
+    -webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
+    transition:color .22s,border-color .22s,background .22s;
+    clip-path:polygon(0 0,100% 0,100% calc(100% - 7px),calc(100% - 7px) 100%,0 100%)}
+  .hud .menu a i,.hud .menu button i{font-style:normal;font-size:8px;color:var(--dim);transition:color .22s}
+  .hud .menu a::before,.hud .menu button::before{content:"";position:absolute;left:0;top:50%;width:1px;height:0;
+    background:var(--void);transform:translateY(-50%);transition:height .25s}
+  .hud .menu a:hover,.hud .menu a:focus-visible,
+  .hud .menu button:hover,.hud .menu button:focus-visible{color:var(--void);background:var(--ice);border-color:var(--ice)}
+  .hud .menu a:hover::before,.hud .menu button:hover::before{height:70%}
+  .hud .menu a:hover i,.hud .menu button:hover i{color:var(--void)}
+  .hud .menu a:active,.hud .menu button:active{background:var(--mute)}
+
+  /* ── bottom row ───────────────────────────────────── */
+  .bot{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;
+    font-family:'Azeret Mono',ui-monospace,monospace;font-size:8.5px;letter-spacing:.18em}
+  .readout{display:flex;flex-direction:column;gap:5px;color:var(--ice);text-shadow:var(--tsh)}
+  .readout span{display:flex;gap:10px}
+  .readout b{font-weight:400;color:var(--dim);min-width:66px}
+  .readout em{font-style:normal}
+  .tail{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+  .tools{display:flex;align-items:center;gap:8px}
+  .hud .tgl{display:flex;align-items:center;gap:7px;color:var(--mute);background:var(--plate);
+    -webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
+    font-family:'Azeret Mono',ui-monospace,monospace;font-size:8.5px;letter-spacing:.2em;
+    border:1px solid var(--hair);padding:7px 10px;
+    transition:color .25s,border-color .25s,background .25s;
+    clip-path:polygon(0 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%)}
+  .hud .tgl i{font-style:normal;font-size:10px;line-height:1;color:var(--dim);transition:color .25s}
+  .hud .tgl b{font-weight:400;min-width:34px;text-align:left}
+  .hud .tgl:hover{color:var(--ice);border-color:var(--line)}
+  .hud .tgl:hover i{color:var(--ice)}
+  .hud .sound{display:flex;align-items:center;gap:7px;color:var(--mute);background:var(--plate);
+    -webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
+    font-family:'Azeret Mono',ui-monospace,monospace;font-size:8.5px;letter-spacing:.2em;
+    border:1px solid var(--hair);padding:7px 10px;transition:color .25s,border-color .25s;
+    clip-path:polygon(0 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%)}
+  .hud .sound:hover{color:var(--ice);border-color:var(--line)}
+  .hud .sound.live{color:var(--ice)}
+  .bars{display:flex;align-items:flex-end;gap:2px;height:9px}
+  .bars i{display:block;width:2px;height:3px;background:var(--dim);transition:background .3s}
+  .sound.live .bars i{background:var(--ice);box-shadow:0 0 6px var(--glow);
+    animation:vu 1.15s ease-in-out infinite}
+  .sound.live .bars i:nth-child(2){animation-duration:.78s;animation-delay:.18s}
+  .sound.live .bars i:nth-child(3){animation-duration:1.42s;animation-delay:.06s}
+  .sound.live .bars i:nth-child(4){animation-duration:.94s;animation-delay:.3s}
+  @keyframes vu{0%,100%{height:2px}50%{height:9px}}
+
+  /* ── explore chips around the form ────────────────── */
+  .explore{position:fixed;inset:0;z-index:4;pointer-events:none}
+  .chip{position:absolute;transform:translate(-50%,-50%) scale(.82);
+    display:flex;align-items:center;gap:9px;padding:9px 14px;
+    font-family:'Azeret Mono',ui-monospace,monospace;font-size:9px;letter-spacing:.22em;
+    color:var(--mute);background:var(--sheet);border:1px solid var(--hair);
+    -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+    opacity:0;pointer-events:none;white-space:nowrap;
+    clip-path:polygon(7px 0,100% 0,100% calc(100% - 7px),calc(100% - 7px) 100%,0 100%,0 7px);
+    transition:opacity .42s cubic-bezier(.2,.8,.3,1),transform .42s cubic-bezier(.2,.8,.3,1),
+               color .25s,border-color .25s,background .25s}
+  .chip i{font-style:normal;color:var(--dim);font-size:8px}
+  .explore.on .chip{opacity:1;transform:translate(-50%,-50%) scale(1);pointer-events:auto}
+  .chip.hot{color:var(--void);background:var(--ice);border-color:var(--ice);
+    transform:translate(-50%,-50%) scale(1.06)}
+  .chip.hot i{color:var(--void)}
+
+  /* ── work panel ───────────────────────────────────── */
+  .panel{position:fixed;top:0;right:0;bottom:0;z-index:7;
+    width:min(560px,48vw);display:flex;flex-direction:column;
+    background:var(--sheet);border-left:1px solid var(--hair);
+    -webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);
+    transform:translateX(102%);opacity:0;visibility:hidden;
+    transition:transform .62s cubic-bezier(.16,.84,.28,1),opacity .5s ease,visibility .62s}
+  .panel.on{transform:none;opacity:1;visibility:visible}
+  .panel-bar{display:flex;justify-content:space-between;align-items:center;gap:14px;
+    padding:16px clamp(16px,2.4vw,26px);border-bottom:1px solid var(--hair);
+    font-family:'Azeret Mono',ui-monospace,monospace}
+  .panel-title{display:flex;flex-direction:column;gap:4px}
+  .panel-title b{font-weight:500;font-size:12px;letter-spacing:.24em;color:var(--ice)}
+  .panel-title i{font-style:normal;font-size:8px;letter-spacing:.22em;color:var(--dim)}
+  .panel-nav{display:flex;align-items:center;gap:6px}
+  .pbtn{display:inline-flex;align-items:center;justify-content:center;gap:7px;
+    height:30px;padding:0 10px;line-height:1;
+    font-family:'Azeret Mono',ui-monospace,monospace;font-size:9px;letter-spacing:.18em;
+    color:var(--mute);border:1px solid var(--hair);background:transparent;
+    transition:color .2s,background .2s,border-color .2s,opacity .3s}
+  .pbtn:hover{color:var(--void);background:var(--ice);border-color:var(--ice)}
+  .pbtn[hidden]{display:none}
+  /* icon-only buttons are square, so PREV and NEXT are the same box */
+  .pbtn.ibtn{width:30px;padding:0}
+
+  /* ── marks ────────────────────────────────────────────
+     One geometry, rotated. These used to be text — &larr;
+     &rarr; \2197 \2193 — but Azeret Mono's latin subset
+     carries only some of those codepoints, so the rest fell
+     through to whatever the device had. Each direction then
+     arrived at a different width and weight, which is why the
+     right arrow read bigger than the left one on a phone.
+     Drawn as SVG they are the same shape at every size,
+     independent of the font that happens to load. */
+  .ico{display:block;flex:0 0 auto;width:var(--ico,12px);height:var(--ico,12px);
+    fill:none;stroke:currentColor;stroke-width:2;
+    transform-origin:50% 50%}
+  .ico-r {transform:rotate(0deg)}     /* next     */
+  .ico-l {transform:rotate(180deg)}   /* previous */
+  .ico-d {transform:rotate(90deg)}    /* download */
+  .ico-ur{transform:rotate(-45deg)}   /* outbound */
+  .panel-body{position:relative;flex:1;overflow:hidden}
+  .view{position:absolute;inset:0;overflow-y:auto;overscroll-behavior:contain;
+    padding:clamp(16px,2.4vw,26px);
+    transition:opacity .42s ease,transform .42s cubic-bezier(.2,.8,.3,1)}
+  .view.hide{opacity:0;transform:translateY(14px);pointer-events:none}
+
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .card{display:block;text-align:left;padding:0;border:1px solid var(--hair);background:transparent;
+    opacity:0;transform:translateY(16px);
+    transition:opacity .5s ease,transform .5s cubic-bezier(.2,.8,.3,1),border-color .25s}
+  .panel.on .card{opacity:1;transform:none}
+  .card:hover{border-color:var(--line)}
+  .card .thumb{position:relative;aspect-ratio:10/7;overflow:hidden;display:block}
+  .card .thumb svg{width:100%;height:100%;display:block;transition:transform .55s cubic-bezier(.2,.8,.3,1)}
+  .card:hover .thumb svg{transform:scale(1.05)}
+  .card .meta{display:block;padding:13px 15px 14px;border-top:1px solid var(--hair);
+    font-family:'Azeret Mono',ui-monospace,monospace;transition:border-color .25s}
+  .card:hover .meta{border-color:var(--line)}
+  .card .meta b{display:block;font-weight:500;font-size:9.5px;letter-spacing:.16em;
+    line-height:1.5;color:var(--ice);overflow-wrap:anywhere}
+  .card .meta span{display:block;margin-top:7px;font-size:8px;letter-spacing:.2em;
+    line-height:1.5;color:var(--dim)}
+
+  .page{display:flex;flex-direction:column;gap:22px}
+  /* Portrait and prose share one grid. A headline, if there is one, spans
+     both columns so it gets the full measure instead of breaking repeatedly
+     in a narrow one; under it the portrait sits beside the bio. On a phone
+     the whole thing collapses to a single column with the portrait leading. */
+  .who{display:grid;grid-template-columns:minmax(0,38%) minmax(0,1fr);
+    gap:0 clamp(16px,2.2vw,24px);align-items:start}
+  .who > h3{grid-column:1/-1;margin-bottom:clamp(14px,1.8vw,20px)}
+  .who .shot{position:relative;width:100%;border:1px solid var(--hair);
+    overflow:hidden;line-height:0}
+  .who .shot img{width:100%;aspect-ratio:4/5;object-fit:cover;display:block;
+    filter:grayscale(1) contrast(1.04);transition:filter .5s ease,opacity .5s ease}
+  body.light .who .shot img{filter:grayscale(1) contrast(1.02) brightness(1.02)}
+  .who .shot::after{content:"";position:absolute;inset:0;pointer-events:none;
+    background:repeating-linear-gradient(to bottom,var(--scan) 0 1px,transparent 1px 3px);
+    opacity:.5;mix-blend-mode:overlay}
+  .who .shot i{position:absolute;left:0;bottom:0;right:0;font-style:normal;
+    font-family:'Azeret Mono',ui-monospace,monospace;font-size:7px;letter-spacing:.22em;
+    color:var(--ice);background:var(--sheet);border-top:1px solid var(--hair);
+    padding:4px 6px;text-align:center;line-height:1.4}
+  .who .said{min-width:0}
+  .page h3{font-weight:700;font-size:clamp(19px,2.3vw,26px);letter-spacing:-.01em;
+    line-height:1.15;color:var(--ice)}
+  .page p{font-size:12.5px;line-height:1.6;color:var(--mute)}
+  .page p + p{margin-top:9px}
+  .block{display:flex;flex-direction:column;gap:8px;
+    padding-top:18px;border-top:1px solid var(--hair)}
+  .block > b{font-family:'Azeret Mono',ui-monospace,monospace;font-weight:400;
+    font-size:8px;letter-spacing:.26em;color:var(--dim)}
+  .rows{display:flex;flex-direction:column}
+  .rows a,.rows span{display:flex;justify-content:space-between;align-items:baseline;gap:14px;
+    padding:11px 0;border-bottom:1px solid var(--hair);text-decoration:none;
+    font-family:'Azeret Mono',ui-monospace,monospace;font-size:9.5px;letter-spacing:.14em;
+    color:var(--ice);transition:color .2s,padding-left .25s}
+  .rows a:hover{color:var(--dim);padding-left:8px}
+  .rows em{display:flex;align-items:center;justify-content:flex-end;gap:.85em;align-self:center;
+    font-style:normal;color:var(--dim);font-size:8.5px;letter-spacing:.2em;text-align:right}
+  .rows em .ico{--ico:11px}
+
+  /* skill tags — same chip as a project's tag row, so the two read as one
+     family. Each group is its own .block, matching DOCUMENTS / ELSEWHERE. */
+  .taglist{display:flex;flex-wrap:wrap;gap:6px}
+  .taglist span{font-family:'Azeret Mono',ui-monospace,monospace;font-size:8.5px;
+    letter-spacing:.16em;color:var(--mute);border:1px solid var(--hair);padding:6px 9px;
+    transition:border-color .25s,color .25s}
+  .taglist span:hover{border-color:var(--line);color:var(--ice)}
+  .lede{font-size:13.5px;line-height:1.6;color:var(--mute)}
+  .mail{font-weight:700;font-size:clamp(17px,2.4vw,25px);letter-spacing:-.01em;
+    color:var(--ice);text-decoration:none;word-break:break-all}
+  .mail:hover{color:var(--dim)}
+  .clients{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .client{border:1px solid var(--hair);display:flex;flex-direction:column;gap:0;
+    transition:border-color .25s}
+  .client:hover{border-color:var(--line)}
+  .client svg{width:100%;aspect-ratio:3/2;display:block}
+  .client b{font-family:'Azeret Mono',ui-monospace,monospace;font-weight:400;font-size:7.5px;
+    letter-spacing:.18em;color:var(--dim);padding:0 0 9px;text-align:center}
+  .note{font-family:'Azeret Mono',ui-monospace,monospace;font-size:8px;letter-spacing:.2em;
+    color:var(--dim);line-height:1.8}
+
+  .detail-img{border:1px solid var(--hair);aspect-ratio:10/7;overflow:hidden}
+  .detail-img svg{width:100%;height:100%;display:block}
+  .detail-head{margin:16px 0 4px;font-weight:700;font-size:clamp(20px,2.6vw,28px);
+    letter-spacing:-.01em;line-height:1.05;color:var(--ice)}
+  .detail-sub{font-family:'Azeret Mono',ui-monospace,monospace;font-size:8.5px;
+    letter-spacing:.22em;color:var(--dim);margin-bottom:16px}
+  .info{border:1px solid var(--hair);background:var(--plate);padding:14px 16px;
+    display:flex;flex-direction:column;gap:12px}
+  .info div{display:flex;flex-direction:column;gap:5px}
+  .info b{font-family:'Azeret Mono',ui-monospace,monospace;font-weight:400;
+    font-size:8px;letter-spacing:.26em;color:var(--dim)}
+  .info p{font-size:12.5px;line-height:1.55;color:var(--mute)}
+  .info .row{flex-direction:row;gap:26px;flex-wrap:wrap}
+  .info .row div{gap:4px}
+  .info .row p{font-family:'Azeret Mono',ui-monospace,monospace;font-size:9.5px;
+    letter-spacing:.14em;color:var(--ice)}
+
+  /* ── real project media ───────────────────────────── */
+  .card .thumb img{width:100%;height:100%;object-fit:cover;display:block;
+    filter:grayscale(1) contrast(1.04);
+    transition:transform .55s cubic-bezier(.2,.8,.3,1),filter .55s ease}
+  .card:hover .thumb img,.card:focus-visible .thumb img{filter:none;transform:scale(1.05)}
+
+  .card .thumb video,.detail-img video{width:100%;height:100%;object-fit:cover;display:block}
+
+  /* gallery — every image in a project folder, minus the cover */
+  .gal{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;align-items:start}
+  .gal[hidden]{display:none}
+  .gal button{display:block;padding:0;background:transparent;
+    border:1px solid var(--hair);overflow:hidden;line-height:0;transition:border-color .25s}
+  .gal button:hover,.gal button:focus-visible{border-color:var(--line)}
+  /* 10/7 only reserves space until the file loads; JS then swaps in the
+     image's real ratio, so a portrait poster is never cropped to landscape. */
+  .gal img{width:100%;height:auto;aspect-ratio:var(--media-ar,10/7);object-fit:contain;
+    display:block;transition:transform .55s cubic-bezier(.2,.8,.3,1),opacity .5s ease,
+      aspect-ratio .35s cubic-bezier(.2,.8,.3,1)}
+  .gal button:hover img,.gal button:focus-visible img{transform:scale(1.04)}
+
+  /* client logos — flattened to the HUD's monochrome, true colour on hover */
+  .client img{width:100%;aspect-ratio:3/2;object-fit:contain;display:block;padding:15%;
+    filter:grayscale(1) brightness(0) invert(1) opacity(.72);transition:filter .45s ease}
+  .client:hover img{filter:none}
+  body.light .client img{filter:grayscale(1) brightness(0) opacity(.72)}
+  body.light .client:hover img{filter:none}
+
+  .detail-img{position:relative}
+
+  /* A video gets its own frame: 16:9 by default, corrected to the file's real
+     ratio the moment metadata loads. `contain` then fits the whole frame —
+     a wide video is never cropped at the sides to fill the 10/7 still box. */
+  .detail-img.is-video{aspect-ratio:var(--media-ar,16/9)}
+  .detail-img.is-video video{object-fit:contain;background:#000}
+
+  /* Same idea for stills: the frame takes the photo's own ratio, so posters
+     stay portrait instead of being cropped to 10/7. The ratio is normally
+     known before the frame paints; `ar-soft` covers the rare late case by
+     easing the correction instead of snapping it. */
+  .detail-img.is-img{aspect-ratio:var(--media-ar,10/7)}
+  .detail-img.is-img img{object-fit:contain}
+  .detail-img.ar-soft{transition:aspect-ratio .35s cubic-bezier(.2,.8,.3,1)}
+
+  /* A loading plate that reads as intentional, rather than a hollow box. */
+  .detail-img.skel,.gal button.skel{background:
+    linear-gradient(100deg,transparent 0 38%,var(--sheet) 50%,transparent 62% 100%),
+    var(--plate);
+    background-size:260% 100%,auto;background-repeat:no-repeat;
+    animation:skelsweep 1.5s linear infinite}
+  @keyframes skelsweep{from{background-position:160% 0,0 0}to{background-position:-60% 0,0 0}}
+
+  /* The picture dissolves in over its own frame instead of popping. */
+  .detail-img.is-img img{opacity:0;transition:opacity .5s ease}
+  .gal img{opacity:0}
+  .detail-img.is-img img.ready,.gal img.ready{opacity:1}
+
+  .detail-img img{width:100%;height:100%;object-fit:cover;display:block}
+  .detail-img img[role=button]:focus-visible{outline:1px solid var(--ice);outline-offset:-3px}
+  .detail-img::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:1;
+    background:repeating-linear-gradient(to bottom,var(--scan) 0 1px,transparent 1px 3px);
+    opacity:.45;mix-blend-mode:overlay}
+  .play{position:absolute;left:50%;top:50%;z-index:2;transform:translate(-50%,-50%);
+    display:flex;align-items:center;gap:10px;padding:11px 16px 11px 13px;
+    font-family:'Azeret Mono',ui-monospace,monospace;font-size:9px;letter-spacing:.22em;
+    color:var(--ice);background:var(--sheet);border:1px solid var(--line);
+    -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);text-decoration:none;
+    white-space:nowrap;
+    clip-path:polygon(7px 0,100% 0,100% calc(100% - 7px),calc(100% - 7px) 100%,0 100%,0 7px);
+    transition:color .25s,background .25s,border-color .25s,transform .3s cubic-bezier(.2,.8,.3,1)}
+  .play svg{width:10px;height:10px;display:block;fill:currentColor}
+  .play:hover,.play:focus-visible{color:var(--void);background:var(--ice);border-color:var(--ice);
+    transform:translate(-50%,-50%) scale(1.06)}
+
+  .info a{color:var(--ice);text-decoration:none;border-bottom:1px solid var(--line);
+    transition:color .2s,border-color .2s}
+  .info a:hover{color:var(--dim);border-color:var(--dim)}
+  .info p + p{margin-top:4px}
+  .info .tags{display:flex;flex-direction:row;flex-wrap:wrap;gap:6px}
+  .info .tags span{font-family:'Azeret Mono',ui-monospace,monospace;font-size:8.5px;
+    letter-spacing:.16em;color:var(--mute);border:1px solid var(--hair);padding:5px 8px;
+    transition:border-color .25s,color .25s}
+  .info .tags span:hover{border-color:var(--line);color:var(--ice)}
+
+  /* no pointer to hover with — show the artwork as it is */
+  @media (hover:none){
+    .card .thumb img{filter:none}
+  }
+
+  /* ambient loops are decorative — hold the first frame instead */
+  @media (prefers-reduced-motion:reduce){
+    .card .thumb video,.detail-img video{animation:none}
+    .detail-img.skel,.gal button.skel{animation:none;background:var(--plate)}
+    .detail-img.ar-soft{transition:none}
+    .gal img{transition:none}
+  }
+
+  /* ── boot ─────────────────────────────────────────── */
+  .boot{position:fixed;inset:0;z-index:10;background:var(--void);display:grid;place-items:center;
+    transition:opacity .6s ease,visibility .6s}
+  .boot.gone{opacity:0;visibility:hidden}
+  .boot-in{width:min(280px,60vw);display:flex;flex-direction:column;gap:11px;
+    font-family:'Azeret Mono',ui-monospace,monospace;font-size:8.5px;letter-spacing:.28em}
+  .boot-t{color:var(--ice)}
+  .boot-bar{height:2px;background:var(--hair);overflow:hidden}
+  .boot-bar i{display:block;height:100%;width:0;background:var(--ice);box-shadow:0 0 12px var(--glow)}
+  .boot-s{display:flex;justify-content:space-between;color:var(--dim)}
+  .boot-s b{font-weight:400;color:var(--ice)}
+
+  /* ── lightbox ─────────────────────────────────────── */
+  .lens{position:fixed;inset:0;z-index:12;display:flex;align-items:center;justify-content:center;
+    touch-action:none;opacity:0;visibility:hidden;transition:opacity .3s ease,visibility .3s}
+  .lens.on{opacity:1;visibility:visible}
+  .lens[hidden]{display:none}
+  .lens-bg{position:absolute;inset:0;background:var(--lens);
+    -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+  .lens-stage{position:relative;z-index:1;margin:0;line-height:0;pointer-events:none;
+    width:100%;height:100%;display:flex;align-items:center;justify-content:center;
+    padding:clamp(56px,9vh,96px) clamp(56px,7vw,112px)}
+  .lens-stage img{display:block;width:auto;height:auto;
+    max-width:min(100%,1400px);max-height:min(100%,1000px);object-fit:contain;
+    border:1px solid var(--hair);opacity:0;transform:scale(.93);
+    transition:transform .44s cubic-bezier(.2,.8,.3,1),opacity .3s ease}
+  .lens.on .lens-stage img{opacity:1;transform:none}
+  /* a pinch has to track the fingers exactly, so nothing is eased while they
+     are down — the easing comes back for the settle and the way home */
+  .lens.on .lens-stage.zoom img{transition:transform .3s cubic-bezier(.2,.8,.3,1),opacity .3s ease}
+  .lens.on .lens-stage.live img{transition:none}
+  .lens.on .lens-stage img.swap{opacity:0;transform:scale(.985);
+    transition-duration:.15s,.15s}
+
+  .lens-btn{position:absolute;z-index:2;display:grid;place-items:center;
+    width:42px;height:42px;padding:0;line-height:1;
+    font-family:'Azeret Mono',ui-monospace,monospace;font-size:13px;
+    color:var(--ice);background:var(--sheet);border:1px solid var(--hair);
+    -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+    transition:color .2s,background .2s,border-color .2s}
+  .lens-btn:hover,.lens-btn:focus-visible{color:var(--void);background:var(--ice);border-color:var(--ice)}
+  .lens-btn[hidden]{display:none}
+  .lens-btn .ico{--ico:16px}
+  .lens-x{top:clamp(14px,3vw,26px);right:clamp(14px,3vw,26px)}
+  .lens-prev{left:clamp(10px,2.4vw,26px);top:50%;transform:translateY(-50%)}
+  .lens-next{right:clamp(10px,2.4vw,26px);top:50%;transform:translateY(-50%)}
+  .lens-count{position:absolute;z-index:2;left:50%;transform:translateX(-50%);
+    bottom:clamp(14px,3vw,26px);display:flex;gap:7px;align-items:baseline;
+    padding:7px 11px;background:var(--sheet);border:1px solid var(--hair);
+    font-family:'Azeret Mono',ui-monospace,monospace;font-size:8.5px;letter-spacing:.22em;
+    color:var(--dim)}
+  .lens-count b{font-weight:400;color:var(--ice)}
+  .lens-count i{font-style:normal}
+  .lens-count[hidden]{display:none}
+
+  /* ── rights line ──────────────────────────────────── */
+  .rights{font-family:'Azeret Mono',ui-monospace,monospace;font-size:7.5px;
+    letter-spacing:.2em;color:var(--dim);line-height:1.6;white-space:nowrap}
+
+  /* on desktop, pull the rights line out of the right-hand stack and
+     center it on the page, independent of the footer's own padding */
+  @media (min-width:901px){
+    .rights{position:fixed;left:50%;bottom:clamp(20px,3vw,36px);
+      transform:translateX(-50%);z-index:4}
+  }
+
+
+  @media (max-width:900px){
+    .panel{width:100%;border-left:0}
+    .grid{grid-template-columns:1fr}
+    .card .meta{padding:14px 16px 15px}
+    .panel-bar{padding:14px 16px}
+    .view{padding:16px 16px max(20px,env(safe-area-inset-bottom))}
+    .detail-head{font-size:22px;margin-top:14px}
+    .who .shot{width:132px}
+    .info p{font-size:12px}
+  }
+  @media (max-width:860px){
+    .top{flex-direction:column;gap:16px}
+    .bot{flex-direction:column;align-items:flex-start;gap:14px}
+    .tail{align-items:flex-start}
+    .readout span:nth-child(3){display:none}
+  }
+
+  /* ── small screens ────────────────────────────────── */
+  @media (max-width:720px){
+    .hud{padding:14px 14px max(14px,env(safe-area-inset-bottom))}
+    .brackets{display:none}
+    .top{gap:12px}
+    .mark{gap:9px;align-items:center}
+    .mark-id{font-size:10px;padding:4px 6px}
+    .mark-name{font-size:10.5px;letter-spacing:.13em}
+    .mark-sub{font-size:7.5px;letter-spacing:.2em;margin-top:2px}
+    .menu{gap:6px}
+    .hud .menu a,.hud .menu button{padding:8px 11px;font-size:8.5px;letter-spacing:.14em;gap:0}
+    .hud .menu a i,.hud .menu button i{display:none}
+
+    /* controls first, then the readout, with the rights line closing it out.
+       display:contents lifts the tail's children into .bot so all three can
+       be ordered against each other. */
+    .bot{flex-direction:column;align-items:stretch;gap:12px}
+    .tail{display:contents}
+    .tools{order:1;justify-content:space-between}
+    .readout{order:2}
+    .rights{order:3}
+    .readout{font-size:8px;gap:4px}
+    .readout b{min-width:58px}
+    .readout span:nth-child(2){display:none}
+
+    /* the ring flattens into a strip you can thumb through */
+    .explore{top:auto;left:0;right:0;height:auto;
+      display:flex;gap:8px;align-items:center;padding:0 14px;
+      overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none}
+    .explore::-webkit-scrollbar{display:none}
+    .explore.on{pointer-events:auto}
+    .chip{position:static;flex:0 0 auto;padding:10px 14px;font-size:9px;
+      transform:translateY(12px)}
+    .explore.on .chip{transform:none}
+    .chip.hot{transform:none}
+    .who{grid-template-columns:1fr;gap:16px}
+    .who > h3{margin-bottom:0}
+    .who .shot{order:-1;width:min(64%,210px)}
+    .clients{grid-template-columns:repeat(2,1fr)}
+
+    /* the mark carries the meaning on its own here */
+    #pclose .lbl{display:none}
+    #pclose{width:30px;padding:0}
+    .gal{grid-template-columns:1fr 1fr;gap:8px}
+
+    .lens-stage{padding:60px 14px 84px}
+    .lens-btn{width:44px;height:44px}
+    .lens-prev,.lens-next{top:auto;bottom:calc(14px + env(safe-area-inset-bottom));transform:none}
+    .lens-prev{left:14px}
+    .lens-next{right:14px}
+    .lens-count{bottom:calc(24px + env(safe-area-inset-bottom))}
+    .rights{white-space:normal;font-size:7px}
+  }
+
+  @media (max-width:420px){
+    .mark-sub{font-size:7px;letter-spacing:.16em}
+    .hud .menu a,.hud .menu button{padding:8px 9px;font-size:8px}
+    .hud .tgl b{display:none}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .sweep,.sound.live .bars i{animation:none}
+  }
+</style>
+</head>
+<body>
+<canvas id="gl"></canvas>
+<div class="grain" id="grain"></div>
+<div class="fx" aria-hidden="true">
+  <div class="sweep"></div>
+  <div class="scan"></div>
+  <div class="scrim"></div>
+  <div class="vig"></div>
+</div>
+
+<div class="ret" id="ret" aria-hidden="true">
+  <svg width="40" height="40" viewBox="0 0 40 40">
+    <path d="M2 13V2h11"/><path d="M27 2h11v11"/><path d="M38 27v11H27"/><path d="M13 38H2V27"/>
+    <circle cx="20" cy="20" r="1.3"/>
+  </svg>
+  <span class="tag" id="rettag">INTERACT</span>
+</div>
+
+<div class="explore" id="explore" aria-hidden="true"></div>
+
+<section class="panel" id="panel" aria-hidden="true">
+  <div class="panel-bar">
+    <span class="panel-title">
+      <b id="panelfield">LOGOS</b>
+      <i id="panelsub">04 WORKS</i>
+    </span>
+    <div class="panel-nav">
+      <button class="pbtn ibtn" id="pprev" type="button" data-tag="PREV" hidden aria-label="Previous work"><svg class="ico ico-l" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3.2 12h16.2"/><path d="M13.4 6l6 6-6 6"/></svg></button>
+      <button class="pbtn ibtn" id="pnext" type="button" data-tag="NEXT" hidden aria-label="Next work"><svg class="ico ico-r" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3.2 12h16.2"/><path d="M13.4 6l6 6-6 6"/></svg></button>
+      <button class="pbtn" id="pback" type="button" data-tag="BACK" hidden>INDEX</button>
+      <button class="pbtn" id="pclose" type="button" data-tag="CLOSE" aria-label="Close"><span class="lbl">CLOSE</span><svg class="ico ico-x" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 5l14 14"/><path d="M19 5L5 19"/></svg></button>
+    </div>
+  </div>
+  <div class="panel-body">
+    <div class="view" id="gridview"><div class="grid" id="grid"></div></div>
+    <div class="view hide" id="detailview">
+      <div class="detail-img" id="detailimg"></div>
+      <h2 class="detail-head" id="detailtitle">Work title</h2>
+      <p class="detail-sub" id="detailtag">FIELD / YEAR</p>
+      <div class="info" id="detailinfo"></div>
+      <div class="gal" id="detailgal" hidden></div>
+    </div>
+  </div>
+</section>
+
+<div class="lens" id="lens" hidden role="dialog" aria-modal="true" aria-label="Project images">
+  <div class="lens-bg" id="lensbg"></div>
+  <figure class="lens-stage"><img id="lensimg" alt=""></figure>
+  <button class="lens-btn lens-x" id="lensclose" type="button" data-tag="CLOSE" aria-label="Close"><svg class="ico ico-x" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 5l14 14"/><path d="M19 5L5 19"/></svg></button>
+  <button class="lens-btn lens-prev" id="lensprev" type="button" data-tag="PREV" aria-label="Previous image"><svg class="ico ico-l" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3.2 12h16.2"/><path d="M13.4 6l6 6-6 6"/></svg></button>
+  <button class="lens-btn lens-next" id="lensnext" type="button" data-tag="NEXT" aria-label="Next image"><svg class="ico ico-r" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3.2 12h16.2"/><path d="M13.4 6l6 6-6 6"/></svg></button>
+  <div class="lens-count" id="lenscount"><b id="lensnow">01</b><i>/</i><span id="lenstotal">01</span></div>
+</div>
+
+<div class="hud">
+  <div class="brackets" aria-hidden="true"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i></div>
+
+  <header class="top">
+    <div class="mark">
+      <span class="mark-id">KF</span>
+      <span>
+        <span class="mark-name">KIARASH FARAHMANDRAD</span>
+        <span class="mark-sub">MULTI-DISCIPLINARY DESIGNER</span>
+      </span>
+    </div>
+    <nav class="menu">
+      <button type="button" data-page="ABOUT" data-tag="ABOUT"><i>01</i>ABOUT</button>
+      <button type="button" data-page="CLIENTS" data-tag="CLIENTS"><i>02</i>CLIENTS</button>
+      <button type="button" data-page="CONTACT" data-tag="CONTACT"><i>03</i>CONTACT</button>
+    </nav>
+  </header>
+
+  <footer class="bot">
+    <div class="readout">
+      <span><b>GEOMETRY</b><em>2,312 TRI / WATERTIGHT</em></span>
+      <span><b>PRACTICE</b><em id="practice">LOGOS / POSTERS / SPATIAL / MOTION</em></span>
+      <span><b>RENDER</b><em id="fps">--</em> FPS</span>
+    </div>
+    <div class="tail">
+      <div class="tools">
+        <button class="tgl" id="theme" type="button" data-tag="THEME" aria-pressed="false">
+          <i id="themeicon">◐</i><b id="themelabel">LIGHT</b>
+        </button>
+        <a class="sound" id="sound" href="#" role="switch" aria-checked="false" data-tag="AUDIO">
+          <span class="bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          <span id="soundlabel">AUDIO STANDBY</span>
+        </a>
+      </div>
+      <span class="rights">&copy; <span id="year">2026</span> ALL RIGHTS RESERVED</span>
+    </div>
+  </footer>
+</div>
+
+<div class="boot" id="boot">
+  <div class="boot-in">
+    <span class="boot-t">KF SYSTEM</span>
+    <div class="boot-bar"><i id="bootfill"></i></div>
+    <span class="boot-s"><span id="bootmsg">INITIALIZING</span><b id="bootpct">00</b></span>
+  </div>
+</div>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+}}
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import * as BufferGeometryUtils from 'three/addons/utils/BufferGeometryUtils.js';
+import { MeshSurfaceSampler } from 'three/addons/math/MeshSurfaceSampler.js';
+
+/* ══ model ════════════════════════════════════════════════════════════════
+   model/logo.glb is the form that is standing every time the page loads —
+   that filename is fixed, so the first thing a visitor sees never changes.
+   Every other .glb dropped into model/ becomes something the form can turn
+   into. tools/build-content.mjs scans the folder and lists them under
+   "models" in content.json, so nothing here has to know how many there are:
+   add a file, push, and the next tap can land on it. See model/README.md. */
+const MODEL_DIR   = 'model/';
+const MODEL_FIRST = 'logo.glb';       // the one on load — keep this name
+const MODEL_URL   = MODEL_DIR + MODEL_FIRST;
+const MAX_ALTS    = 12;               // how many extra forms are held in memory
+const FIT = 3.0;                      // on-screen height of the form, world units
+const BACK_Z = -6;
+
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const coarse = matchMedia('(pointer: coarse)').matches;
+
+/* ══ themes ═══════════════════════════════════════════════════════════════ */
+const THEMES = {
+  dark: {
+    bg:0x070708, line:0xf3f3f3, lineOp:0.20, field:0xf3f3f3, fieldOp:0.55,
+    matte:0x141517, matteRough:0.42, matteMetal:0.50,
+    key:0xffffff, additive:true, exposure:1.15,
+    keyI:2.4, rimI:1.5, ambI:0.4, ambC:0xc3c8cb,
+    env:{ back:0x0d151d, key:6, fill:4.5, rim:3.0, floor:1.6, wall:1.4 },
+    poster:{
+      bg:'#070708',
+      glow:['rgba(78,84,88,.46)','rgba(32,35,38,.26)','rgba(7,7,8,0)'],
+      g1:'rgba(255,255,255,.085)', g2:'rgba(255,255,255,.035)',
+      rule:'rgba(255,255,255,.12)', grain:0.16
+    }
+  },
+  light: {
+    bg:0xedebe6, line:0x1a1b1e, lineOp:0.34, field:0x4a4e52, fieldOp:0.40,
+    matte:0x24262a, matteRough:0.34, matteMetal:0.58,
+    key:0x0b0b0c, additive:false, exposure:1.02,
+    keyI:2.0, rimI:1.1, ambI:0.85, ambC:0xffffff,
+    env:{ back:0xdcdad4, key:5, fill:3.6, rim:2.2, floor:1.5, wall:1.3 },
+    poster:{
+      bg:'#edebe6',
+      glow:['rgba(255,255,255,.85)','rgba(220,216,207,.45)','rgba(237,235,230,0)'],
+      g1:'rgba(20,20,24,.10)', g2:'rgba(20,20,24,.042)',
+      rule:'rgba(20,20,24,.14)', grain:0.09
+    }
+  }
+};
+let mode = 'dark';
+const TH = ()=>THEMES[mode];
+
+/* ══ renderer ═════════════════════════════════════════════════════════════ */
+const canvas = document.getElementById('gl');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias:true });
+// a phone gains nothing from a 3x buffer, and loses a third of its frame rate to it
+const DPR = Math.min(devicePixelRatio, coarse ? 1.75 : 2);
+renderer.setPixelRatio(DPR);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = TH().exposure;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(TH().bg);
+const FOV = 34;
+const camera = new THREE.PerspectiveCamera(FOV, 1, 0.1, 100);
+camera.position.set(0, 0, 7.4);
+
+function envScene(cfg){
+  const s = new THREE.Scene();
+  s.background = new THREE.Color(cfg.back);
+  const pg = new THREE.PlaneGeometry(1,1);
+  const bar = (x,y,z,sx,sy,rx,ry,hex,mul)=>{
+    const m = new THREE.Mesh(pg, new THREE.MeshBasicMaterial({ color:new THREE.Color(hex).multiplyScalar(mul), side:THREE.DoubleSide }));
+    m.position.set(x,y,z); m.scale.set(sx,sy,1); m.rotation.set(rx,ry,0); s.add(m);
+  };
+  bar(0, 6, 0, 14, 8, Math.PI/2, 0, 0xffffff, cfg.key);
+  bar(-6, 0.5, 1, 3.2, 9, 0, Math.PI/2, 0xf2f4f5, cfg.fill);
+  bar(6, -0.5, -1, 2.4, 8, 0, -Math.PI/2, 0xaab6bd, cfg.rim);
+  bar(0, -5, 2, 12, 6, -Math.PI/2, 0, 0x3a3e41, cfg.floor);
+  bar(0, 0, -8, 16, 12, 0, 0, 0x1a1c1e, cfg.wall);
+  return s;
+}
+const pmrem = new THREE.PMREMGenerator(renderer);
+const envCache = {};
+function envFor(m){
+  if(!envCache[m]) envCache[m] = pmrem.fromScene(envScene(THEMES[m].env), 0.03).texture;
+  return envCache[m];
+}
+scene.environment = envFor(mode);
+
+const keyLight = new THREE.DirectionalLight(0xffffff, TH().keyI);
+keyLight.position.set(-3, 4, 5); scene.add(keyLight);
+const rimLight = new THREE.DirectionalLight(0x9fb0ba, TH().rimI);
+rimLight.position.set(4, -2, -3); scene.add(rimLight);
+const ambLight = new THREE.AmbientLight(TH().ambC, TH().ambI);
+scene.add(ambLight);
+
+// a flash that fires where the surface is struck
+const strike = new THREE.PointLight(0xffffff, 0, 6, 2);
+strike.visible = false;
+scene.add(strike);
+
+/* ══ backdrop: technical grid, drawn at native resolution ═════════════════ */
+const posterCanvas = document.createElement('canvas');
+const pctx = posterCanvas.getContext('2d');
+const posterTex = new THREE.CanvasTexture(posterCanvas);
+posterTex.colorSpace = THREE.SRGBColorSpace;
+const poster = new THREE.Mesh(
+  new THREE.PlaneGeometry(1,1),
+  new THREE.MeshBasicMaterial({ map:posterTex })
+);
+poster.position.z = BACK_Z;
+scene.add(poster);
+
+let grainPattern = null;
+function makeGrain(){
+  const n = document.createElement('canvas'); n.width = n.height = 180;
+  const g = n.getContext('2d');
+  const img = g.createImageData(180,180);
+  for(let i=0;i<img.data.length;i+=4){
+    const v = 90 + Math.random()*130;
+    img.data[i] = img.data[i+1] = img.data[i+2] = v;
+    img.data[i+3] = Math.random()*46;
+  }
+  g.putImageData(img,0,0);
+  document.getElementById('grain').style.backgroundImage = 'url('+n.toDataURL()+')';
+  grainPattern = n;
+}
+makeGrain();
+
+function drawPoster(w, h, dpr){
+  const P = TH().poster;
+  posterCanvas.width = Math.round(w*dpr); posterCanvas.height = Math.round(h*dpr);
+  pctx.setTransform(dpr,0,0,dpr,0,0);
+  pctx.clearRect(0,0,w,h);
+  pctx.fillStyle = P.bg; pctx.fillRect(0,0,w,h);
+
+  const glow = pctx.createRadialGradient(w/2, h*0.46, 0, w/2, h*0.46, Math.max(w,h)*0.6);
+  glow.addColorStop(0, P.glow[0]);
+  glow.addColorStop(0.45, P.glow[1]);
+  glow.addColorStop(1, P.glow[2]);
+  pctx.fillStyle = glow; pctx.fillRect(0,0,w,h);
+
+  const step = Math.max(52, Math.round(Math.min(w,h)/14));
+  const cx = w/2, cy = h/2;
+  pctx.lineWidth = 1;
+  for(let n=Math.ceil(-cx/step); cx+n*step<=w; n++){
+    const x = cx+n*step;
+    if(x<0) continue;
+    pctx.strokeStyle = n%5===0 ? P.g1 : P.g2;
+    pctx.beginPath(); pctx.moveTo(Math.round(x)+.5,0); pctx.lineTo(Math.round(x)+.5,h); pctx.stroke();
+  }
+  for(let n=Math.ceil(-cy/step); cy+n*step<=h; n++){
+    const y = cy+n*step;
+    if(y<0) continue;
+    pctx.strokeStyle = n%5===0 ? P.g1 : P.g2;
+    pctx.beginPath(); pctx.moveTo(0,Math.round(y)+.5); pctx.lineTo(w,Math.round(y)+.5); pctx.stroke();
+  }
+
+  pctx.strokeStyle = P.rule;
+  pctx.beginPath(); pctx.moveTo(0, Math.round(h*0.74)+.5); pctx.lineTo(w, Math.round(h*0.74)+.5); pctx.stroke();
+
+  if(grainPattern){
+    const pat = pctx.createPattern(grainPattern,'repeat');
+    pctx.globalAlpha = P.grain; pctx.globalCompositeOperation = 'overlay';
+    pctx.fillStyle = pat; pctx.fillRect(0,0,w,h);
+    pctx.globalAlpha = 1; pctx.globalCompositeOperation = 'source-over';
+  }
+  posterTex.needsUpdate = true;
+}
+
+/* ══ lens (pointer) + shockwave (click) ═══════════════════════════════════ */
+const uC  = { value: new THREE.Vector3(0,0,0) };
+const uR1 = { value: 0 };
+const uR2 = { value: 0 };
+const uPC = { value: new THREE.Vector3(0,0,-99) };
+const uPR = { value: 0 };
+const uPI = { value: 0 };
+const uKeyC = { value: new THREE.Color(TH().key) };
+// how far the shell has opened into a wireframe — driven by mouse hover only,
+// since a touch device has no hover to give it
+const uReveal = { value: 0 };
+
+function zoneify(mat, mode2){
+  mat.transparent = true;
+  mat.onBeforeCompile = (sh)=>{
+    sh.uniforms.uC = uC; sh.uniforms.uR1 = uR1; sh.uniforms.uR2 = uR2;
+    sh.uniforms.uPC = uPC; sh.uniforms.uPR = uPR; sh.uniforms.uPI = uPI;
+    sh.uniforms.uKeyC = uKeyC; sh.uniforms.uReveal = uReveal;
+    sh.vertexShader = 'varying vec3 vWP;\nvarying vec3 vOP;\nuniform vec3 uPC;\nuniform float uPR;\nuniform float uPI;\n' + sh.vertexShader.replace(
+      '#include <project_vertex>',
+      // a tap sends a ring out through the shell — the surface swells along
+      // it and settles back as the ring passes, rather than just glowing
+      '\n  float pdV = distance(transformed, uPC);' +
+      '\n  float ringV = exp(-pow((pdV - uPR) / 0.21, 2.0)) * uPI;' +
+      '\n  transformed += normalize(transformed - uPC + vec3(0.0001)) * ringV * 0.13;' +
+      '\n#include <project_vertex>\n  vWP = (modelMatrix * vec4(transformed, 1.0)).xyz;\n  vOP = transformed;'
+    );
+    // hovering (mouse only) does not just brighten the lens — it thins the
+    // shell everywhere and brings the wireframe up over the whole form, so
+    // what you get is the structure of the thing rather than a lit patch
+    // hover takes the solid all the way off rather than part way: the matte
+    // and the glass shell both go to nothing at full reveal, and the wireframe
+    // comes up to full, so what's left under the pointer is only the structure
+    const band = mode2 === 'in'
+      ? 'a = (1.0 - smoothstep(uR1 - 0.13, uR1 + 0.13, d)) * (1.0 - uReveal);'
+      : mode2 === 'out'
+        ? 'a = smoothstep(uR1 - 0.13, uR1 + 0.13, d) * (1.0 - uReveal);'
+        : 'a = max(smoothstep(uR1 - 0.16, uR1 + 0.10, d) * (1.0 - smoothstep(uR2 - 0.16, uR2 + 0.16, d)), uReveal);';
+    const wave =
+      '\n  float pd = distance(vOP, uPC);' +
+      '\n  float ring = exp(-pow((pd - uPR) / 0.21, 2.0)) * uPI;' +
+      '\n  float wake = (1.0 - smoothstep(uPR - 0.5, uPR, pd)) * uPI * 0.22;' +
+      '\n  diffuseColor.a = clamp(diffuseColor.a + ring * 0.92 + wake, 0.0, 1.0);' +
+      '\n  diffuseColor.rgb = mix(diffuseColor.rgb, uKeyC, clamp(ring * 1.25, 0.0, 1.0));';
+    sh.fragmentShader =
+      'varying vec3 vWP;\nvarying vec3 vOP;\nuniform vec3 uC;\nuniform float uR1;\nuniform float uR2;\n' +
+      'uniform vec3 uPC;\nuniform float uPR;\nuniform float uPI;\nuniform vec3 uKeyC;\nuniform float uReveal;\n' + sh.fragmentShader.replace(
+      '#include <color_fragment>',
+      '#include <color_fragment>' +
+      // the lens is a circle on the glass, not a ball in the world. Measuring
+      // straight to uC made it cut the form at an angle once the form turned —
+      // one flank lit, the other left dark. Casting each fragment back along the
+      // eye ray onto the plane uC sits on keeps the highlight under the pointer
+      // whatever the rotation, and keeps its edges even.
+      '\n  float ez = vWP.z - cameraPosition.z;' +
+      '\n  float et = -cameraPosition.z / (abs(ez) < 0.0001 ? -0.0001 : ez);' +
+      '\n  vec2 eq = cameraPosition.xy + (vWP.xy - cameraPosition.xy) * et;' +
+      '\n  float d = distance(eq, uC.xy);\n  float a;\n  ' + band +
+      '\n  diffuseColor.a *= max(a, 0.0);' + wave
+    );
+  };
+  return mat;
+}
+
+/* ══ particle field — small dots, not squares ═════════════════════════════ */
+function mulberry32(a){
+  return function(){
+    a |= 0; a = a + 0x6D2B79F5 | 0;
+    let t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+const rng = mulberry32(0x5eed1);
+const CELL = 0.335;
+const DOT = 0.19;                       // fraction of a cell — tiny
+const blocks = [];
+const dummy = new THREE.Object3D();
+let field = null;
+
+function buildField(){
+  for(let gx=-11; gx<=11; gx++){
+    for(let gy=-7; gy<=7; gy++){
+      const x = gx*CELL, y = gy*CELL;
+      const r = Math.hypot(x*0.82, y*0.95);
+      let p = 0.34*Math.exp(-((r-2.45)*(r-2.45))/(2*0.85*0.85));
+      p *= THREE.MathUtils.clamp(0.20 + 0.80*Math.sin(x*1.9+0.6)*Math.cos(y*1.55-0.9), 0, 1);
+      if(r > 3.3) p *= 0.12;
+      if(rng() > p) continue;
+      blocks.push({
+        x, y, z: -0.75 - rng()*1.1,
+        phase: rng()*Math.PI*2,
+        speed: 0.5 + rng()*1.6,
+        blink: rng() > 0.95,
+        born: rng()*0.5
+      });
+    }
+  }
+  field = new THREE.InstancedMesh(
+    new THREE.CircleGeometry(0.5, 10),
+    new THREE.MeshBasicMaterial({ transparent:true, opacity:TH().fieldOp, depthWrite:false }),
+    blocks.length
+  );
+  field.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+  const c = new THREE.Color(TH().field);
+  blocks.forEach((b,i)=>field.setColorAt(i, c));
+  field.instanceColor.needsUpdate = true;
+  scene.add(field);
+}
+buildField();
+
+const tmp = new THREE.Vector3();
+function updateField(ease, t, waveC, waveR, waveI){
+  const size = CELL * DOT;
+  for(let i=0;i<blocks.length;i++){
+    const b = blocks[i];
+    tmp.set(b.x, b.y, b.z);
+    const d = tmp.distanceTo(uC.value);
+
+    let s = 0.22 + 0.78 * THREE.MathUtils.smoothstep(d, uR1.value - 0.25, uR1.value + 0.45);
+    const ring = Math.max(0, 1 - Math.abs(d - uR2.value)/0.75);
+    s *= 1 + 0.34*ring;
+    if(!reduce){
+      s *= 0.94 + 0.06*Math.sin(t*b.speed + b.phase);
+      if(b.blink && Math.sin(t*0.9 + b.phase) > 0.86) s *= 0.12;
+    }
+    if(waveI > 0){
+      const wd = tmp.distanceTo(waveC);
+      s *= 1 + 1.5 * waveI * Math.exp(-Math.pow((wd - waveR)/0.4, 2));
+    }
+    s *= THREE.MathUtils.clamp((ease - b.born) / 0.45, 0, 1);
+
+    dummy.position.set(b.x, b.y, b.z);
+    dummy.scale.set(size*s, size*s, 1);
+    dummy.updateMatrix();
+    field.setMatrixAt(i, dummy.matrix);
+  }
+  field.instanceMatrix.needsUpdate = true;
+}
+
+/* ══ the form ═════════════════════════════════════════════════════════════ */
+const group = new THREE.Group();
+scene.add(group);
+
+function normalize(geo){
+  geo.computeBoundingBox();
+  const size = geo.boundingBox.getSize(new THREE.Vector3());
+  const mid  = geo.boundingBox.getCenter(new THREE.Vector3());
+  geo.translate(-mid.x, -mid.y, -mid.z);
+  const k = FIT / Math.max(size.x, size.y);
+  geo.scale(k,k,k);
+  geo.computeBoundingBox(); geo.computeBoundingSphere();
+  const fitted = geo.boundingBox.getSize(new THREE.Vector3());
+  // every form is fitted to the same box, so the framing carries over and a
+  // morph never jumps in scale. The dims ride on the geometry rather than in
+  // a global, since forms are now normalized long before they are shown.
+  geo.userData.fitW = fitted.x;
+  geo.userData.fitH = fitted.y;
+  return geo;
+}
+
+function flatten(root){
+  const parts = [];
+  root.updateWorldMatrix(true, true);
+  root.traverse(o=>{
+    if(!o.isMesh) return;
+    const g = o.geometry.clone().applyMatrix4(o.matrixWorld);
+    for(const key of Object.keys(g.attributes)){
+      if(key !== 'position' && key !== 'normal') g.deleteAttribute(key);
+    }
+    if(!g.attributes.normal) g.computeVertexNormals();
+    parts.push(g.toNonIndexed());
+  });
+  if(!parts.length) return null;
+  return parts.length === 1 ? parts[0] : BufferGeometryUtils.mergeGeometries(parts, false);
+}
+
+let matte, glass, outline, wire, wireThru, ready = false;
+
+function build(geo){
+  normalize(geo);
+  letterGeo = geo;
+  letterW = geo.userData.fitW; letterH = geo.userData.fitH;
+  const T = TH();
+
+  matte = new THREE.Mesh(geo, zoneify(new THREE.MeshStandardMaterial({
+    color:T.matte, roughness:T.matteRough, metalness:T.matteMetal, envMapIntensity:1.15
+  }), 'out'));
+  matte.renderOrder = 1;
+  group.add(matte);
+
+  outline = new THREE.LineSegments(new THREE.EdgesGeometry(geo, 20), new THREE.LineBasicMaterial({
+    color:T.line, transparent:true, opacity:T.lineOp, depthWrite:false
+  }));
+  outline.scale.setScalar(1.002);
+  outline.renderOrder = 2;
+  group.add(outline);
+
+  const wireGeo = new THREE.WireframeGeometry(geo);
+  wire = new THREE.LineSegments(wireGeo, zoneify(new THREE.LineBasicMaterial({
+    color:T.line, depthWrite:false
+  }), 'band'));
+  wire.scale.setScalar(1.006);
+  wire.renderOrder = 3;
+  group.add(wire);
+
+  // the same lines a second time, with no depth test, carried entirely by the
+  // hover reveal. The matte goes to zero alpha on hover but still writes depth,
+  // which would leave the far side of the mesh masked by a shell you can no
+  // longer see — this pass puts the hidden lines back. Riding the reveal means
+  // it fades up with the shell rather than snapping in, and at rest it is off.
+  wireThru = new THREE.LineSegments(wireGeo, new THREE.LineBasicMaterial({
+    color:T.line, transparent:true, opacity:0, depthTest:false, depthWrite:false
+  }));
+  wireThru.scale.setScalar(1.006);
+  wireThru.renderOrder = 3.5;
+  wireThru.visible = false;
+  group.add(wireThru);
+
+  const depth = geo.boundingBox.getSize(new THREE.Vector3()).z;
+  glass = new THREE.Mesh(geo, zoneify(new THREE.MeshPhysicalMaterial({
+    color:0xffffff, metalness:0, roughness:0.02, transmission:1,
+    thickness:Math.max(depth,0.6), ior:1.6, clearcoat:1, clearcoatRoughness:0.02,
+    iridescence:0.3, iridescenceIOR:1.28, iridescenceThicknessRange:[180,420],
+    // the shell only shows through the lens, and at 1.7 it mirrored the bright bar
+    // of the environment straight back — the circle filled with a flat white wash
+    // instead of the structure it is meant to open onto, worst at grazing angles
+    // where fresnel drives reflectance to one. Enough is left for a rim of sheen.
+    envMapIntensity:0.35, depthWrite:false
+  }), 'in'));
+  glass.scale.setScalar(1.004);
+  glass.renderOrder = 4;
+  group.add(glass);
+
+  ready = true;
+  // slot zero of the bench is whatever loaded first, and it already owns the
+  // edge and wireframe passes — no need to cut them a second time
+  forms[0] = { url:MODEL_URL, geo, edges:outline.geometry, wireGeo:wire.geometry };
+  formIx = 0;
+  try{ resize(); }catch(e){}     // refit now that the real proportions are known
+  // the grains are only needed on the first tap, so they can wait a couple of frames
+  setTimeout(()=>{ try{ buildDust(); }catch(e){} }, 90);
+  // the rest of the folder loads behind the intro, so the first paint is unaffected
+  setTimeout(loadBench, 1200);
+}
+
+const boot = document.getElementById('boot');
+const bootmsg = document.getElementById('bootmsg');
+const bootfill = document.getElementById('bootfill');
+const bootpct = document.getElementById('bootpct');
+
+new GLTFLoader().load(
+  MODEL_URL,
+  gltf=>{
+    const geo = flatten(gltf.scene);
+    if(geo) build(geo);
+    else bootmsg.textContent = 'MODEL NOT FOUND';
+  },
+  undefined,
+  ()=>{
+    bootmsg.textContent = 'MODEL NOT FOUND';
+  }
+);
+
+/* ══ the bench: every form the letter can become ══════════════════════════
+   Slot zero is model/logo.glb and is what stands on load. The others arrive
+   afterwards, one at a time and only once the first form is up, so a folder
+   with a dozen models still costs the visitor nothing at first paint. The
+   count is never hard-coded anywhere — the list comes from content.json.
+
+   Each slot carries its geometry plus the two derived passes a swap needs
+   (edges, wireframe). Cutting those on load rather than mid-flight is the
+   difference between a morph that lands clean and one that hitches on the
+   frame it hands over. */
+
+const forms = [];                 // { url, geo, edges, wireGeo }
+let formIx = 0;                   // which one is standing right now
+let nextIx = -1;                  // which one the next tap will bring in
+let benchList = null, benchLoading = false;
+
+const idle = fn => (window.requestIdleCallback
+  ? requestIdleCallback(()=>fn(), { timeout:1500 })
+  : setTimeout(fn, 60));
+
+/* content.json is the source of truth; model/models.json is a hand-written
+   fallback for anyone serving the folder without running the build script. */
+function setBench(list){
+  benchList = (list || [])
+    .filter(n => typeof n === 'string' && /\.(glb|gltf)$/i.test(n))
+    .map(n => n.indexOf('/') >= 0 ? n : MODEL_DIR + n)
+    .filter(u => u !== MODEL_URL);
+  loadBench();
+}
+
+function loadBench(){
+  if(benchLoading || !benchList || !benchList.length || !ready) return;
+  benchLoading = true;
+  const queue = benchList.slice(0, MAX_ALTS);
+  const loader = new GLTFLoader();
+
+  (function next(){
+    const url = queue.shift();
+    if(!url){ benchLoading = false; return; }
+    loader.load(url, gltf=>{
+      try{
+        const geo = flatten(gltf.scene);
+        if(geo){
+          normalize(geo);
+          const f = { url, geo, edges:null, wireGeo:null };
+          forms.push(f);
+          // the two heavy derivations, spread over separate idle slices
+          idle(()=>{
+            f.edges = new THREE.EdgesGeometry(geo, 20);
+            idle(()=>{ f.wireGeo = new THREE.WireframeGeometry(geo); });
+          });
+          if(nextIx < 0) chooseNext();       // the first arrival unlocks morphing
+        }
+      }catch(err){ console.warn('[model]', url, err); }
+      idle(next);
+    }, undefined, ()=>{
+      console.warn('[model] could not load ' + url);
+      idle(next);
+    });
+  })();
+}
+
+/* The next destination is drawn as soon as the current one lands, not at the
+   moment of the tap — which leaves a whole idle window to sample its cloud
+   and pair the grains, so the tap itself is free. The current form is left
+   out of the draw, so nothing ever morphs into what it already is. */
+function chooseNext(){
+  const pool = [];
+  for(let i=0;i<forms.length;i++) if(i !== formIx && forms[i] && forms[i].geo) pool.push(i);
+  nextIx = pool.length ? pool[(Math.random()*pool.length)|0] : -1;
+  if(nextIx >= 0) idle(()=>{ if(dustReady) pairFor(cid(formIx,0), cid(nextIx,0)); });
+}
+
+// handed over halfway through the flight, while the solid is fully faded out
+function swapForm(i){
+  const f = forms[i];
+  if(!f || !f.geo || !ready) return;
+  formIx = i;
+  letterGeo = f.geo;
+  letterW = f.geo.userData.fitW || letterW;
+  letterH = f.geo.userData.fitH || letterH;
+
+  matte.geometry = f.geo;
+  glass.geometry = f.geo;
+  glass.material.thickness = Math.max(f.geo.boundingBox.getSize(new THREE.Vector3()).z, 0.6);
+
+  if(!f.edges)   f.edges   = new THREE.EdgesGeometry(f.geo, 20);
+  if(!f.wireGeo) f.wireGeo = new THREE.WireframeGeometry(f.geo);
+  outline.geometry  = f.edges;
+  wire.geometry     = f.wireGeo;
+  wireThru.geometry = f.wireGeo;
+
+  try{ resize(); }catch(e){}     // proportions differ between forms
+}
+
+
+/* ══ dust: the letter comes apart and puts itself back together ═══════════
+   The form is sampled twice into two clouds of equal size. A kd-tree walks
+   both clouds down the same splits, so every grain is paired with the grain
+   that sits in the same corner of the shape — the swarm shifts rather than
+   scatters, and the letter stays readable the whole way through. What you
+   see is the lift off the surface, the twist about the standing axis and the
+   breath outward; the letter is always on its way back to itself.
+
+   Grain count is the one per-frame cost this adds, so it is kept lean and
+   cut further on phones and when motion is asked to be reduced. */
+
+const PN = reduce ? 3200 : (coarse ? 5200 : 9000);
+const MORPH_T = reduce ? 0.85 : 1.35;
+
+let letterGeo = null, formFade = 1;
+let dust = null, dustMat = null, dustReady = false;
+let morph = null, queued = 0;
+
+/* A cloud belongs to a form, not to the morph, so it is cut once and kept.
+   `variant` exists only for the case of a single model in the folder, where
+   the departure and arrival clouds have to be two different samplings of the
+   same surface or every grain would already be home. */
+const clouds = new Map();     // "form#variant" -> { pos, nrm }
+const pairs  = new Map();     // "from>to"      -> permutation
+const cid = (i, v) => i + '#' + v;
+
+function cloudById(id){
+  let c = clouds.get(id);
+  if(c) return c;
+  const parts = id.split('#'), i = +parts[0], v = +parts[1];
+  const f = forms[i];
+  if(!f || !f.geo) return null;
+  c = sampleCloud(f.geo, 9001 + i*7919 + v*4703);
+  clouds.set(id, c);
+  return c;
+}
+
+function pairFor(idA, idB){
+  const k = idA + '>' + idB;
+  let p = pairs.get(k);
+  if(p) return p;
+  const A = cloudById(idA), B = cloudById(idB);
+  if(!A || !B) return null;
+  p = kdPair(A.pos, B.pos);
+  if(pairs.size > 40) pairs.clear();      // n forms have n² routes between them
+  pairs.set(k, p);
+  return p;
+}
+
+function sstep(x){
+  x = Math.min(1, Math.max(0, x));
+  return x*x*(3 - 2*x);
+}
+
+function sampleCloud(geo, seed){
+  const s = new MeshSurfaceSampler(new THREE.Mesh(geo, new THREE.MeshBasicMaterial())).build();
+  s.randomFunction = mulberry32(seed);
+  const pos = new Float32Array(PN*3), nrm = new Float32Array(PN*3);
+  const p = new THREE.Vector3(), n = new THREE.Vector3();
+  for(let i=0;i<PN;i++){
+    s.sample(p, n);
+    pos[i*3] = p.x; pos[i*3+1] = p.y; pos[i*3+2] = p.z;
+    nrm[i*3] = n.x; nrm[i*3+1] = n.y; nrm[i*3+2] = n.z;
+  }
+  return { pos, nrm };
+}
+
+// recursive median split of both clouds at once — O(n log n), and the halves
+// always correspond, so nothing has to cross the letter to reach its place
+function kdPair(A, B){
+  const n = A.length/3;
+  const ia = new Int32Array(n), ib = new Int32Array(n), perm = new Int32Array(n);
+  for(let i=0;i<n;i++){ ia[i] = i; ib[i] = i; }
+
+  function span(arr, idx, lo, hi, ax){
+    let mn = Infinity, mx = -Infinity;
+    for(let k=lo;k<hi;k++){ const v = arr[idx[k]*3+ax]; if(v<mn) mn=v; if(v>mx) mx=v; }
+    return mx - mn;
+  }
+  function select(arr, idx, lo, hi, ax, k){
+    while(hi - lo > 1){
+      const pivot = arr[idx[(lo+hi)>>1]*3+ax];
+      let i = lo, j = hi-1;
+      while(i <= j){
+        while(arr[idx[i]*3+ax] < pivot) i++;
+        while(arr[idx[j]*3+ax] > pivot) j--;
+        if(i <= j){ const t = idx[i]; idx[i] = idx[j]; idx[j] = t; i++; j--; }
+      }
+      if(k <= j) hi = j+1;
+      else if(k >= i) lo = i;
+      else return;
+    }
+  }
+
+  const stack = [[0,n,0,n]];
+  while(stack.length){
+    const s = stack.pop();
+    const a0 = s[0], a1 = s[1], b0 = s[2], b1 = s[3];
+    const c = a1 - a0;
+    if(c === 1){ perm[ia[a0]] = ib[b0]; continue; }
+    let ax = 0, best = -1;
+    for(let k=0;k<3;k++){
+      const e = span(A,ia,a0,a1,k) + span(B,ib,b0,b1,k);
+      if(e > best){ best = e; ax = k; }
+    }
+    const mid = c >> 1;
+    select(A, ia, a0, a1, ax, a0+mid);
+    select(B, ib, b0, b1, ax, b0+mid);
+    stack.push([a0, a0+mid, b0, b0+mid]);
+    stack.push([a0+mid, a1, b0+mid, b1]);
+  }
+  return perm;
+}
+
+const DUST_VERT = `
+attribute vec3 aTo;
+attribute vec3 aNrm;
+attribute vec2 aRnd;
+uniform float uT;
+uniform float uFade;
+uniform float uSize;
+uniform float uPx;
+uniform float uLift;
+uniform float uSwirl;
+uniform float uPuff;
+uniform vec3  uHit;
+varying float vG;
+
+void main(){
+  // grains nearest the strike let go first, the far side hangs on
+  float sweep = clamp(distance(position, uHit) / 3.2, 0.0, 1.0);
+  float d = mix(sweep, aRnd.x, 0.45) * 0.34;
+  float k = clamp((uT - d) / 0.66, 0.0, 1.0);
+
+  float e = k*k*k*(k*(k*6.0 - 15.0) + 10.0);        // smootherstep
+  float b = sin(k * 3.14159265);                     // 0 -> 1 -> 0 across the flight
+  b = b*b*(3.0 - 2.0*b);
+
+  vec3 p = mix(position, aTo, e);
+  p += aNrm * (b * uLift * (0.45 + aRnd.y));         // lift off the surface
+  p *= 1.0 + b * uPuff;                              // and breathe outward
+
+  float ang = b * uSwirl * (0.55 + aRnd.y);          // twist about the standing axis
+  float ca = cos(ang), sa = sin(ang);
+  vec2 q = p.xz;
+  p.x = q.x*ca - q.y*sa;
+  p.z = q.x*sa + q.y*ca;
+
+  vec4 mv = modelViewMatrix * vec4(p, 1.0);
+  gl_Position = projectionMatrix * mv;
+  float ps = uSize * (0.55 + aRnd.y) * (1.0 + b*0.9) * uPx / max(0.02, -mv.z);
+  gl_PointSize = clamp(ps, 1.0, 18.0);
+  vG = uFade * (0.55 + 0.45*b);
+}
+`;
+
+const DUST_FRAG = `
+uniform vec3 uCol;
+varying float vG;
+void main(){
+  vec2 q = gl_PointCoord - 0.5;
+  float r = dot(q, q);
+  if(r > 0.25) discard;
+  gl_FragColor = vec4(uCol, smoothstep(0.25, 0.05, r) * vG);
+}
+`;
+
+function dustColor(){
+  // written straight to the framebuffer, so keep the theme colour in display space
+  const c = new THREE.Color();
+  c.setHex(TH().key, THREE.LinearSRGBColorSpace);
+  return c;
+}
+
+function buildDust(){
+  if(dustReady || dust || !ready || !letterGeo) return;
+
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(PN*3), 3));
+  g.setAttribute('aTo',      new THREE.BufferAttribute(new Float32Array(PN*3), 3));
+  g.setAttribute('aNrm',     new THREE.BufferAttribute(new Float32Array(PN*3), 3));
+  const rnd = new Float32Array(PN*2);
+  const r = mulberry32(0x9e3779b);
+  for(let i=0;i<PN;i++){ rnd[i*2] = r(); rnd[i*2+1] = r(); }
+  g.setAttribute('aRnd', new THREE.BufferAttribute(rnd, 2));
+  g.boundingSphere = new THREE.Sphere(new THREE.Vector3(), 6);
+
+  dustMat = new THREE.ShaderMaterial({
+    uniforms:{
+      uT:{value:0}, uFade:{value:0}, uSize:{value:0.016}, uPx:{value:900},
+      uLift:{value:reduce?0.14:0.30}, uSwirl:{value:reduce?0.11:0.24}, uPuff:{value:reduce?0.05:0.11},
+      uHit:{value:new THREE.Vector3()}, uCol:{value:dustColor()}
+    },
+    vertexShader:DUST_VERT, fragmentShader:DUST_FRAG,
+    transparent:true, depthWrite:false, toneMapped:false,
+    blending: TH().additive ? THREE.AdditiveBlending : THREE.NormalBlending
+  });
+
+  dust = new THREE.Points(g, dustMat);
+  dust.frustumCulled = false;
+  dust.renderOrder = 6;
+  dust.visible = false;
+  group.add(dust);
+
+  // sampling and pairing are chunked so the frames right after boot stay smooth.
+  // What is warmed here is the standing form's own departure cloud plus the
+  // self-morph fallback, which is all that can be needed before the rest of
+  // the folder has arrived; cross-form pairs are warmed by chooseNext().
+  const jobs = [
+    ()=>{ cloudById(cid(formIx,0)); },
+    ()=>{ cloudById(cid(formIx,1)); },
+    ()=>{ pairFor(cid(formIx,0), cid(formIx,1)); },
+    ()=>{
+      dustReady = true;
+      sizeDust(); syncDust();
+      if(queued){ queued = 0; startMorph(null); }   // a tap that beat the grains here
+    }
+  ];
+  (function next(){
+    const job = jobs.shift();
+    if(!job) return;
+    try{ job(); }catch(e){ return; }
+    setTimeout(next, 0);
+  })();
+}
+
+function syncDust(){
+  if(!dustMat) return;
+  dustMat.uniforms.uCol.value.copy(dustColor());
+  dustMat.blending = TH().additive ? THREE.AdditiveBlending : THREE.NormalBlending;
+  dustMat.needsUpdate = true;
+}
+
+function sizeDust(){
+  if(dustMat) dustMat.uniforms.uPx.value = VH * DPR / (2*Math.tan(FOV*Math.PI/360));
+}
+
+function armDust(hit, idA, idB){
+  if(!dust) return false;
+  const A = cloudById(idA), B = cloudById(idB);
+  if(!A || !B) return false;
+  const perm = pairFor(idA, idB);
+  if(!perm) return false;
+  const g = dust.geometry;
+  const p = g.attributes.position.array, t = g.attributes.aTo.array, n = g.attributes.aNrm.array;
+  p.set(A.pos); n.set(A.nrm);
+  for(let i=0;i<PN;i++){
+    const j = perm[i]*3, o = i*3;
+    t[o] = B.pos[j]; t[o+1] = B.pos[j+1]; t[o+2] = B.pos[j+2];
+  }
+  g.attributes.position.needsUpdate = true;
+  g.attributes.aTo.needsUpdate = true;
+  g.attributes.aNrm.needsUpdate = true;
+  dustMat.uniforms.uHit.value.copy(hit || new THREE.Vector3());
+  dustMat.uniforms.uT.value = 0;
+  dustMat.uniforms.uFade.value = 0;
+  return true;
+}
+
+function startMorph(hit){
+  if(!ready) return;
+  if(morph){ queued = 1; return; }              // a tap mid-flight still counts
+  if(!dustReady){ queued = 1; return; }         // the grains are still being cut
+
+  // where it is going was decided when the last morph landed. With only one
+  // model in the folder there is nowhere to go, and the form comes apart and
+  // puts itself back together as before — the folder can grow later.
+  const to = (nextIx >= 0 && forms[nextIx] && forms[nextIx].geo) ? nextIx : -1;
+  const idA = cid(formIx, 0);
+  const idB = to >= 0 ? cid(to, 0) : cid(formIx, 1);
+  if(!armDust(hit, idA, idB)) return;
+
+  morph = { t:0, sealed:false, swapped:false, to };
+  dustMat.uniforms.uSwirl.value *= -1;          // the twist alternates, so no two are alike
+  dust.visible = true;
+  formFade = 1;
+  morphSound();
+}
+
+function stepMorph(dt){
+  if(!morph) return;
+  morph.t += dt;
+  const k = Math.min(1, morph.t / MORPH_T);
+  const u = dustMat.uniforms;
+  u.uT.value = k;
+  u.uFade.value = Math.min(sstep(k/0.09), sstep((1-k)/0.14));
+
+  // the solid lets go early and is back before the grains have finished settling
+  formFade = Math.max(1 - sstep(k/0.17), sstep((k - 0.78)/0.22));
+
+  // the handover happens in the gap where the solid is fully out — from 0.17
+  // to 0.78 there is nothing on screen but grains, so the geometry underneath
+  // can be exchanged without anything being seen to change
+  if(!morph.swapped && k > 0.45){
+    morph.swapped = true;
+    if(morph.to >= 0) swapForm(morph.to);
+  }
+
+  if(!morph.sealed && k > 0.83){                // the letter locks back in
+    morph.sealed = true;
+    chime();
+  }
+  if(k >= 1){
+    morph = null;
+    dust.visible = false;
+    formFade = 1;
+    chooseNext();                               // and the next draw begins warming
+    if(queued){ queued = 0; startMorph(null); }
+  }
+}
+
+// one place decides how solid the form looks, so the morph and the intro agree
+function applyFade(ease){
+  if(!ready) return;
+  const v = formFade, T = TH();
+  matte.material.opacity = v;
+  matte.material.depthWrite = v > 0.5;         // or the solid would mask its own dust
+  wire.material.opacity = v;
+  outline.material.opacity = T.lineOp * ease * v;
+  wire.visible = v > 0.02;
+  outline.visible = v > 0.02;
+  glass.visible = v > 0.9;                     // transmission doesn't fade cleanly
+  glass.material.opacity = v;
+  const s = 0.986 + 0.014*v;                   // the solid contracts a hair as it lets go
+  matte.scale.setScalar(s);
+  outline.scale.setScalar(1.002*s);
+  wire.scale.setScalar(1.006*s);
+  wireThru.scale.setScalar(1.006*s);
+  glass.scale.setScalar(1.004*s);
+}
+
+/* ══ audio ════════════════════════════════════════════════════════════════ */
+// everything here is synthesised in the browser — no audio files, nothing streamed.
+// nothing is armed until the visitor actually interacts.
+let actx = null, soundOn = true, started = false;
+let master = null, ambientBus = null, sfxBus = null, verb = null, startedAt = 0;
+let chordTimer = null, bellTimer = null, chordIx = 0;
+const AMB = 0.17;
+
+function ctx(){
+  if(!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
+  if(actx.state === 'suspended') actx.resume();
+  return actx;
+}
+function outBus(){ return sfxBus || ctx().destination; }
+
+function makeIR(seconds, decay){
+  const ac = ctx(), len = Math.floor(ac.sampleRate * seconds);
+  const buf = ac.createBuffer(2, len, ac.sampleRate);
+  for(let c=0;c<2;c++){
+    const d = buf.getChannelData(c);
+    for(let i=0;i<len;i++){
+      const t = i/len;
+      d[i] = (Math.random()*2-1) * Math.pow(1-t, decay) * (i < 240 ? i/240 : 1);
+    }
+  }
+  return buf;
+}
+
+const CHORDS = [
+  [110.00, 164.81, 196.00, 246.94],
+  [ 87.31, 130.81, 164.81, 220.00],
+  [130.81, 196.00, 246.94, 329.63],
+  [ 82.41, 123.47, 146.83, 196.00]
+];
+const BELLS = [440.00, 523.25, 587.33, 659.25, 783.99, 880.00, 1046.50];
+
+function scheduleChord(first){
+  const ac = ctx(), t = ac.currentTime;
+  const notes = CHORDS[chordIx++ % CHORDS.length];
+  const dur = 17, fade = first ? 1.6 : 4.0, out = 5.0;
+  notes.forEach((f, i)=>{
+    for(let u=0; u<2; u++){
+      const o = ac.createOscillator();
+      o.type = u ? 'triangle' : 'sawtooth';
+      o.frequency.value = f * (1 + (Math.random()-0.5)*0.005);
+
+      const lp = ac.createBiquadFilter();
+      lp.type = 'lowpass'; lp.Q.value = 0.7;
+      lp.frequency.value = 300 + i*110;
+
+      const lfo = ac.createOscillator();
+      lfo.frequency.value = 0.03 + Math.random()*0.05;
+      const lfoG = ac.createGain(); lfoG.gain.value = 130;
+      lfo.connect(lfoG); lfoG.connect(lp.frequency);
+
+      const g = ac.createGain();
+      const peak = (u ? 0.05 : 0.08) / (1 + i*0.4);
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.linearRampToValueAtTime(peak, t + fade);
+      g.gain.setValueAtTime(peak, t + dur - out);
+      g.gain.linearRampToValueAtTime(0.0001, t + dur);
+
+      o.connect(lp); lp.connect(g);
+      g.connect(ambientBus); g.connect(verb);
+      o.start(t); lfo.start(t);
+      o.stop(t + dur + 1); lfo.stop(t + dur + 1);
+    }
+  });
+}
+
+function scheduleBell(){
+  try{
+    const ac = ctx(), t = ac.currentTime;
+    const f = BELLS[Math.floor(Math.random()*BELLS.length)];
+    const g = ac.createGain();
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(0.05, t + 0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 5.5);
+    const o = ac.createOscillator();  o.type = 'sine';  o.frequency.value = f;
+    const o2 = ac.createOscillator(); o2.type = 'sine'; o2.frequency.value = f * 2.004;
+    const g2 = ac.createGain(); g2.gain.value = 0.22;
+    o2.connect(g2); g2.connect(g); o.connect(g);
+    let tail = g;
+    if(ac.createStereoPanner){
+      const pan = ac.createStereoPanner();
+      pan.pan.value = Math.random()*1.4 - 0.7;
+      g.connect(pan); tail = pan;
+    }
+    tail.connect(ambientBus); tail.connect(verb);
+    o.start(t); o2.start(t); o.stop(t + 6); o2.stop(t + 6);
+  }catch(e){}
+  bellTimer = setTimeout(scheduleBell, (7 + Math.random()*9)*1000);
+}
+
+function buildAudio(){
+  if(started) return;
+  try{
+    const ac = ctx();
+    started = true; startedAt = performance.now();
+
+    master = ac.createGain(); master.gain.value = 0.0001;
+    master.connect(ac.destination);
+
+    verb = ac.createConvolver(); verb.buffer = makeIR(4.5, 2.6);
+    const verbGain = ac.createGain(); verbGain.gain.value = 0.9;
+    verb.connect(verbGain); verbGain.connect(master);
+
+    ambientBus = ac.createGain(); ambientBus.gain.value = AMB; ambientBus.connect(master);
+    sfxBus = ac.createGain(); sfxBus.gain.value = 1; sfxBus.connect(master);
+
+    [[55, 0.09], [82.41, 0.055]].forEach(([f, v], i)=>{
+      const o = ac.createOscillator(); o.type = 'sine'; o.frequency.value = f;
+      const g = ac.createGain(); g.gain.value = v;
+      const lfo = ac.createOscillator(); lfo.frequency.value = 0.05 + i*0.028;
+      const lg = ac.createGain(); lg.gain.value = v*0.35;
+      lfo.connect(lg); lg.connect(g.gain);
+      o.connect(g); g.connect(ambientBus);
+      o.start(); lfo.start();
+    });
+
+    const nb = ac.createBuffer(1, ac.sampleRate*4, ac.sampleRate);
+    const nd = nb.getChannelData(0);
+    for(let i=0;i<nd.length;i++) nd[i] = (Math.random()*2-1)*0.5;
+    const src = ac.createBufferSource(); src.buffer = nb; src.loop = true;
+    const bp = ac.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 1100; bp.Q.value = 0.8;
+    const ng = ac.createGain(); ng.gain.value = 0.02;
+    const nlfo = ac.createOscillator(); nlfo.frequency.value = 0.04;
+    const nlg = ac.createGain(); nlg.gain.value = 520;
+    nlfo.connect(nlg); nlg.connect(bp.frequency);
+    src.connect(bp); bp.connect(ng); ng.connect(ambientBus); ng.connect(verb);
+    src.start(); nlfo.start();
+
+    scheduleChord(true);
+    chordTimer = setInterval(scheduleChord, 15000);
+    setTimeout(scheduleBell, 1500);
+
+    // short fade — the bed is audible almost immediately
+    master.gain.setTargetAtTime(soundOn ? 1 : 0, ac.currentTime, 0.35);
+  }catch(e){ started = false; }
+  paintSound();
+  syncTag();
+  refreshExplore();
+}
+
+let audioWatch = null;
+function startAudio(){
+  if(started) return;
+  const ac = ctx();
+
+  // playing a single silent sample inside the gesture is what actually lifts the
+  // lock on iOS — resume() alone is often accepted and then quietly ignored
+  try{
+    const s = ac.createBufferSource();
+    s.buffer = ac.createBuffer(1, 1, 22050);
+    s.connect(ac.destination);
+    s.start(0);
+  }catch(e){}
+
+  const tryBuild = ()=>{
+    if(!started && ac.state === 'running') buildAudio();
+    return started;
+  };
+  if(tryBuild()) return;
+
+  const p = ac.resume();
+  if(p && p.then) p.then(tryBuild).catch(()=>{});
+
+  // the state can flip a beat after resume() settles, and nobody should have to
+  // tap twice to be heard — so watch for it rather than waiting for another tap
+  if(!audioWatch){
+    ac.addEventListener('statechange', function onState(){
+      if(tryBuild()) ac.removeEventListener('statechange', onState);
+    });
+    let n = 0;
+    audioWatch = setInterval(()=>{
+      if(tryBuild() || ++n > 40){ clearInterval(audioWatch); audioWatch = null; }
+    }, 60);
+  }
+}
+
+function duck(){
+  if(!ambientBus) return;
+  const ac = ctx(), t = ac.currentTime;
+  ambientBus.gain.cancelScheduledValues(t);
+  ambientBus.gain.setTargetAtTime(AMB*0.45, t, 0.05);
+  ambientBus.gain.setTargetAtTime(AMB, t + 0.28, 0.7);
+}
+
+function boop(){
+  if(!soundOn || !started) return;
+  try{
+    const ac = ctx(), t = ac.currentTime;
+    const d = 1 + (Math.random() - 0.5) * 0.05;
+
+    const out = ac.createGain();
+    out.gain.setValueAtTime(0.0001, t);
+    out.gain.exponentialRampToValueAtTime(0.26, t + 0.012);
+    out.gain.exponentialRampToValueAtTime(0.0001, t + 0.34);
+
+    const lp = ac.createBiquadFilter();
+    lp.type = 'lowpass';
+    lp.frequency.setValueAtTime(2800, t);
+    lp.frequency.exponentialRampToValueAtTime(700, t + 0.3);
+    lp.Q.value = 6;
+
+    const o1 = ac.createOscillator();
+    o1.type = 'sine';
+    o1.frequency.setValueAtTime(300 * d, t);
+    o1.frequency.exponentialRampToValueAtTime(760 * d, t + 0.04);
+    o1.frequency.exponentialRampToValueAtTime(430 * d, t + 0.24);
+
+    const o2 = ac.createOscillator();
+    o2.type = 'triangle';
+    o2.frequency.setValueAtTime(1220 * d, t);
+    o2.frequency.exponentialRampToValueAtTime(1720 * d, t + 0.05);
+    const g2 = ac.createGain();
+    g2.gain.setValueAtTime(0.11, t);
+    g2.gain.exponentialRampToValueAtTime(0.0001, t + 0.1);
+
+    o1.connect(lp); o2.connect(g2); g2.connect(lp);
+    lp.connect(out); out.connect(outBus());
+    if(verb){ const s = ac.createGain(); s.gain.value = 0.5; out.connect(s); s.connect(verb); }
+    o1.start(t); o2.start(t); o1.stop(t + 0.38); o2.stop(t + 0.13);
+  }catch(e){}
+}
+
+function blip(freq, vol){
+  if(!soundOn || !started) return;
+  try{
+    const ac = ctx(), t = ac.currentTime;
+    const g = ac.createGain();
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(vol, t + 0.006);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.07);
+    const o = ac.createOscillator();
+    o.type = 'sine';
+    o.frequency.setValueAtTime(freq, t);
+    o.frequency.exponentialRampToValueAtTime(freq*1.3, t + 0.06);
+    o.connect(g); g.connect(outBus());
+    o.start(t); o.stop(t + 0.1);
+  }catch(e){}
+}
+
+/* A video with its own sound owns the room — the ambient bed steps aside for
+   it and comes back when the video stops or the project is closed. */
+let videoHold = false;
+
+function applyMaster(){
+  if(!started || !master) return;
+  const on = soundOn && !document.hidden && !videoHold;
+  master.gain.setTargetAtTime(on ? 1 : 0, ctx().currentTime, on ? 0.3 : 0.25);
+}
+
+/* Detached <video> elements keep playing, so they are paused before the
+   markup that holds them is replaced or hidden. */
+function haltMedia(scope){
+  (scope || document).querySelectorAll('video').forEach(v=>{
+    try{ v.pause(); }catch(e){}
+  });
+  if(videoHold){ videoHold = false; applyMaster(); }
+}
+
+function watchVideo(v){
+  if(!v) return;
+  const sync = ()=>{
+    const loud = !v.paused && !v.ended && !v.muted && v.volume > 0;
+    if(loud !== videoHold){ videoHold = loud; applyMaster(); }
+  };
+  ['play','playing','pause','ended','volumechange','emptied'].forEach(k=>v.addEventListener(k, sync));
+}
+
+document.addEventListener('visibilitychange', ()=>{
+  if(document.hidden) haltMedia(document);
+  applyMaster();
+});
+
+
+// the change of state gets its own two sounds: air on the way out, a tone on landing
+function morphSound(){
+  if(!soundOn || !started) return;
+  try{
+    const ac = ctx(), t = ac.currentTime;
+    const len = Math.floor(ac.sampleRate * 1.5);
+    const buf = ac.createBuffer(1, len, ac.sampleRate);
+    const d = buf.getChannelData(0);
+    for(let i=0;i<len;i++) d[i] = Math.random()*2 - 1;
+
+    const src = ac.createBufferSource(); src.buffer = buf;
+    const bp = ac.createBiquadFilter();
+    bp.type = 'bandpass'; bp.Q.value = 1.15;
+    bp.frequency.setValueAtTime(220, t);
+    bp.frequency.exponentialRampToValueAtTime(3400, t + 0.62);
+    bp.frequency.exponentialRampToValueAtTime(380, t + 1.4);
+
+    const g = ac.createGain();
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(0.075, t + 0.20);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 1.42);
+
+    src.connect(bp); bp.connect(g);
+    g.connect(outBus());
+    if(verb) g.connect(verb);
+    src.start(t); src.stop(t + 1.5);
+  }catch(e){}
+}
+
+function chime(){
+  if(!soundOn || !started) return;
+  try{
+    const ac = ctx(), t = ac.currentTime;
+    const f = BELLS[Math.floor(Math.random()*4)];
+    const g = ac.createGain();
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(0.075, t + 0.015);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 2.6);
+    const o = ac.createOscillator();  o.type = 'sine';      o.frequency.value = f;
+    const o2 = ac.createOscillator(); o2.type = 'triangle'; o2.frequency.value = f*1.5;
+    const g2 = ac.createGain(); g2.gain.value = 0.3;
+    o2.connect(g2); g2.connect(g); o.connect(g);
+    g.connect(outBus());
+    if(verb) g.connect(verb);
+    o.start(t); o2.start(t); o.stop(t + 2.8); o2.stop(t + 2.8);
+  }catch(e){}
+}
+
+/* ══ shockwave ════════════════════════════════════════════════════════════ */
+let wave = null;
+const waveWorld = new THREE.Vector3();
+
+function strikeAt(hit){
+  const local = matte.worldToLocal(hit.point.clone());
+  const normal = hit.face ? hit.face.normal.clone().normalize() : local.clone().normalize();
+
+  wave = { t:0, life:1.15, local };
+  uPC.value.copy(local);
+  uPR.value = 0.02;
+  uPI.value = 1;
+
+  strike.position.copy(hit.point);
+  strike.intensity = 14;
+  strike.visible = true;
+
+  duck();
+  boop();
+}
+
+
+/* ══ work: loaded from content.json ══════════════════════════════════ */
+/* tools/build-content.mjs scans the repository and writes content.json.
+   Add a project folder, a client logo or a new cv.pdf and it shows up
+   here on the next push — nothing in this file needs editing. */
+let FIELDS = [];
+
+/* placeholder artwork — drawn procedurally, themed through CSS variables */
+function seeded(seed){
+  let a = seed >>> 0;
+  return ()=>{
+    a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+
+function art(kind, seed){
+  const r = seeded(seed * 2654435761 + 17);
+  const W = 1000, H = 700;
+  let s = '<rect width="'+W+'" height="'+H+'" fill="var(--ph0)"/>';
+  for(let i=1;i<10;i++) s += '<line x1="'+(i*W/10)+'" y1="0" x2="'+(i*W/10)+'" y2="'+H+'" stroke="var(--ph1)" stroke-width="1"/>';
+  for(let i=1;i<7;i++)  s += '<line x1="0" y1="'+(i*H/7)+'" x2="'+W+'" y2="'+(i*H/7)+'" stroke="var(--ph1)" stroke-width="1"/>';
+
+  if(kind === 0){                                   // logos
+    const cx = 340 + r()*320, cy = 300 + r()*110;
+    s += '<circle cx="'+cx+'" cy="'+cy+'" r="'+(150+r()*45)+'" fill="none" stroke="var(--ph2)" stroke-width="2"/>';
+    s += '<circle cx="'+cx+'" cy="'+cy+'" r="'+(92+r()*30)+'" fill="var(--ph3)"/>';
+    s += '<circle cx="'+cx+'" cy="'+cy+'" r="'+(44+r()*18)+'" fill="var(--ph0)"/>';
+    s += '<path d="M'+(cx-230)+' '+cy+' h'+(460)+'" stroke="var(--ph2)" stroke-width="2"/>';
+    s += '<rect x="'+(cx+120)+'" y="'+(cy-190)+'" width="86" height="86" fill="var(--ph2)"/>';
+  }else if(kind === 1){                             // posters
+    s += '<rect x="90" y="70" width="'+(W-180)+'" height="'+(H-140)+'" fill="none" stroke="var(--ph2)" stroke-width="2"/>';
+    let y = 130;
+    for(let i=0;i<6;i++){
+      const w = 180 + r()*580;
+      s += '<rect x="140" y="'+y+'" width="'+w+'" height="'+(i===0?46:18)+'" fill="'+(i===0?'var(--ph3)':'var(--ph2)')+'"/>';
+      y += (i===0?90:44);
+    }
+    s += '<rect x="'+(W-320)+'" y="'+(H-250)+'" width="180" height="180" fill="var(--ph3)" opacity=".9"/>';
+  }else if(kind === 2){                             // spatial — a solid, sited
+    // the old 3d and xr placeholders, now one image: the frames and tracking
+    // points put the form somewhere, which is the whole point of the merge
+    for(let i=0;i<2;i++){
+      const m = 110 + i*90;
+      s += '<rect x="'+m+'" y="'+(m*0.62)+'" width="'+(W-m*2)+'" height="'+(H-m*1.24)+'" fill="none" stroke="var(--ph2)" stroke-width="'+(i===0?2:1)+'"/>';
+    }
+    for(let i=0;i<7;i++) s += '<circle cx="'+(160+r()*680)+'" cy="'+(120+r()*460)+'" r="'+(3+r()*5)+'" fill="var(--ph2)"/>';
+
+    const cx = 500, cy = 350, k = 150 + r()*40;
+    const p = (x,y)=> (cx + x) + ',' + (cy + y);
+    s += '<polygon points="'+p(0,-k*1.15)+' '+p(k,-k*0.55)+' '+p(0,0)+' '+p(-k,-k*0.55)+'" fill="var(--ph3)" opacity=".92"/>';
+    s += '<polygon points="'+p(-k,-k*0.55)+' '+p(0,0)+' '+p(0,k*1.15)+' '+p(-k,k*0.55)+'" fill="var(--ph2)"/>';
+    s += '<polygon points="'+p(k,-k*0.55)+' '+p(0,0)+' '+p(0,k*1.15)+' '+p(k,k*0.55)+'" fill="var(--ph1)"/>';
+    s += '<polygon points="'+p(0,-k*1.15)+' '+p(k,-k*0.55)+' '+p(k,k*0.55)+' '+p(0,k*1.15)+' '+p(-k,k*0.55)+' '+p(-k,-k*0.55)+'" fill="none" stroke="var(--ph2)" stroke-width="2"/>';
+
+    // the innermost frame is a bracket, not a box: the form is being
+    // registered against the space it sits in
+    const bx = 290, by = 180, bw = W - bx*2, bh = H - by*2, t = 46;
+    s += '<path d="M'+bx+' '+(by+t)+' v-'+t+' h'+t+' M'+(bx+bw-t)+' '+by+' h'+t+' v'+t
+      + ' M'+(bx+bw)+' '+(by+bh-t)+' v'+t+' h-'+t+' M'+(bx+t)+' '+(by+bh)+' h-'+t+' v-'+t+'" '
+      + 'fill="none" stroke="var(--ph3)" stroke-width="2"/>';
+  }else{                                            // motion
+    for(let i=0;i<7;i++){
+      s += '<rect x="'+(110 + i*104)+'" y="'+(200 + Math.sin(i*0.9)*70)+'" width="72" height="'+(180 + i*22)+'" fill="var(--ph2)" opacity="'+(0.25 + i*0.11).toFixed(2)+'"/>';
+    }
+    for(let i=0;i<4;i++) s += '<rect x="90" y="'+(110 + i*140)+'" width="'+(300 + r()*520)+'" height="2" fill="var(--ph3)" opacity=".5"/>';
+    s += '<rect x="'+(W-260)+'" y="'+(H-190)+'" width="150" height="90" fill="var(--ph3)"/>';
+  }
+  return '<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid slice">'+s+'</svg>';
+}
+
+
+function mark(i){
+  const r = seeded(i*7919 + 31);
+  const p = [];
+  const n = 2 + Math.floor(r()*3);
+  for(let k=0;k<n;k++){
+    const t = r();
+    if(t < 0.34) p.push('<circle cx="'+(70+r()*160)+'" cy="'+100+'" r="'+(22+r()*30)+'" fill="none" stroke="var(--ph3)" stroke-width="7"/>');
+    else if(t < 0.67) p.push('<rect x="'+(60+r()*150)+'" y="'+(58+r()*30)+'" width="'+(34+r()*54)+'" height="'+(34+r()*54)+'" fill="var(--ph3)"/>');
+    else p.push('<path d="M'+(58+r()*60)+' 148 L'+(120+r()*50)+' 52 L'+(200+r()*40)+' 148 Z" fill="none" stroke="var(--ph3)" stroke-width="7"/>');
+  }
+  return '<svg viewBox="0 0 300 200"><rect width="300" height="200" fill="none"/>'+p.join('')+'</svg>';
+}
+
+let PAGES = {};
+
+/* ══ explore chips ════════════════════════════════════════════════════════ */
+const exploreEl = document.getElementById('explore');
+let chips = [], chipAngle = [], active = 0;
+
+function buildChips(){
+  chips.forEach(c=>c.remove());
+  chips = FIELDS.map((f,i)=>{
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'chip'; b.dataset.tag = f.key;
+    b.innerHTML = '<i>'+String(i+1).padStart(2,'0')+'</i><span>'+f.key+'</span>';
+    b.addEventListener('pointerenter', ()=>{ setActive(i); blip(1240, 0.03); });
+    b.addEventListener('click', ()=>openField(i));
+    exploreEl.appendChild(b);
+    return b;
+  });
+  chipAngle = FIELDS.map((f,i)=> -Math.PI/2 + i*(Math.PI*2/FIELDS.length));
+  active = 0;
+  if(chips[0]) chips[0].classList.add('hot');
+}
+
+let chipRX = 1, chipRY = 1;
+const stacked = ()=> innerWidth <= 720;
+
+function placeChips(){
+  if(stacked()){
+    // the ring flattens into a strip parked above the bottom bar
+    const bot = document.querySelector('.bot');
+    const hud = document.querySelector('.hud');
+    const pad = parseFloat(getComputedStyle(hud).paddingBottom) || 14;
+    exploreEl.style.bottom = ((bot ? bot.offsetHeight : 60) + pad + 16) + 'px';
+    chips.forEach(c=>{ c.style.left = ''; c.style.top = ''; c.classList.remove('hot'); });
+    return;
+  }
+  exploreEl.style.bottom = '';
+  chipRX = Math.min(VW*0.40, 400);
+  chipRY = Math.min(VH*0.33, 265);
+  chips.forEach((c,i)=>{
+    c.style.left = (cxMid() + Math.cos(chipAngle[i])*chipRX) + 'px';
+    c.style.top  = (cyMid() + Math.sin(chipAngle[i])*chipRY) + 'px';
+    c.classList.toggle('hot', i === active);
+  });
+}
+
+// anywhere inside the ring counts as still reaching for it, so the labels
+// survive a slow drift from the form out to a label
+function inReach(){
+  const dx = (pointerX - cxMid()) / (chipRX * 1.34);
+  const dy = (pointerY - cyMid()) / (chipRY * 1.34);
+  return dx*dx + dy*dy <= 1;
+}
+
+function setActive(i){
+  active = i;
+  if(stacked()) return;
+  chips.forEach((c,k)=>c.classList.toggle('hot', k === i));
+}
+
+let hoverForm = false, hoverChips = false, exploreTimer = null;
+// the work is the point of the place, so the wheel shows itself as soon as the
+// form is standing and stays out until the visitor has reached for it once —
+// after that it goes back to answering the pointer
+let exploreIntro = true;
+function refreshExplore(){
+  clearTimeout(exploreTimer);
+  if(panelOpen || !ready){ exploreEl.classList.remove('on'); return; }
+  if(stacked()){ exploreEl.classList.add('on'); return; }   // always there on a phone
+  if(exploreIntro){ exploreEl.classList.add('on'); return; }
+  const open = exploreEl.classList.contains('on');
+  if(hoverForm || hoverChips || (open && inReach())) exploreEl.classList.add('on');
+  else exploreTimer = setTimeout(()=>{
+    if(!panelOpen && !(hoverForm || hoverChips)) exploreEl.classList.remove('on');
+  }, 420);
+}
+exploreEl.addEventListener('pointerenter', ()=>{ hoverChips = true; refreshExplore(); });
+exploreEl.addEventListener('pointerleave', ()=>{ hoverChips = false; refreshExplore(); });
+
+/* ══ work panel ═══════════════════════════════════════════════════════════ */
+const panel = document.getElementById('panel');
+const gridEl = document.getElementById('grid');
+const gridView = document.getElementById('gridview');
+const detailView = document.getElementById('detailview');
+const pField = document.getElementById('panelfield');
+const pSub = document.getElementById('panelsub');
+const pPrev = document.getElementById('pprev');
+const pNext = document.getElementById('pnext');
+const pBack = document.getElementById('pback');
+const pClose = document.getElementById('pclose');
+
+let panelOpen = false, fieldIx = 0, workIx = -1;
+
+function showPanel(){
+  panelOpen = true;
+  hoverChips = false; hoverForm = false;
+  panel.classList.add('on');
+  panel.setAttribute('aria-hidden','false');
+  refreshExplore();
+  blip(920, 0.05);
+}
+
+function openPage(k){
+  const p = PAGES[k];
+  if(!p) return;
+  fieldIx = -1; workIx = -1;
+  pField.textContent = k;
+  pSub.textContent = p.sub;
+  haltMedia(gridEl);
+  gridEl.className = 'page';
+  gridEl.innerHTML = p.html();
+  gridEl.querySelectorAll('a').forEach(a=>a.addEventListener('pointerenter', ()=>blip(1180, 0.026)));
+  showGrid();
+  showPanel();
+}
+
+function openField(i){
+  // reaching for a discipline turns the form too, so the mark behind the panel
+  // is never the one that was standing when the visitor arrived
+  startMorph(null);
+  fieldIx = i; workIx = -1;
+  const f = FIELDS[i];
+  haltMedia(gridEl);
+  gridEl.className = 'grid';
+  pField.textContent = f.key;
+  pSub.textContent = String(f.works.length).padStart(2,'0') + ' WORKS — ' + f.sub;
+  gridEl.innerHTML = '';
+  f.works.forEach((w,k)=>{
+    const c = document.createElement('button');
+    c.type = 'button'; c.className = 'card'; c.dataset.tag = 'OPEN';
+    c.innerHTML = '<span class="thumb">'+workMedia(w, f, i*97 + k*13 + 5, true)+'</span>' +
+      '<span class="meta"><b>'+esc(w.t)+'</b><span>'+esc(w.y || '')+'</span></span>';
+    c.style.opacity = '0'; c.style.transform = 'translateY(16px)';
+    /* the thumb is the cover file, so its ratio is free to learn here — and
+       reaching for a card warms the rest of that folder ahead of the click */
+    noteAR(c.querySelector('img'), w.img);
+    c.addEventListener('pointerenter', ()=>{ blip(1180, 0.026); warmWork(w); });
+    c.addEventListener('focus', ()=>warmWork(w));
+    watchVideo(c.querySelector('video'));
+    c.addEventListener('click', ()=>openWork(k));
+    gridEl.appendChild(c);
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      c.style.transitionDelay = (k*60) + 'ms';
+      c.style.opacity = ''; c.style.transform = '';
+    }));
+  });
+  showGrid();
+  showPanel();
+}
+
+function showGrid(){
+  haltMedia(detailView);
+  workIx = -1;
+  pBack.textContent = fieldIx < 0 ? 'TOP' : 'INDEX';
+  gridView.classList.remove('hide');
+  detailView.classList.add('hide');
+  pPrev.hidden = pNext.hidden = pBack.hidden = true;
+  gridView.scrollTop = 0;
+}
+
+const PLAY_ICON = '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 1l9 5-9 5z"/></svg>';
+
+const esc = s => String(s == null ? '' : s)
+  .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+const calm = ()=> matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+/* A cover image if the folder has one, else a video, else procedural artwork. */
+/* ── image ratios ─────────────────────────────────────
+   A frame that knows the file's shape before it paints never jumps. Ratios
+   are measured once per src, off-DOM, and cached — so by the time a project
+   opens, its boxes are already the right shape. */
+const AR = new Map();          // src -> "w/h"
+const AR_WAIT = new Map();     // src -> promise, so a src is measured once
+
+const arVar = src => AR.has(src) ? ' style="--media-ar:' + AR.get(src) + '"' : '';
+
+/* Record a ratio from an <img> that is already on the page (a grid thumb, say)
+   — the file is downloaded either way, so this costs nothing. */
+function noteAR(img, src){
+  if(!img || !src || AR.has(src)) return;
+  const grab = ()=>{
+    if(img.naturalWidth && img.naturalHeight)
+      AR.set(src, img.naturalWidth + '/' + img.naturalHeight);
+  };
+  if(img.complete) grab(); else img.addEventListener('load', grab, { once:true });
+}
+
+function measureAR(src){
+  if(!src) return Promise.resolve('');
+  if(AR.has(src)) return Promise.resolve(AR.get(src));
+  if(AR_WAIT.has(src)) return AR_WAIT.get(src);
+
+  const p = new Promise(res=>{
+    const im = new Image();
+    im.decoding = 'async';
+    const grab = ()=>{
+      if(!im.naturalWidth || !im.naturalHeight) return false;
+      const ar = im.naturalWidth + '/' + im.naturalHeight;
+      AR.set(src, ar); res(ar); return true;
+    };
+    /* Dimensions sit in the file header, so they are readable long before the
+       last byte lands — polling gets them frames earlier than `load` would. */
+    const poll = ()=>{
+      if(grab()) return;
+      if(im.complete) res('');
+      else requestAnimationFrame(poll);
+    };
+    im.onload  = ()=>{ if(!grab()) res(''); };
+    im.onerror = ()=>res('');
+    im.src = src;
+    requestAnimationFrame(poll);
+  });
+
+  AR_WAIT.set(src, p);
+  return p;
+}
+
+const warmAR = list => (list || []).filter(Boolean).forEach(measureAR);
+
+/* Everything a project will show, warmed the moment the card is touched. */
+const warmWork = w => { if(w) warmAR([w.img].concat(w.gallery || [])); };
+
+/* Covers for the whole index, once the browser is otherwise idle. */
+function warmCovers(){
+  idle(()=>{
+    const covers = [];
+    FIELDS.forEach(f => (f.works || []).forEach(w => { if(w.img) covers.push(w.img); }));
+    warmAR(covers);
+  });
+}
+
+/* Give `frame` the ratio of `src`: instantly when it is known, otherwise as
+   soon as the header arrives. `token` guards against a fast click-through
+   landing an old measurement on the new project. */
+function applyAR(frame, src, token){
+  if(!src) return;
+  if(AR.has(src)){ frame.style.setProperty('--media-ar', AR.get(src)); return; }
+  frame.classList.add('ar-soft');       // let the correction ease in, not snap
+  measureAR(src).then(ar=>{
+    if(ar && frame.dataset.arToken === token) frame.style.setProperty('--media-ar', ar);
+  });
+}
+
+/* Fade the picture in over its own frame instead of popping it into place. */
+function revealOnLoad(img, frame){
+  const done = ()=>{ img.classList.add('ready'); if(frame) frame.classList.remove('skel'); };
+  if(img.complete && img.naturalWidth) done();
+  else{
+    img.addEventListener('load', done, { once:true });
+    img.addEventListener('error', done, { once:true });
+  }
+}
+
+function workMedia(w, f, seed, thumb){
+  if(w.img){
+    return '<img src="'+esc(w.img)+'" alt="'+esc(w.t)+'"' +
+      (thumb ? ' loading="lazy"' : '') + ' decoding="async">';
+  }
+  if(w.video){
+    return '<video src="'+esc(w.video)+'" muted loop playsinline preload="metadata"' +
+      (calm() ? '' : ' autoplay') + (thumb ? '' : ' controls') + '></video>';
+  }
+  return art(f.kind, seed);
+}
+const chips_ = list => list.map(x=>'<span>'+x+'</span>').join('');
+
+function workInfo(w){
+  let h = '';
+  if(w.b) h += '<div><b>'+(w.lb||'BRIEF')+'</b><p>'+w.b+'</p></div>';
+  if(w.a || w.credit){
+    h += '<div><b>'+(w.la||'APPROACH')+'</b>' +
+      (w.a ? '<p>'+w.a+'</p>' : '') +
+      (w.credit ? '<p>'+w.credit+'</p>' : '') +
+    '</div>';
+  }
+  const clientList = (w.clients && w.clients.length) ? w.clients : (w.c ? [w.c] : []);
+  if(clientList.length) h += '<div><b>CLIENT'+(clientList.length > 1 ? 'S' : '')+
+    '</b><div class="tags">'+chips_(clientList)+'</div></div>';
+  if(w.roles)   h += '<div><b>ROLE</b><div class="tags">'+chips_(w.roles)+'</div></div>';
+
+  const row =
+    (w.y ? '<div><b>YEAR</b><p>'+esc(w.y)+'</p></div>' : '') +
+    (!w.roles && w.r ? '<div><b>ROLE</b><p>'+esc(w.r)+'</p></div>' : '');
+  if(row) h += '<div class="row">'+row+'</div>';
+
+  return h;
+}
+
+function openWork(k){
+  const f = FIELDS[fieldIx], w = f.works[k];
+  workIx = k;
+
+  const media = workMedia(w, f, fieldIx*97 + k*13 + 5, false);
+  const play = w.link
+    ? '<a class="play" href="'+w.link+'" target="_blank" rel="noopener" data-tag="PLAY">'+PLAY_ICON+'WATCH</a>'
+    : '';
+  const dimg = document.getElementById('detailimg');
+  haltMedia(dimg);
+  dimg.innerHTML = media + play;
+  const pl = dimg.querySelector('.play');
+  if(pl) pl.addEventListener('pointerenter', ()=>blip(1320, 0.03));
+
+  /* Video projects size their frame to the footage, not to the still-image
+     box, so 16:9 motion work is shown whole. */
+  const vid = dimg.querySelector('video');
+  dimg.classList.toggle('is-video', !!vid);
+  dimg.style.removeProperty('--media-ar');
+  if(vid){
+    const fitFrame = ()=>{
+      if(vid.videoWidth && vid.videoHeight){
+        dimg.style.setProperty('--media-ar', vid.videoWidth + '/' + vid.videoHeight);
+      }
+    };
+    vid.addEventListener('loadedmetadata', fitFrame);
+    fitFrame();
+  }
+
+  /* Stills do the same: the cover keeps its own ratio, portrait or landscape.
+     The ratio is usually already cached from the grid thumb, so the frame is
+     the right shape on its first paint. */
+  const cover = dimg.querySelector('img');
+  dimg.classList.remove('ar-soft', 'skel');
+  dimg.classList.toggle('is-img', !!cover);
+  dimg.dataset.arToken = String(fieldIx) + ':' + String(k);
+  if(cover){
+    applyAR(dimg, w.img, dimg.dataset.arToken);
+    dimg.classList.add('skel');
+    revealOnLoad(cover, dimg);
+  }
+
+  watchVideo(vid);
+
+  /* the cover leads, then everything else in the folder */
+  const shots = (w.img ? [w.img] : []).concat(w.gallery || []);
+
+  const hero = w.img ? dimg.querySelector('img') : null;
+  if(hero && shots.length){
+    const open = ()=>openLens(shots, 0, w.t);
+    hero.dataset.tag = 'VIEW';
+    hero.setAttribute('role', 'button');
+    hero.setAttribute('tabindex', '0');
+    hero.addEventListener('click', open);
+    hero.addEventListener('keydown', e=>{
+      if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); open(); }
+    });
+  }
+
+  document.getElementById('detailtitle').textContent = w.t;
+  document.getElementById('detailtag').textContent = w.tag
+    || (f.key + ' / ' + w.y + ' / ' + String(k+1).padStart(2,'0') + ' OF ' + String(f.works.length).padStart(2,'0'));
+  document.getElementById('detailinfo').innerHTML = workInfo(w);
+
+  const gal = document.getElementById('detailgal');
+  const rest = w.gallery || [];
+  const offset = w.img ? 1 : 0;
+  gal.hidden = rest.length === 0;
+  /* A cached ratio is written straight into the markup, so the tile is born
+     the right shape — nothing to correct afterwards. */
+  gal.innerHTML = rest.map((src,n)=>
+    '<button class="gshot skel" type="button" data-tag="VIEW"'+arVar(src)+
+      ' aria-label="View image '+(n+1+offset)+'">' +
+      '<img src="'+esc(src)+'" alt="'+esc(w.t)+' \u2014 '+(n+1+offset)+'" decoding="async">' +
+    '</button>'
+  ).join('');
+  gal.querySelectorAll('button').forEach((btn,n)=>{
+    const src = rest[n], im = btn.querySelector('img');
+    btn.dataset.arToken = dimg.dataset.arToken + ':' + n;
+    applyAR(btn, src, btn.dataset.arToken);
+    revealOnLoad(im, btn);
+    noteAR(im, src);
+    btn.addEventListener('pointerenter', ()=>blip(1180, 0.026));
+    btn.addEventListener('click', ()=>openLens(shots, n + offset, w.t));
+  });
+
+  /* PREV / NEXT should land as cleanly as the first open */
+  warmWork(f.works[(k + 1) % f.works.length]);
+  warmWork(f.works[(k - 1 + f.works.length) % f.works.length]);
+
+  gridView.classList.add('hide');
+  detailView.classList.remove('hide');
+  detailView.scrollTop = 0;
+  pBack.hidden = false;
+  pPrev.hidden = pNext.hidden = f.works.length < 2;
+  blip(1420, 0.045);
+}
+
+function stepWork(d){
+  const n = FIELDS[fieldIx].works.length;
+  openWork((workIx + d + n) % n);
+}
+
+function closePanel(){
+  panelOpen = false;
+  panel.classList.remove('on');
+  panel.setAttribute('aria-hidden','true');
+  haltMedia(panel);
+  showGrid();
+  refreshExplore();          // without this the chip strip stays hidden on touch
+  blip(640, 0.045);
+}
+
+pPrev.addEventListener('click', ()=>stepWork(-1));
+pNext.addEventListener('click', ()=>stepWork(1));
+pBack.addEventListener('click', ()=>{ showGrid(); blip(880,0.04); });
+pClose.addEventListener('click', closePanel);
+document.querySelectorAll('.menu [data-page]').forEach(b=>
+  b.addEventListener('click', ()=>{ startAudio(); openPage(b.dataset.page); }));
+/* ══ lightbox ═════════════════════════════════════════════════════════════
+   Tapping any project image lifts it out of the panel: the backdrop dims,
+   the image scales up, and arrows or a swipe move through the rest of the
+   folder. */
+const lens = document.getElementById('lens');
+const lensBg = document.getElementById('lensbg');
+const lensImg = document.getElementById('lensimg');
+const lensClose = document.getElementById('lensclose');
+const lensPrev = document.getElementById('lensprev');
+const lensNext = document.getElementById('lensnext');
+const lensCount = document.getElementById('lenscount');
+const lensNow = document.getElementById('lensnow');
+const lensTotal = document.getElementById('lenstotal');
+
+let lensSet = [], lensIx = 0, lensName = '', lensSwap = null;
+const lensOpen = ()=> !lens.hidden;
+
+function paintLens(){
+  const many = lensSet.length > 1;
+  lensPrev.hidden = lensNext.hidden = lensCount.hidden = !many;
+  lensNow.textContent = String(lensIx + 1).padStart(2,'0');
+  lensTotal.textContent = String(lensSet.length).padStart(2,'0');
+}
+
+function showShot(){
+  lensImg.src = lensSet[lensIx];
+  lensImg.alt = lensName + ' \u2014 ' + (lensIx + 1) + ' of ' + lensSet.length;
+}
+
+function openLens(set, i, name){
+  if(!set || !set.length) return;
+  zClear();                           // a new picture always opens squared up
+  lensSet = set;
+  lensIx = Math.max(0, Math.min(i | 0, set.length - 1));
+  lensName = name || '';
+  lens.hidden = false;
+  showShot();
+  paintLens();
+  // one frame on screen before the transition, or it has nothing to run from
+  requestAnimationFrame(()=>requestAnimationFrame(()=>lens.classList.add('on')));
+  lensClose.focus({ preventScroll:true });
+  blip(1380, 0.04);
+}
+
+function stepLens(d){
+  if(lensSet.length < 2) return;
+  lensIx = (lensIx + d + lensSet.length) % lensSet.length;
+  zReset(true);                       // the one you were reading squares up as it goes
+  paintLens();
+  clearTimeout(lensSwap);
+  lensImg.classList.add('swap');
+  lensSwap = setTimeout(()=>{ showShot(); lensImg.classList.remove('swap'); }, 150);
+  blip(1180, 0.03);
+}
+
+function closeLens(){
+  if(!lensOpen()) return;
+  zReset(true);
+  lens.classList.remove('on');
+  clearTimeout(lensSwap);
+  setTimeout(()=>{
+    lens.hidden = true;
+    lensImg.removeAttribute('src');   // never leave a broken frame behind
+    lensImg.classList.remove('swap');
+  }, 320);
+  blip(720, 0.04);
+}
+
+lensClose.addEventListener('click', closeLens);
+lensPrev.addEventListener('click', ()=>stepLens(-1));
+lensNext.addEventListener('click', ()=>stepLens(1));
+[lensClose, lensPrev, lensNext].forEach(b=>
+  b.addEventListener('pointerenter', ()=>blip(1240, 0.03)));
+
+/* the wheel steps through the set, one image per gesture rather than per tick */
+let lensWheel = 0;
+lens.addEventListener('wheel', e=>{
+  if(!lensOpen()) return;
+  e.preventDefault();
+  const now = performance.now();
+  if(now - lensWheel < 260) return;
+  const d = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+  if(Math.abs(d) < 4) return;
+  lensWheel = now;
+  stepLens(d > 0 ? 1 : -1);
+}, { passive:false });
+
+/* ── pinch to zoom, swipe to move, tap to dismiss ────────────────────────
+   Three readings of one surface, and they must never overlap. Two fingers
+   push the photo in, scaling it about the point held between them; once it
+   is larger than the screen a single finger moves it around; at rest a
+   sideways flick steps the folder and a tap on the backdrop closes.
+
+   The zoom is run here rather than handed to the browser's own pinch, which
+   would scale the entire overlay — chrome, backdrop, counter and all — and
+   leave the visitor stranded at 3x with no way to square it up again. This
+   way only the photograph moves, and letting go always leaves the interface
+   where it was. */
+const lensStage = document.querySelector('.lens-stage');
+const ZMAX = 4;                                  // far enough in to read grain
+let zS = 1, zX = 0, zY = 0;                      // scale, and offset in px
+const zPts = new Map();                          // every finger on the sheet
+let zGest = null, lensSwipe = null;
+
+const zoomed = ()=> zS > 1.01;
+
+function zApply(ease){
+  lensStage.classList.toggle('live', !ease);     // no easing under the fingers
+  lensStage.classList.toggle('zoom', zoomed());
+  lensImg.style.transform = (zS === 1 && !zX && !zY)
+    ? ''                                         // hand the frame back to the CSS
+    : 'translate3d(' + zX + 'px,' + zY + 'px,0) scale(' + zS + ')';
+}
+
+// the photo may be moved only as far as its own edges — never past them
+function zClamp(){
+  const mx = Math.max(0, (lensImg.clientWidth  * zS - innerWidth)  / 2);
+  const my = Math.max(0, (lensImg.clientHeight * zS - innerHeight) / 2);
+  zX = Math.max(-mx, Math.min(mx, zX));
+  zY = Math.max(-my, Math.min(my, zY));
+}
+
+let zSettle = null;
+
+// straight back to fit with no animation and no leftover state — for opening,
+// where the lift-in needs the stylesheet's own transition left alone
+function zClear(){
+  clearTimeout(zSettle);
+  zS = 1; zX = 0; zY = 0; zGest = null;
+  zPts.clear(); lensSwipe = null;
+  lensStage.classList.remove('live', 'zoom');
+  lensImg.style.transform = '';
+}
+
+function zReset(ease){
+  const was = zoomed();
+  clearTimeout(zSettle);
+  zS = 1; zX = 0; zY = 0; zGest = null;
+  if(ease !== false && was){
+    // hold the quick curve until the photo has actually landed back on fit,
+    // then let go of it so the open and swap animations get their own timing
+    lensStage.classList.remove('live');
+    lensStage.classList.add('zoom');
+    lensImg.style.transform = '';
+    zSettle = setTimeout(()=>lensStage.classList.remove('zoom'), 340);
+    return;
+  }
+  zApply(ease !== false);
+}
+
+lens.addEventListener('pointerdown', e=>{
+  if(e.target.closest('.lens-btn')) return;      // let the buttons be buttons
+  zPts.set(e.pointerId, { x:e.clientX, y:e.clientY });
+  // fingers are captured so a gesture that wanders off the photo keeps
+  // reporting; a mouse is left alone, so the desktop path is untouched
+  if(e.pointerType !== 'mouse'){ try{ lens.setPointerCapture(e.pointerId); }catch(err){} }
+
+  if(zPts.size === 2){                           // a second finger is a pinch,
+    lensSwipe = null;                            // and never a swipe or a tap
+    const [a, b] = [...zPts.values()];
+    zGest = { kind:'pinch', s0:zS, x0:zX, y0:zY,
+              d0:Math.max(1, Math.hypot(a.x - b.x, a.y - b.y)),
+              mx:(a.x + b.x)/2, my:(a.y + b.y)/2 };
+    return;
+  }
+  if(zPts.size > 2){ zGest = null; lensSwipe = null; return; }
+
+  zGest = zoomed() ? { kind:'pan', px:e.clientX, py:e.clientY, x0:zX, y0:zY } : null;
+  lensSwipe = { x:e.clientX, y:e.clientY, moved:false, on:e.target };
+});
+
+lens.addEventListener('pointermove', e=>{
+  const p = zPts.get(e.pointerId);
+  if(p){ p.x = e.clientX; p.y = e.clientY; }
+  if(lensSwipe && Math.abs(e.clientX - lensSwipe.x) > 10) lensSwipe.moved = true;
+  if(!zGest) return;
+
+  if(zGest.kind === 'pinch' && zPts.size >= 2){
+    const [a, b] = [...zPts.values()];
+    const d = Math.max(1, Math.hypot(a.x - b.x, a.y - b.y));
+    const s = Math.max(1, Math.min(ZMAX, zGest.s0 * (d / zGest.d0)));
+    // the point between the fingers is the anchor: work out where it sits on
+    // the photograph itself, then place the photograph so it stays under them
+    const cx = innerWidth/2, cy = innerHeight/2;
+    const ux = (zGest.mx - cx - zGest.x0) / zGest.s0;
+    const uy = (zGest.my - cy - zGest.y0) / zGest.s0;
+    zS = s;
+    zX = (a.x + b.x)/2 - cx - s*ux;
+    zY = (a.y + b.y)/2 - cy - s*uy;
+    zClamp(); zApply(false);
+    return;
+  }
+  if(zGest.kind === 'pan'){
+    zX = zGest.x0 + (e.clientX - zGest.px);
+    zY = zGest.y0 + (e.clientY - zGest.py);
+    zClamp(); zApply(false);
+  }
+}, { passive:true });
+
+function lensLetGo(e){
+  const many = zPts.size > 1;
+  zPts.delete(e.pointerId);
+  try{ if(lens.hasPointerCapture(e.pointerId)) lens.releasePointerCapture(e.pointerId); }catch(err){}
+
+  if(many){                                      // coming out of a pinch
+    zGest = null; lensSwipe = null;
+    if(zS <= 1.02) zReset(true); else { zClamp(); zApply(true); }
+    // a finger still down carries straight on into a move, from where it is,
+    // so the photo doesn't jump the moment the other one lifts
+    if(zPts.size === 1 && zoomed()){
+      const [q] = [...zPts.values()];
+      zGest = { kind:'pan', px:q.x, py:q.y, x0:zX, y0:zY };
+    }
+    return;
+  }
+
+  const sw = lensSwipe;
+  zGest = null; lensSwipe = null;
+  if(!sw || e.type === 'pointercancel'){ if(zoomed()){ zClamp(); zApply(true); } return; }
+
+  const dx = e.clientX - sw.x, dy = e.clientY - sw.y;
+  const tap = !sw.moved && Math.abs(dx) < 10 && Math.abs(dy) < 10;
+
+  // while the photo is in close, everything answers to the zoom: a tap squares
+  // it back up rather than closing, so no one can be stranded at 4x, and a
+  // drag has already moved it and wants no second reading
+  if(zoomed()){
+    if(tap) zReset(true); else { zClamp(); zApply(true); }
+    return;
+  }
+  // horizontal intent only, so a vertical flick doesn't jump the image
+  if(Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)){ stepLens(dx < 0 ? 1 : -1); return; }
+  if(tap && (sw.on === lensBg || sw.on === lens)) closeLens();
+}
+lens.addEventListener('pointerup', lensLetGo);
+lens.addEventListener('pointercancel', lensLetGo);
+
+/* Safari on iOS will happily run its own page zoom on top of this one, which
+   would scale the whole overlay and leave no way back. These are WebKit's own
+   gesture events, and they are only ever headed off over the lightbox — the
+   rest of the page can still be pinched by anyone who needs to read it. */
+['gesturestart','gesturechange','gestureend'].forEach(t=>
+  lens.addEventListener(t, e=>{ if(lensOpen()) e.preventDefault(); }, { passive:false }));
+lens.addEventListener('touchmove', e=>{
+  if(lensOpen() && e.touches.length > 1) e.preventDefault();
+}, { passive:false });
+
+// a turned phone changes what "as far as its own edges" means
+addEventListener('resize', ()=>{ if(lensOpen() && zoomed()){ zClamp(); zApply(true); } });
+
+/* ══ the photographs are not for taking ═══════════════════════════════════
+   Right-click on the desktop and the press-and-hold callout on a phone both
+   go nowhere over an image or over the lightbox — no "save image", no drag
+   to the desktop, no selection. Worth being straight about what this is: a
+   lock on the front door. The browser still has to fetch the files to draw
+   them, so anyone who knows their way around devtools or the network tab can
+   still get at them. What it does stop is the casual, thoughtless save, and
+   that is nearly all of it. */
+document.addEventListener('contextmenu', e=>{
+  const t = e.target;
+  if(t.closest && (t.closest('img') || t.closest('.lens') || t.closest('.thumb,.shot,.gal,.client')))
+    e.preventDefault();
+}, { capture:true });
+
+document.addEventListener('dragstart', e=>{
+  if(e.target && e.target.tagName === 'IMG') e.preventDefault();
+});
+
+addEventListener('keydown', e=>{
+  if(lensOpen()){                       // the lightbox is on top, so it answers first
+    if(e.key === 'Escape'){ closeLens(); return; }
+    if(e.key === 'ArrowRight'){ stepLens(1); return; }
+    if(e.key === 'ArrowLeft'){ stepLens(-1); return; }
+    return;
+  }
+  if(e.key === 'Escape' && panelOpen){ workIx >= 0 ? showGrid() : closePanel(); }
+  if(panelOpen && workIx >= 0){
+    if(e.key === 'ArrowRight') stepWork(1);
+    if(e.key === 'ArrowLeft')  stepWork(-1);
+  }
+});
+
+/* ══ pointer, reticle, interface ══════════════════════════════════════════ */
+const ret = document.getElementById('ret');
+const retTag = document.getElementById('rettag');
+const fpsOut = document.getElementById('fps');
+
+/* Fullscreen is the one state where the site's own cursor cannot follow: the
+   video is painted over the whole page, reticle included. The CSS hands the
+   real pointer back; this puts the reticle away while it is gone, so nothing
+   is chasing a cursor nobody can see, and returns it on the way out. The
+   body flag exists because the fullscreen pseudo-classes are inconsistently
+   applied to media elements across engines — the class is not. */
+const fsOn = ()=> !!(document.fullscreenElement || document.webkitFullscreenElement);
+let retWasOn = false;
+
+function syncFullscreen(){
+  const on = fsOn();
+  document.body.classList.toggle('fs', on);
+  if(on){
+    retWasOn = ret.classList.contains('on');
+    ret.classList.remove('on');
+  }else if(retWasOn){
+    retWasOn = false;
+    ret.classList.add('on');
+  }
+}
+document.addEventListener('fullscreenchange', syncFullscreen);
+document.addEventListener('webkitfullscreenchange', syncFullscreen);
+
+const raycaster = new THREE.Raycaster();
+const ndcPt = new THREE.Vector2();
+const target = new THREE.Vector3();
+let reveal = 0;   // how open the wireframe reveal is — mouse hover only, never touch
+const ndc = new THREE.Vector3();
+let mx=0, my=0, px=0, py=0, touched=false, clock=0, intro=0, radius=0, rGoal=0;
+let pointerX = innerWidth/2, pointerY = innerHeight/2, retX = pointerX, retY = pointerY;
+let VX = 0, VY = 0, VW = innerWidth, VH = innerHeight, visH = 4.5, centreY = 0, formScale = 1, formScaleGoal = 1;
+let letterW = 2.1, letterH = FIT;
+const cxMid = ()=> VX + VW/2;
+const cyMid = ()=> VY + VH/2;
+let spin = 0, spinV = 0, groupX = 0;
+
+// the reticle invites you in, then tells you what a tap will do
+function syncTag(){
+  retTag.textContent = hoverForm ? (started ? 'MORPH' : 'INTERACT') : '';
+}
+
+function toWorld(cx, cy){
+  ndc.set(((cx - VX)/VW)*2-1, -((cy - VY)/VH)*2+1, 0.5).unproject(camera);
+  ndc.sub(camera.position).normalize();
+  return camera.position.clone().addScaledVector(ndc, -camera.position.z/ndc.z);
+}
+
+function pick(cx, cy){
+  if(!ready) return null;
+  ndcPt.set(((cx - VX)/VW)*2-1, -((cy - VY)/VH)*2+1);
+  raycaster.setFromCamera(ndcPt, camera);
+  const hits = raycaster.intersectObject(matte, false);
+  return hits.length ? hits[0] : null;
+}
+
+addEventListener('pointermove', e=>{
+  pointerX = e.clientX; pointerY = e.clientY;
+  target.copy(toWorld(e.clientX, e.clientY));
+  mx = (e.clientX - cxMid())/(VW/2);
+  my = (e.clientY - cyMid())/(VH/2);
+  rGoal = 1;
+  if(!touched) touched = true;
+  if(coarse) return;
+  if(fsOn()) return;      // the real cursor has the room; nothing to stand in for
+
+  ret.classList.add('on');
+
+  const ui = e.target.closest ? e.target.closest('[data-tag]') : null;
+  const inPanel = e.target.closest ? e.target.closest('.panel,.lens') : null;
+  const over = !ui && !inPanel && !!pick(e.clientX, e.clientY);
+
+  if(over !== hoverForm){
+    hoverForm = over;
+    if(over){ blip(1500, 0.035); exploreIntro = false; }   // they've found it
+  }
+  refreshExplore();
+
+  // the direction you lean picks the field
+  if(exploreEl.classList.contains('on') && !ui && !stacked()){
+    const a = Math.atan2(e.clientY - cyMid(), (e.clientX - cxMid()) * (VH/VW));
+    let best = 0, bd = 9;
+    chipAngle.forEach((ca,i)=>{
+      let d = Math.abs(((a - ca + Math.PI*3) % (Math.PI*2)) - Math.PI);
+      if(d < bd){ bd = d; best = i; }
+    });
+    setActive(best);
+  }
+
+  ret.classList.toggle('lock', !!ui || over);
+  syncTag();
+}, { passive:true });
+
+addEventListener('pointerleave', ()=>{
+  rGoal = 0; mx = 0; my = 0;
+  ret.classList.remove('on');
+  hoverForm = false; refreshExplore();
+});
+
+/* ── drag to turn the form, tap to change it ──────────────────────────────
+   One gesture, two readings. Travel past a small threshold is a turn: sideways
+   spins the form about its standing axis, up and down tips it, and letting go
+   carries the momentum on. Anything under the threshold is a tap, which strikes
+   the surface and starts the morph. Touch and mouse take the same path, so a
+   phone gets the turn without the click having to be given up for it. */
+const TAP_SLOP = coarse ? 14 : 6;        // px of travel still read as a tap
+const TAP_MS = 700;
+const SPIN_PER_PX = 0.0070;
+const TILT_PER_PX = 0.0042;
+let tilt = 0, tiltV = 0, grab = null;
+
+// belt-and-braces: some mobile WebKit builds are inconsistent about treating
+// a bare 'pointerdown' as the kind of user gesture that's allowed to unlock
+// Web Audio, even though it fires and looks completely normal. 'touchstart'
+// and 'mousedown' have always been on that allowlist everywhere, which is
+// the real reason the nav buttons "worked" — their click handlers quietly
+// caught what pointerdown missed. The 3D model had no such fallback, so a
+// tap that only landed on canvas could silently fail to unlock on iOS.
+addEventListener('touchstart', startAudio, { passive:true });
+addEventListener('mousedown', startAudio);
+addEventListener('click', startAudio);
+
+addEventListener('pointerdown', e=>{
+  // unlock audio on the very first touch contact anywhere on the page —
+  // this must run before the UI exclusion below, which only exists to stop
+  // taps on buttons/chips/panels from also spinning the 3D model. Without
+  // this, tapping a floating chip (they carry [data-tag] too) never unlocked
+  // audio, since it isn't part of the .hud button group either.
+  startAudio();
+  if(e.target.closest && (e.target.closest('[data-tag]') || e.target.closest('.panel,.lens'))) return;
+  exploreIntro = false;
+  grab = { id:e.pointerId, x:e.clientX, y:e.clientY, lx:e.clientX, ly:e.clientY,
+           travel:0, t:performance.now(), turning:false, fx:0, fy:0 };
+  try{ canvas.setPointerCapture(e.pointerId); }catch(err){}
+  if(pick(e.clientX, e.clientY)){ hoverForm = true; refreshExplore(); }
+});
+
+addEventListener('pointermove', e=>{
+  if(!grab || e.pointerId !== grab.id) return;
+  const dx = e.clientX - grab.lx, dy = e.clientY - grab.ly;
+  grab.lx = e.clientX; grab.ly = e.clientY;
+  grab.travel += Math.abs(dx) + Math.abs(dy);
+  if(grab.travel <= TAP_SLOP) return;            // still inside tap territory
+  grab.turning = true;
+  grab.fx = dx * SPIN_PER_PX;
+  grab.fy = dy * TILT_PER_PX;
+  spin += grab.fx;                               // the hand drives it directly,
+  spinV = 0; tiltV = 0;                          // so any drift steps aside
+  tilt = THREE.MathUtils.clamp(tilt + grab.fy, -0.9, 0.9);
+  ret.classList.add('lock');
+});
+
+function letGo(e){
+  if(!grab || (e && e.pointerId !== grab.id)) return;
+  const g = grab; grab = null;
+  try{ canvas.releasePointerCapture(g.id); }catch(err){}
+
+  // a mouse leaving the glass takes the lens with it; a finger has no such
+  // moment, so lifting it has to do the same job or the last touch stays lit
+  if(coarse){ rGoal = 0; mx = 0; my = 0; }
+
+  if(g.turning){                                 // a flick keeps turning after release
+    spinV = THREE.MathUtils.clamp(g.fx * 0.85, -0.085, 0.085);
+    tiltV = THREE.MathUtils.clamp(g.fy * 0.55, -0.05, 0.05);
+    return;
+  }
+  if(performance.now() - g.t > TAP_MS) return;   // a long hold is not a tap
+
+  const hit = pick(g.lx, g.ly);
+  if(!hit){ refreshExplore(); return; }
+  strikeAt(hit);
+  startMorph(matte ? matte.worldToLocal(hit.point.clone()) : null);
+  hoverForm = true;
+  refreshExplore();
+}
+addEventListener('pointerup', letGo);
+addEventListener('pointercancel', letGo);
+
+// interface feedback
+document.querySelectorAll('.hud a, .hud button').forEach(a=>{
+  a.addEventListener('pointerenter', ()=>blip(1180, 0.03));
+  // unlock on pointerdown, the earliest signal a touch gives us — by the time
+  // a synthetic 'click' arrives on mobile, the browser's user-activation
+  // window can already have lapsed, which is why the sound toggle used to
+  // need a second tap to actually start audio.
+  a.addEventListener('pointerdown', ()=>{
+    startAudio();
+    if(a.id !== 'sound') blip(880, 0.06);
+  });
+});
+
+// the wheel turns the form about its own vertical axis, so you can walk around it
+addEventListener('wheel', e=>{
+  if(e.target.closest && e.target.closest('.panel,.lens')) return;
+  spinV += e.deltaY * 0.00030;
+  spinV = THREE.MathUtils.clamp(spinV, -0.075, 0.075);
+}, { passive:true });
+
+const soundBtn = document.getElementById('sound');
+const soundLabel = document.getElementById('soundlabel');
+
+function paintSound(){
+  const live = started && soundOn;
+  soundBtn.classList.toggle('live', live);
+  soundLabel.textContent = !started ? 'AUDIO STANDBY' : (soundOn ? 'AUDIO ON' : 'AUDIO OFF');
+  soundBtn.setAttribute('aria-checked', String(live));
+}
+
+soundBtn.addEventListener('click', e=>{
+  e.preventDefault();
+  if(!started || performance.now() - startedAt < 400){ startAudio(); blip(1320, 0.06); return; }
+  soundOn = !soundOn;
+  applyMaster();
+  if(soundOn) blip(1320, 0.06);
+  paintSound();
+});
+
+/* ══ theme ════════════════════════════════════════════════════════════════ */
+const themeBtn = document.getElementById('theme');
+const themeLabel = document.getElementById('themelabel');
+const themeIcon = document.getElementById('themeicon');
+
+function applyTheme(){
+  const T = TH();
+  document.body.classList.toggle('light', mode === 'light');
+  themeLabel.textContent = mode === 'light' ? 'DARK' : 'LIGHT';
+  themeIcon.textContent = mode === 'light' ? '◑' : '◐';
+  themeBtn.setAttribute('aria-pressed', String(mode === 'light'));
+
+  renderer.toneMappingExposure = T.exposure;
+  scene.background = new THREE.Color(T.bg);
+  scene.environment = envFor(mode);
+  keyLight.intensity = T.keyI;
+  rimLight.intensity = T.rimI;
+  ambLight.intensity = T.ambI;
+  ambLight.color = new THREE.Color(T.ambC);
+  uKeyC.value.set(T.key);
+
+  if(field){
+    field.material.opacity = T.fieldOp;
+    const c = new THREE.Color(T.field);
+    for(let i=0;i<blocks.length;i++) field.setColorAt(i, c);
+    field.instanceColor.needsUpdate = true;
+  }
+  if(ready){
+    matte.material.color.set(T.matte);
+    matte.material.roughness = T.matteRough;
+    matte.material.metalness = T.matteMetal;
+    outline.material.color.set(T.line);
+    outline.material.opacity = T.lineOp;
+    wire.material.color.set(T.line);
+    wireThru.material.color.set(T.line);
+  }
+  syncDust();
+  drawPoster(VW, VH, DPR);
+}
+
+themeBtn.addEventListener('click', ()=>{
+  mode = mode === 'dark' ? 'light' : 'dark';
+  applyTheme();
+  blip(mode === 'light' ? 1560 : 1040, 0.05);
+});
+
+/* ══ layout ═══════════════════════════════════════════════════════════════ */
+// everything measures the canvas itself. innerHeight lies on phones — the
+// layout viewport runs behind the browser chrome — so the drawing buffer, the
+// projection and the pointer maths are all pinned to the element's real box.
+function chromeBands(){
+  const hud = document.querySelector('.hud');
+  const top = document.querySelector('.top');
+  const bot = document.querySelector('.bot');
+  const cs = hud ? getComputedStyle(hud) : null;
+  const padT = cs ? (parseFloat(cs.paddingTop) || 0) : 24;
+  const padB = cs ? (parseFloat(cs.paddingBottom) || 0) : 24;
+  return {
+    t: (top ? top.offsetHeight : 40) + padT,
+    b: (bot ? bot.offsetHeight : 46) + padB + (stacked() ? 56 : 0)
+  };
+}
+
+// the form is framed inside the space the interface leaves, not the whole screen
+function fitView(){
+  const r = canvas.getBoundingClientRect();
+  VX = r.left; VY = r.top;
+  VW = Math.max(1, Math.round(r.width));
+  VH = Math.max(1, Math.round(r.height));
+
+  const band = chromeBands();
+  const freeH = Math.max(140, VH - band.t - band.b);
+  const hFrac = stacked() ? 0.60 : 0.72;      // of the free band
+  const wFrac = stacked() ? 0.74 : 0.60;      // of the full width
+  const aspect = VW / VH;
+
+  // the camera is framed against a fixed FIT×FIT reference box rather than
+  // whichever shape is currently on screen, so swapping to a taller or wider
+  // form never moves the camera itself — that would drag the background
+  // field and everything else along with it. Only the form is rescaled, by
+  // however much its own letterW/letterH fall short of the reference, so it
+  // still lands on the same target fraction of the frame every time.
+  visH = Math.max(FIT * VH / (freeH * hFrac), FIT / (wFrac * aspect), 3.4);
+  camera.position.z = visH / (2*Math.tan(FOV*Math.PI/360));
+  camera.aspect = aspect;
+  camera.updateProjectionMatrix();
+
+  const idealVisH = Math.max(letterH * VH / (freeH * hFrac), letterW / (wFrac * aspect), 3.4);
+  formScaleGoal = visH / idealVisH;
+  // the frame loop eases formScale toward this goal rather than snapping to
+  // it here, so a model swap settles into its new size instead of popping.
+
+  // put the form in the middle of the free band rather than the middle of the glass
+  const centrePx = band.t + freeH/2;
+  centreY = (VH/2 - centrePx) * (visH / VH);
+}
+
+function fitPoster(){
+  const dist = camera.position.z - BACK_Z;
+  const h = 2*Math.tan(FOV*Math.PI/360)*dist;
+  poster.scale.set(h*camera.aspect, h, 1);
+}
+
+function resize(){
+  fitView();
+  renderer.setSize(VW, VH, false);
+  fitPoster();
+  sizeDust();
+  drawPoster(VW, VH, DPR);
+  placeChips();
+  refreshExplore();
+}
+addEventListener('resize', resize);
+addEventListener('orientationchange', ()=>setTimeout(resize, 120));
+if(window.visualViewport) visualViewport.addEventListener('resize', resize);
+resize();
+applyTheme();
+// the bars change height once the webfont lands, so measure again
+if(document.fonts && document.fonts.ready) document.fonts.ready.then(resize).catch(()=>{});
+setTimeout(resize, 400);
+
+/* ══ frame ════════════════════════════════════════════════════════════════ */
+let first = true, last = performance.now(), fpsAcc = 0, fpsN = 0, bootP = 0;
+
+function frame(now){
+  requestAnimationFrame(frame);
+  const dt = Math.min(0.05, (now - last)/1000 || 0.016);
+  last = now;
+  clock += 0.0068;
+
+  if(bootP < 100){
+    bootP += ((ready ? 100 : 88) - bootP) * (ready ? 0.16 : 0.05);
+    bootfill.style.width = Math.min(100, bootP) + '%';
+    bootpct.textContent = String(Math.round(Math.min(100, bootP))).padStart(2,'0');
+    if(ready && bootP > 99.2 && first){
+      first = false;
+      bootmsg.textContent = 'READY';
+      boot.classList.add('gone');
+      setTimeout(()=>boot.remove(), 900);
+    }
+  }
+
+  if(ready){
+    intro = Math.min(1, intro + 0.009);
+    const ease = 1 - Math.pow(1 - intro, 3);
+
+    if(!touched || reduce){
+      target.set(Math.sin(clock*1.1)*0.9, Math.cos(clock*0.72)*1.0, 0);
+      rGoal = reduce ? 1 : 0.9;
+    }
+
+    radius += (rGoal - radius) * (rGoal < radius ? 0.14 : 0.055);   // quick to let go
+    uC.value.lerp(target, touched ? 0.16 : 0.05);
+    uR1.value = 0.62 * radius * ease;
+    uR2.value = 1.02 * radius * ease;
+
+    // wireframe reveal: mouse hover only — a touch device has no hover, so
+    // coarse pointers never open the shell this way. An open panel is no
+    // reason to withhold it: on a wide screen the form is still sitting there
+    // beside the archive, and pointing at it should do what it always does.
+    // On a narrow one the panel covers the form outright, and the hover test
+    // already refuses anything inside .panel, so there is nothing to guard.
+    const wantReveal = !coarse && !morph && hoverForm;
+    reveal += ((wantReveal ? 1 : 0) - reveal) * (wantReveal ? 0.13 : 0.09);
+    if(reveal < 0.002) reveal = 0;
+    uReveal.value = reveal;
+    // the hidden-line pass follows the reveal, a little under the front lines
+    // so the near side of the mesh still reads as the near side
+    wireThru.material.opacity = reveal * 0.42 * formFade;
+    wireThru.visible = reveal > 0.01 && formFade > 0.02;
+
+    // the turn about the local up axis, with weight — wheel, drag or flick
+    spin += spinV;
+    spinV *= reduce ? 0.7 : 0.945;
+    if(Math.abs(spinV) < 0.00002) spinV = 0;
+
+    // the tip from a vertical drag drifts back to level once the hand is off
+    tilt += tiltV;
+    tiltV *= reduce ? 0.7 : 0.9;
+    if(Math.abs(tiltV) < 0.00002) tiltV = 0;
+    if(!grab) tilt *= 0.992;
+    tilt = THREE.MathUtils.clamp(tilt, -0.9, 0.9);
+
+    // the form steps aside when the archive is open
+    const gx = (panelOpen && VW > 900) ? -1.55 : 0;
+    groupX += (gx - groupX) * 0.055;
+
+    px += (mx - px)*0.04; py += (my - py)*0.04;
+    group.rotation.y = spin + px*0.42 + Math.sin(clock*0.75)*0.13 + (1-ease)*0.8;
+    group.rotation.x = -py*0.26 + Math.sin(clock*0.53)*0.08 + tilt;
+    group.rotation.z = Math.sin(clock*0.41)*0.045;
+    group.position.x = groupX;
+    group.position.y = centreY + Math.sin(clock*1.15)*0.1;
+    // the target size a swap asks for is reached gradually rather than in
+    // one jump, so a much bigger or smaller form eases into place
+    formScale += (formScaleGoal - formScale) * (reduce ? 0.18 : 0.09);
+
+    group.scale.setScalar(formScale * (0.9 + 0.1*ease) * (panelOpen && VW > 900 ? 0.86 : 1));
+
+    stepMorph(dt);
+    applyFade(ease);
+
+    let waveI = 0;
+    if(wave){
+      wave.t += dt;
+      const k = wave.t / wave.life;
+      if(k >= 1){
+        wave = null; uPI.value = 0; uPR.value = 0;
+      }else{
+        const e2 = 1 - Math.pow(1 - k, 2.4);
+        uPR.value = 0.02 + e2 * 3.6;
+        uPI.value = Math.pow(1 - k, 1.7);
+        waveI = uPI.value;
+        waveWorld.copy(wave.local); group.localToWorld(waveWorld);
+      }
+    }
+    if(strike.visible){
+      strike.intensity *= Math.pow(0.02, dt);
+      if(strike.intensity < 0.05){ strike.intensity = 0; strike.visible = false; }
+    }
+
+    updateField(ease, clock*8, waveWorld, uPR.value, waveI);
+  }
+
+  if(!coarse){
+    retX += (pointerX - retX) * 0.42;
+    retY += (pointerY - retY) * 0.42;
+    ret.style.transform = 'translate(' + retX.toFixed(1) + 'px,' + retY.toFixed(1) + 'px) translate(-50%,-50%)';
+  }
+
+  renderer.render(scene, camera);
+
+  fpsAcc += dt; fpsN++;
+  if(fpsAcc >= 0.5){
+    fpsOut.textContent = String(Math.round(fpsN / fpsAcc)).padStart(2,'0');
+    fpsAcc = 0; fpsN = 0;
+  }
+}
+requestAnimationFrame(frame);
+
+/* ══ content ══════════════════════════════════════════════════════════════
+   Reads content.json, which tools/build-content.mjs regenerates from the
+   repository on every push. Adding a project folder, dropping a logo into
+   clients/ or replacing about/cv.pdf is the whole workflow — this file
+   never needs to change. */
+
+/* the one arrow, pointed wherever it is needed: 'r' 'l' 'd' 'ur' */
+const ico_ = dir =>
+  '<svg class="ico ico-'+dir+'" viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
+    '<path d="M3.2 12h16.2"/><path d="M13.4 6l6 6-6 6"/></svg>';
+
+/* [label, value, href, mark] — mark is a direction for ico_ */
+const rows_ = list => list.map(([label, value, href, mark]) => {
+  const inner = esc(label) + '<em>' + esc(value) + (mark ? ico_(mark) : '') + '</em>';
+  return href
+    ? '<a href="'+esc(href)+'"'+(/^https?:/i.test(href) ? ' target="_blank" rel="noopener"' : '') +
+      ' data-tag="'+esc(label)+'">'+inner+'</a>'
+    : '<span>'+inner+'</span>';
+}).join('');
+
+const block_ = (title, inner) =>
+  '<div class="block"><b>'+esc(title)+'</b><div class="rows">'+inner+'</div></div>';
+
+/* same block furniture, chips instead of rows */
+const tagblock_ = (title, items) =>
+  '<div class="block"><b>'+esc(title)+'</b><div class="taglist">' +
+  items.map(s=>'<span>'+esc(s)+'</span>').join('') + '</div></div>';
+
+/* about.skills is [{ label, items }] — one block per group */
+const skills_ = groups => (groups || [])
+  .filter(g => g && g.items && g.items.length)
+  .map(g => tagblock_((g.label || 'SKILLS').toUpperCase(), g.items))
+  .join('');
+
+const elsewhere_ = links => {
+  const entries = Object.entries(links || {});
+  return entries.length
+    ? block_('ELSEWHERE', rows_(entries.map(([k, v]) => [k.toUpperCase(), '', v, 'ur'])))
+    : '';
+};
+
+/* Built from parts at runtime. The address is never present as a single
+   string in the HTML or in content.json, so a scraper grepping the source
+   for an address pattern comes away with nothing. */
+function mailLink(email){
+  if(!email || !email.user || !email.domain || !email.tld) return '';
+  const at = String.fromCharCode(64);
+  const addr = email.user + at + email.domain + '.' + email.tld;
+  return '<a class="mail" href="#" data-mail="'+esc(addr)+'" data-tag="EMAIL" ' +
+    'rel="nofollow noreferrer">' + esc(addr) + '</a>';
+}
+
+function buildPages(c){
+  const site = c.site || {};
+  const about = c.about || {};
+  const clients = c.clients || {};
+  const pages = {};
+
+  /* ── ABOUT ── */
+  const shot = about.portrait
+    ? '<figure class="shot">' +
+        '<img src="'+esc(about.portrait)+'" alt="'+esc(site.name || '')+'" loading="lazy" decoding="async">' +
+        (about.caption ? '<i>'+esc(about.caption)+'</i>' : '') +
+      '</figure>'
+    : '';
+
+  const paras = (about.paragraphs || []);
+  const cv = about.cv;
+
+  pages.ABOUT = {
+    sub: (site.role || 'PROFILE').toUpperCase(),
+    html: ()=>
+      '<div class="who">' +
+        (about.headline ? '<h3>'+esc(about.headline)+'</h3>' : '') +
+        shot +
+        '<div class="said">' + paras.map(p=>'<p>'+p+'</p>').join('') + '</div>' +
+      '</div>' +
+      skills_(about.skills) +
+      (cv ? block_('DOCUMENTS', rows_([[
+        'CURRICULUM VITAE',
+        'PDF · ' + cv.size + ' · ' + cv.updated,
+        cv.src + (cv.hash ? '?v=' + cv.hash : ''),
+        'd'
+      ]])) : '') +
+      elsewhere_(site.links)
+  };
+
+  /* ── CLIENTS ── */
+  const logos = clients.logos || [];
+  const tiles = logos.length
+    ? logos.map((l,i)=>'<div class="client">' +
+        (l.src
+          ? '<img src="'+esc(l.src)+'" alt="'+esc(l.name)+'" loading="lazy" decoding="async">'
+          : mark(i)) +
+        '<b>'+esc(String(l.name).toUpperCase())+'</b></div>').join('')
+    : '';
+
+  const engagements = clients.engagements || [];
+
+  pages.CLIENTS = {
+    sub: String(logos.length).padStart(2,'0') + ' ORGANISATIONS',
+    html: ()=>
+      (clients.lede ? '<p class="lede">'+esc(clients.lede)+'</p>' : '') +
+      (tiles ? '<div class="clients">'+tiles+'</div>' : '') +
+      (engagements.length
+        ? block_('ENGAGEMENTS', rows_(engagements.map(e=>[e.name, e.year || ''])))
+        : '') +
+      (logos.length ? '' : '<p class="note">Drop a logo into clients/ and it appears here.</p>')
+  };
+
+  /* ── CONTACT ── */
+  const details = Object.entries(site.details || {});
+
+  pages.CONTACT = {
+    sub: 'GET IN TOUCH',
+    html: ()=>
+      '<p class="lede">Open to commissions, collaborations and the occasional strange brief.</p>' +
+      mailLink(site.email) +
+      elsewhere_(site.links) +
+      (details.length
+        ? block_('DETAILS', rows_(details.map(([k,v])=>[k.toUpperCase(), v])))
+        : '')
+  };
+
+  return pages;
+}
+
+/* the href stays inert in the markup; the real one is built on click */
+document.addEventListener('click', e=>{
+  const a = e.target.closest && e.target.closest('a[data-mail]');
+  if(!a) return;
+  e.preventDefault();
+  location.href = 'mailto:' + a.dataset.mail;
+});
+
+const yearEl = document.getElementById('year');
+if(yearEl) yearEl.textContent = String(new Date().getFullYear());
+
+/* the model folder is inventoried by the same build step as everything else,
+   so a new .glb needs no edit here. The fallback covers a folder served
+   without the build script having run. */
+function bootBench(c){
+  const m = c && c.models;
+  let list = [];
+  if(Array.isArray(m)) list = m;
+  else if(m && typeof m === 'object') list = m.alts || m.models || [];
+  if(list.length){ setBench(list); return; }
+
+  fetch(MODEL_DIR + 'models.json', { cache:'no-cache' })
+    .then(r => r.ok ? r.json() : null)
+    .then(j => { if(j) setBench(Array.isArray(j) ? j : (j.alts || j.models || [])); })
+    .catch(()=>{});
+}
+
+function applyContent(c){
+  bootBench(c);
+  FIELDS = c.fields || [];
+  PAGES = buildPages(c);
+
+  const practice = document.getElementById('practice');
+  if(FIELDS.length) practice.textContent = FIELDS.map(f=>f.key).join(' / ');
+
+  buildChips();
+  placeChips();
+  refreshExplore();
+  warmCovers();
+}
+
+fetch('content.json', { cache: 'no-cache' })
+  .then(r=>{ if(!r.ok) throw new Error('content.json \u2192 HTTP ' + r.status); return r.json(); })
+  .then(applyContent)
+  .catch(err=>{
+    console.error('[content]', err);
+    bootBench(null);          // the forms are independent of the site index
+    document.getElementById('practice').textContent = 'CONTENT UNAVAILABLE';
+    PAGES = { ABOUT: { sub:'UNAVAILABLE', html:()=>
+      '<p class="lede">The site index could not be loaded.</p>' +
+      '<p class="note">content.json is generated by tools/build-content.mjs. ' +
+      'Run <code>node tools/build-content.mjs</code>, then serve the folder over HTTP ' +
+      '(<code>npx serve</code>) rather than opening the file directly.</p>' } };
+  });
+</script>
+</body>
+</html>

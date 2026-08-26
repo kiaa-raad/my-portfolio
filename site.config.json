@@ -1,0 +1,23 @@
+{
+  "name": "Kiarash Farahmandrad",
+  "role": "Multi-disciplinary designer",
+
+  "_email_note": "Split into parts on purpose. The full address is never written out in any file the browser downloads, so scrapers that grep for user@host.tld find nothing. index.html reassembles it at runtime.",
+  "email": {
+    "user": "k.farahmandrad",
+    "domain": "gmail",
+    "tld": "com"
+  },
+
+  "links": {
+    "LINKEDIN": "https://www.linkedin.com/in/kia-rad/",
+    "LETTERBOXD": "https://letterboxd.com/kia_rad/"
+  },
+  "details": {
+    "BASED IN": "Tehran, Iran",
+    "AVAILABILITY": "Open to commissions",
+    "RESPONSE": "Within a few days"
+  },
+  "clients_lede": "The list runs from technology platforms to cultural institutions. Some arrived for a single mark; others for a system a whole team would go on to run.",
+  "show_empty_categories": false
+}

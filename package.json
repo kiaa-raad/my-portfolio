@@ -1,0 +1,10 @@
+{
+  "name": "portfolio-site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "cv": "node tools/build-cv.mjs",
+    "build": "node tools/build-content.mjs",
+    "start": "node tools/build-content.mjs && npx --yes serve ."
+  }
+}
