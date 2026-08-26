@@ -1,0 +1,8 @@
+# https://kiarad.space — one page, everything on it public.
+User-agent: *
+Allow: /
+
+# Nothing here for a crawler; they are build inputs and scratch space.
+Disallow: /tools/
+
+Sitemap: https://kiarad.space/sitemap.xml

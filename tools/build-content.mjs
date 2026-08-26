@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 /**
- * Scans the repository and writes content.json.
+ * Scans the repository and writes content.json — plus the SEO surface that
+ * has to be legible without running the page: the meta block and structured
+ * data inside index.html, robots.txt and sitemap.xml.
  *
  * Nothing here is hand-maintained: drop a folder in projects/, a logo in
  * clients/, or a new cv.pdf in about/, and the next run picks it up.
@@ -332,7 +334,9 @@ function buildClients() {
   return files(dir)
     .filter(f => IMAGE.has(extname(f).toLowerCase()))
     .map(f => ({
-      name: basename(f, extname(f)).replace(/[-_]+/g, ' ').trim(),
+      // "Tardid - Virtual Philosophy School.png": the dashes become spaces,
+      // and the spaces already around them would otherwise stay as a gap.
+      name: basename(f, extname(f)).replace(/[-_]+/g, ' ').replace(/\s+/g, ' ').trim(),
       src: posix(join(dir, f))
     }));
 }
@@ -427,14 +431,13 @@ function entryBlocks(raw) {
  * Reads the CV/résumé content out of `about/resume.md`, a hand-maintained
  * companion to `about.md` — the two are kept apart so the short bio (read
  * by every visitor) doesn't get lost in the long, form-heavy resume data.
- * Returns null when the file is absent, so the page and its nav entry can
- * both stay out of the way until there is something to show.
+ * Takes the file's body; returns null when there is nothing in it, so the
+ * page and its nav entry can both stay out of the way until there is
+ * something to show.
  */
-function readResume(dir, all) {
-  const name = all.find(f => /^resume\.md$/i.test(f));
-  if (!name) return null;
+function readResume(body) {
+  if (!body) return null;
 
-  const { body } = frontMatter(read(join(dir, name)));
   const secs = rawSections(body);
 
   const experience = entryBlocks(secs.experience).map(({ meta, bullets }) => ({
@@ -483,6 +486,14 @@ function buildAbout(config) {
   const { data, body } = mdName ? frontMatter(read(join(dir, mdName))) : { data: {}, body: '' };
   const secs = sections(body);
 
+  // resume.md carries the CV data *and*, since it is the file that gets
+  // edited whenever the toolkit changes, the skill groups. about.md is still
+  // read as a fallback so a copy of the content that predates the move keeps
+  // rendering its skills.
+  const resumeName = all.find(f => /^resume\.md$/i.test(f));
+  const resumeBody = resumeName ? frontMatter(read(join(dir, resumeName))).body : '';
+  const resumeSkills = readSkills(resumeBody);
+
   const cvFile = all.find(f => /\.pdf$/i.test(f) && /^(cv|resume|resumé)\./i.test(f))
     || all.find(f => /\.pdf$/i.test(f));
 
@@ -509,9 +520,9 @@ function buildAbout(config) {
     caption: String(data.caption || config.name || '').toUpperCase(),
     headline: data.headline || '',
     paragraphs,
-    skills: readSkills(body),
+    skills: resumeSkills.length ? resumeSkills : readSkills(body),
     practice: secs.practice || null,
-    resume: readResume(dir, all),
+    resume: readResume(resumeBody),
     cv
   };
 }
@@ -522,6 +533,7 @@ function loadConfig() {
   const p = join(ROOT, 'site.config.json');
   const defaults = {
     name: '', role: '', email: '', links: {}, details: {},
+    url: '', brand: '', description: '', og_image: '',
     clients_lede: '', show_empty_categories: false
   };
   if (!existsSync(p)) return defaults;
@@ -530,6 +542,407 @@ function loadConfig() {
     console.error('site.config.json is not valid JSON — using defaults.\n ', err.message);
     return defaults;
   }
+}
+
+/* ── seo ──────────────────────────────────────────────────────────────── */
+
+/**
+ * index.html is one URL whose body is drawn entirely by JavaScript, so
+ * anything that does not run scripts — a social-card scraper, a crawler that
+ * skips rendering, a reader with scripting off — would see the boot screen
+ * and nothing else. The data that feeds the runtime is therefore written out
+ * three more ways: the <head> meta block, a plain-HTML copy of the site
+ * inside <noscript>, and schema.org structured data. index.html carries the
+ * SEO markers; everything between them is regenerated here on every build,
+ * so none of it is kept in step by hand.
+ *
+ * The email address is deliberately absent from all of it — see the note in
+ * site.config.json. It is the one thing on the page a scraper must not find.
+ */
+
+const SEO_HEAD = ['<!-- SEO:HEAD:START -->', '<!-- SEO:HEAD:END -->'];
+const SEO_BODY = ['<!-- SEO:BODY:START -->', '<!-- SEO:BODY:END -->'];
+
+/** Replaces what sits between a marker pair, leaving the markers in place. */
+function region(html, [open, close], inner) {
+  const a = html.indexOf(open);
+  const b = html.indexOf(close, a);
+  if (a < 0 || b < 0) throw new Error(`index.html is missing ${open} … ${close}`);
+  return html.slice(0, a + open.length) + '\n' + inner.trim() + '\n' + html.slice(b);
+}
+
+/**
+ * Pixel size of a PNG, JPEG or WebP, read from the header alone — the card
+ * scrapers render a placeholder of the right shape when they are told the
+ * dimensions up front, and guess (usually wrongly) when they are not.
+ * Returns null for anything it does not recognise, and the tags are dropped.
+ */
+function imageSize(p) {
+  let b;
+  try { b = readFileSync(p); } catch { return null; }
+
+  if (b.length > 24 && b.toString('latin1', 1, 4) === 'PNG') {
+    return { w: b.readUInt32BE(16), h: b.readUInt32BE(20) };
+  }
+
+  if (b.length > 4 && b[0] === 0xFF && b[1] === 0xD8) {
+    for (let i = 2; i + 9 < b.length;) {
+      if (b[i] !== 0xFF) { i++; continue; }
+      const marker = b[i + 1];
+      // SOF0–SOF15, minus the three that are not frame headers at all.
+      if (marker >= 0xC0 && marker <= 0xCF && ![0xC4, 0xC8, 0xCC].includes(marker)) {
+        return { w: b.readUInt16BE(i + 7), h: b.readUInt16BE(i + 5) };
+      }
+      i += 2 + b.readUInt16BE(i + 2);
+    }
+    return null;
+  }
+
+  if (b.length > 30 && b.toString('latin1', 0, 4) === 'RIFF' && b.toString('latin1', 8, 12) === 'WEBP') {
+    const chunk = b.toString('latin1', 12, 16);
+    // Every WebP flavour stores its size somewhere different, and all three
+    // are minus-one encoded except the lossy one.
+    if (chunk === 'VP8X') return { w: (b.readUIntLE(24, 3) & 0xFFFFFF) + 1, h: (b.readUIntLE(27, 3) & 0xFFFFFF) + 1 };
+    if (chunk === 'VP8 ') return { w: b.readUInt16LE(26) & 0x3FFF, h: b.readUInt16LE(28) & 0x3FFF };
+    if (chunk === 'VP8L') {
+      const n = b.readUInt32LE(21);
+      return { w: (n & 0x3FFF) + 1, h: ((n >> 14) & 0x3FFF) + 1 };
+    }
+  }
+
+  return null;
+}
+
+/** Strips tags out of the already-rendered bio HTML for use in plain text. */
+const plain = html => String(html || '')
+  .replace(/<[^>]*>/g, '')
+  .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"')
+  .replace(/\s+/g, ' ')
+  .trim();
+
+const OG_MIME = { '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.gif': 'image/gif' };
+
+/* WebP is deliberately absent: Telegram and WhatsApp will not render a WebP
+   preview, so a card in that format silently shows no image at all. */
+const mimeOf = p => OG_MIME[extname(String(p || '')).toLowerCase()] || '';
+
+const metaTag = (key, value, attr = 'name') =>
+  (value === '' || value == null ? '' : `<meta ${attr}="${key}" content="${escapeHtml(String(value))}">`);
+
+/** Drops the empties, so an unset config field leaves no blank tag behind. */
+const tags = (...lines) => lines.filter(Boolean).join('\n');
+
+function seoHead(config, content, abs) {
+  const title = [config.name, config.role].filter(Boolean).join(' — ');
+  const desc = config.description || plain((content.about.paragraphs || [])[0]);
+  const brand = config.brand || config.name;
+  const home = abs('');
+  const img = abs(config.og_image);
+  const size = config.og_image ? imageSize(join(ROOT, config.og_image)) : null;
+  const alt = [config.name, config.role].filter(Boolean).join(', ');
+
+  const identity = tags(
+    `<title>${escapeHtml(title)}</title>`,
+    metaTag('description', desc),
+    home ? `<link rel="canonical" href="${escapeHtml(home)}">` : '',
+    metaTag('author', config.name),
+    metaTag('application-name', brand),
+    metaTag('robots', 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'),
+    metaTag('color-scheme', 'dark light'),
+    '<meta name="theme-color" content="#070708" media="(prefers-color-scheme: dark)">',
+    '<meta name="theme-color" content="#edebe6" media="(prefers-color-scheme: light)">'
+  );
+
+  /* og:site_name is what a search engine reads the site's *brand* off, which
+     is why the title itself can stay the person's name and stop there. */
+  /* Everything a link preview is built from. The scrapers that matter here
+     are not browsers and do not run the page: Telegram, WhatsApp, LinkedIn,
+     Slack and Facebook each fetch the HTML, read this block, and stop — which
+     is why it sits at the very top of <head>, well inside the first few
+     hundred kilobytes WhatsApp's crawler bothers to read.
+
+     og:image has to be an absolute URL for all of them; the explicit width
+     and height are what get LinkedIn to draw the large card instead of the
+     small thumbnail; secure_url is what LinkedIn and Facebook look for over
+     https; and the type spares WhatsApp having to sniff the bytes. */
+  const openGraph = tags(
+    metaTag('og:type', 'website', 'property'),
+    metaTag('og:site_name', brand, 'property'),
+    metaTag('og:locale', 'en_US', 'property'),
+    metaTag('og:url', home, 'property'),
+    metaTag('og:title', title, 'property'),
+    metaTag('og:description', desc, 'property'),
+    metaTag('og:image', img, 'property'),
+    img && /^https:/i.test(img) ? metaTag('og:image:secure_url', img, 'property') : '',
+    img ? metaTag('og:image:type', mimeOf(config.og_image), 'property') : '',
+    size ? metaTag('og:image:width', size.w, 'property') : '',
+    size ? metaTag('og:image:height', size.h, 'property') : '',
+    img ? metaTag('og:image:alt', alt, 'property') : ''
+  );
+
+  const twitter = tags(
+    metaTag('twitter:card', img ? 'summary_large_image' : 'summary'),
+    metaTag('twitter:title', title),
+    metaTag('twitter:description', desc),
+    metaTag('twitter:image', img),
+    img ? metaTag('twitter:image:alt', alt) : ''
+  );
+
+  return [identity, openGraph, twitter].filter(Boolean).join('\n\n');
+}
+
+/* ── the no-script copy ───────────────────────────────────────────────── */
+
+/**
+ * A flat, styled-in-CSS rendering of everything the panels would show: the
+ * bio, the skill groups, every project under its field, the client list and
+ * the way out to the CV. It is the site as a document rather than as an
+ * instrument, and it is what a crawler that never runs the module reads.
+ */
+function seoNoscript(config, content, abs) {
+  const { site, about, clients, fields } = content;
+  const based = (site.details && (site.details['BASED IN'] || site.details['Based in'])) || '';
+
+  /* The document's <h1> is the name in the HUD, which without scripting is
+     stranded under the boot screen — so the copy repeats it in a <p> rather
+     than a second <h1>, and the heading outline stays as it should be. */
+  const head = `<p class="seo-name">${escapeHtml(site.name)}</p>\n`
+    + `<p class="seo-role">${escapeHtml([site.role, based].filter(Boolean).join(' · '))}</p>`;
+
+  // Already HTML — sections() ran the markdown through inline() on the way in.
+  const bio = (about.paragraphs || []).map(p => `<p>${p}</p>`).join('\n');
+
+  const skills = (about.skills || []).length
+    ? '<h2>Skills</h2>\n' + about.skills
+      .map(g => `<h3>${escapeHtml(g.label || 'SKILLS')}</h3>\n<p>${escapeHtml(g.items.join(', '))}</p>`)
+      .join('\n')
+    : '';
+
+  const work = fields.length
+    ? '<h2>Selected work</h2>\n' + fields.map(f => {
+      const items = f.works.map(w => {
+        const note = [w.self ? 'Self-initiated' : (w.clients && w.clients[0]) || w.c, w.y]
+          .filter(Boolean).join(', ');
+        const caption = escapeHtml([w.t, note].filter(Boolean).join(' — '));
+        const shot = w.img
+          ? `<img src="${escapeHtml(w.img)}" alt="${caption}" loading="lazy" decoding="async" width="240">`
+          : '';
+        return `<li>${shot}<span>${caption}</span></li>`;
+      }).join('\n');
+      return `<h3>${escapeHtml(f.key)} — ${escapeHtml(f.sub)}</h3>\n<ul class="seo-work">\n${items}\n</ul>`;
+    }).join('\n')
+    : '';
+
+  const logos = (clients.logos || []).length
+    ? '<h2>Clients</h2>\n<ul>' +
+      clients.logos.map(l => `<li>${escapeHtml(l.name)}</li>`).join('') + '</ul>'
+    : '';
+
+  /* Links only. The address is assembled in the browser and stays out of
+     every file that ships — a plain mailto here would undo all of that. */
+  const elsewhere = Object.entries(site.links || {});
+  const reach = '<h2>Contact</h2>\n' +
+    (elsewhere.length
+      ? '<ul>' + elsewhere.map(([k, v]) =>
+        `<li><a href="${escapeHtml(v)}" rel="me noopener">${escapeHtml(k)}</a></li>`).join('') + '</ul>'
+      : '') +
+    (about.cv ? `\n<p><a href="${escapeHtml(about.cv.src)}">Curriculum vitae (PDF)</a></p>` : '') +
+    '\n<p>Enable JavaScript for the interactive version of this site.</p>';
+
+  return '<noscript>\n<div class="seo">\n'
+    + [head, bio, skills, work, logos, reach].filter(Boolean).join('\n\n')
+    + '\n</div>\n</noscript>';
+}
+
+/* ── structured data ──────────────────────────────────────────────────── */
+
+/**
+ * One @graph rather than several loose blocks, so the person, the site, the
+ * page and the work all point at each other by @id instead of being restated.
+ */
+function seoJsonLd(config, content, abs) {
+  const { site, about, fields } = content;
+  const home = abs('');
+  const brand = config.brand || config.name;
+  const desc = config.description || plain((about.paragraphs || [])[0]);
+  const based = (site.details && site.details['BASED IN']) || '';
+  const [city, country] = based.split(',').map(s => s.trim());
+
+  const person = {
+    '@type': 'Person',
+    '@id': home + '#person',
+    name: config.name,
+    alternateName: brand,
+    url: home,
+    jobTitle: config.role,
+    description: plain((about.paragraphs || []).join(' ')) || desc,
+    knowsAbout: [
+      ...(about.skills || []).flatMap(g => g.items),
+      ...fields.map(f => f.key.toLowerCase())
+    ],
+    sameAs: Object.values(site.links || {})
+  };
+
+  if (about.portrait) person.image = abs(about.portrait);
+  if (city) person.address = { '@type': 'PostalAddress', addressLocality: city, addressCountry: country || undefined };
+
+  const schools = ((about.resume && about.resume.education) || [])
+    .map(e => e.school).filter(Boolean);
+  if (schools.length) {
+    person.alumniOf = [...new Set(schools)].map(name => ({ '@type': 'CollegeOrUniversity', name }));
+  }
+
+  // worksFor means *now*. A role that has already ended belongs in a graph
+  // that can carry dates, not in a flat list that reads as current, so only
+  // the open-ended ones are declared.
+  const employers = ((about.resume && about.resume.experience) || [])
+    .filter(e => /present|current|ongoing/i.test(e.dates))
+    .map(e => e.org.split('·')[0].trim())
+    .filter(Boolean);
+  if (employers.length) {
+    person.worksFor = [...new Set(employers)].map(name => ({ '@type': 'Organization', name }));
+  }
+
+  const website = {
+    '@type': 'WebSite',
+    '@id': home + '#website',
+    url: home,
+    name: brand,
+    alternateName: config.name,
+    description: desc,
+    inLanguage: 'en',
+    publisher: { '@id': home + '#person' }
+  };
+
+  const page = {
+    '@type': 'ProfilePage',
+    '@id': home + '#webpage',
+    url: home,
+    name: [config.name, config.role].filter(Boolean).join(' — '),
+    description: desc,
+    inLanguage: 'en',
+    isPartOf: { '@id': home + '#website' },
+    about: { '@id': home + '#person' },
+    mainEntity: { '@id': home + '#person' }
+  };
+  if (about.portrait) page.primaryImageOfPage = abs(about.portrait);
+
+  /* Every project as a work with a named creator — the part of the graph a
+     portfolio actually has to say out loud, since none of it is in the HTML. */
+  const works = fields.flatMap(f => f.works.map(w => {
+    const item = {
+      '@type': 'CreativeWork',
+      name: w.t,
+      genre: f.key.toLowerCase(),
+      creator: { '@id': home + '#person' },
+      url: home
+    };
+    if (w.y) item.dateCreated = w.y;
+    if (w.img) item.image = abs(w.img);
+    if (w.b) item.abstract = plain(w.b).slice(0, 300);
+    const client = (w.clients && w.clients[0]) || w.c;
+    if (client && !w.self) item.sourceOrganization = { '@type': 'Organization', name: client };
+    return item;
+  }));
+
+  const portfolio = works.length ? [{
+    '@type': 'ItemList',
+    '@id': home + '#work',
+    name: 'Selected work',
+    numberOfItems: works.length,
+    itemListElement: works.map((w, i) => ({ '@type': 'ListItem', position: i + 1, item: w }))
+  }] : [];
+
+  const graph = { '@context': 'https://schema.org', '@graph': [website, page, person, ...portfolio] };
+
+  // "</" anywhere inside the JSON would close the script tag early.
+  return '<script type="application/ld+json">\n'
+    + JSON.stringify(graph, null, 2).replace(/<\//g, '<\\/')
+    + '\n</script>';
+}
+
+/* ── robots and sitemap ───────────────────────────────────────────────── */
+
+function writeRobots(abs) {
+  const home = abs('');
+  const body = [
+    '# https://kiarad.space — one page, everything on it public.',
+    'User-agent: *',
+    'Allow: /',
+    '',
+    '# Nothing here for a crawler; they are build inputs and scratch space.',
+    'Disallow: /tools/',
+    ''
+  ];
+  if (home) body.push('Sitemap: ' + home + 'sitemap.xml', '');
+  writeFileSync(join(ROOT, 'robots.txt'), body.join('\n'));
+}
+
+/**
+ * One URL, and every piece of artwork on it declared as an image for that
+ * URL. A portfolio's covers and galleries are the thing worth finding, and
+ * a single-page site gives image search no other way to find them.
+ */
+function writeSitemap(content, abs) {
+  const home = abs('');
+  if (!home) return 0;
+
+  const seen = new Set();
+  const images = [];
+  for (const f of content.fields) {
+    for (const w of f.works) {
+      for (const src of [w.img, ...(w.gallery || [])]) {
+        if (!src || seen.has(src)) continue;
+        seen.add(src);
+        images.push({ loc: abs(src), title: `${w.t} — ${f.key.toLowerCase()}` });
+      }
+    }
+  }
+
+  const xml = [
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"',
+    '        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">',
+    '  <url>',
+    `    <loc>${escapeHtml(home)}</loc>`,
+    `    <lastmod>${content.generated.slice(0, 10)}</lastmod>`,
+    '    <changefreq>monthly</changefreq>',
+    '    <priority>1.0</priority>',
+    ...images.map(i =>
+      '    <image:image>\n' +
+      `      <image:loc>${escapeHtml(i.loc)}</image:loc>\n` +
+      `      <image:title>${escapeHtml(i.title)}</image:title>\n` +
+      '    </image:image>'),
+    '  </url>',
+    '</urlset>',
+    ''
+  ].join('\n');
+
+  writeFileSync(join(ROOT, 'sitemap.xml'), xml);
+  return images.length;
+}
+
+/** Rewrites both marked regions of index.html and writes robots + sitemap. */
+function writeSeo(config, content) {
+  const origin = String(config.url || '').replace(/\/+$/, '');
+  // encodeURI on the way out, so a filename with a space in it still yields
+  // a URL a validator will take.
+  const abs = p => (!origin ? ''
+    : !p ? origin + '/'
+    : /^https?:/i.test(p) ? p
+    : origin + '/' + encodeURI(String(p).replace(/^\/+/, '')));
+
+  const p = join(ROOT, 'index.html');
+  let html = read(p);
+  html = region(html, SEO_HEAD, seoHead(config, content, abs));
+  html = region(html, SEO_BODY, seoNoscript(config, content, abs) + '\n\n' + seoJsonLd(config, content, abs));
+  writeFileSync(p, html);
+
+  writeRobots(abs);
+  const images = writeSitemap(content, abs);
+
+  if (!origin) console.warn('  site.config.json has no "url" — canonical, sitemap and robots left incomplete.');
+  return images;
 }
 
 /* ── main ─────────────────────────────────────────────────────────────── */
@@ -556,11 +969,14 @@ const content = {
 
 writeFileSync(join(ROOT, 'content.json'), JSON.stringify(content, null, 2) + '\n');
 
+const indexed = writeSeo(config, content);
+
 const works = fields.reduce((n, f) => n + f.works.length, 0);
 console.log(
   `content.json written\n` +
   `  ${fields.length} categories, ${works} projects, ${clients.length} client logos\n` +
   `  cv: ${content.about.cv ? content.about.cv.src + ' (updated ' + content.about.cv.updated + ')' : 'none found'}\n` +
+  `  seo: index.html meta + JSON-LD, robots.txt, sitemap.xml (${indexed} images)\n` +
   `  models: ${models.primary || 'model/' + MODEL_PRIMARY + ' MISSING'}` +
   ` + ${models.alts.length} to morph into${models.alts.length ? ' (' + models.alts.join(', ') + ')' : ''}`
 );

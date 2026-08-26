@@ -3,10 +3,54 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Kiarash Farahmandrad — multi-disciplinary designer</title>
+
+<!-- Everything between the SEO markers — here and again in the body — is
+     written by tools/build-content.mjs out of site.config.json and whatever
+     is sitting in projects/, clients/ and about/. Edit those and run
+     `npm run build`; anything typed in between the markers by hand is
+     overwritten on the next run. -->
+<!-- SEO:HEAD:START -->
+<title>Kiarash Farahmandrad — Multi-disciplinary designer</title>
+<meta name="description" content="Kiarash Farahmandrad is a multi-disciplinary designer in Tehran working across logo and identity design, posters, 3D, XR and motion. Selected work, clients and CV.">
+<link rel="canonical" href="https://kiarad.space/">
+<meta name="author" content="Kiarash Farahmandrad">
+<meta name="application-name" content="Kiarad Space">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#070708" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#edebe6" media="(prefers-color-scheme: light)">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Kiarad Space">
+<meta property="og:locale" content="en_US">
+<meta property="og:url" content="https://kiarad.space/">
+<meta property="og:title" content="Kiarash Farahmandrad — Multi-disciplinary designer">
+<meta property="og:description" content="Kiarash Farahmandrad is a multi-disciplinary designer in Tehran working across logo and identity design, posters, 3D, XR and motion. Selected work, clients and CV.">
+<meta property="og:image" content="https://kiarad.space/og.png">
+<meta property="og:image:secure_url" content="https://kiarad.space/og.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Kiarash Farahmandrad, Multi-disciplinary designer">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Kiarash Farahmandrad — Multi-disciplinary designer">
+<meta name="twitter:description" content="Kiarash Farahmandrad is a multi-disciplinary designer in Tehran working across logo and identity design, posters, 3D, XR and motion. Selected work, clients and CV.">
+<meta name="twitter:image" content="https://kiarad.space/og.png">
+<meta name="twitter:image:alt" content="Kiarash Farahmandrad, Multi-disciplinary designer">
+<!-- SEO:HEAD:END -->
+
+<link rel="icon" href="favicon.png" type="image/png" sizes="270x270">
+<link rel="apple-touch-icon" href="favicon.png">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700&family=Azeret+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+
+<!-- three.js is fetched from unpkg the moment the module graph resolves, and
+     the connection costs a DNS lookup plus a TLS handshake the page would
+     otherwise pay for only after parsing. Warm it while the CSS is in flight. -->
+<link rel="preconnect" href="https://unpkg.com" crossorigin>
 <style>
   :root{
     --void:#070708;
@@ -466,6 +510,34 @@
   .boot-s{display:flex;justify-content:space-between;color:var(--dim)}
   .boot-s b{font-weight:400;color:var(--ice)}
 
+  /* ── no-script fallback ───────────────────────────────
+     Without the module nothing ever clears the boot screen, so the noscript
+     copy — which tools/build-content.mjs writes from the same content.json
+     the panels are built from — has to sit above it and bring its own
+     scrolling back, the page body being overflow:hidden by design. */
+  .seo{position:fixed;inset:0;z-index:20;overflow-y:auto;
+    background:var(--void);color:var(--ice);
+    padding:48px 24px 72px;max-width:760px;margin:0 auto;
+    font-size:14px;line-height:1.7}
+  .seo .seo-name{font-size:13px;font-weight:600;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--ice);margin-bottom:4px}
+  .seo h2{font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--ice);margin:40px 0 4px;padding-top:16px;border-top:1px solid var(--hair)}
+  .seo h3{font-family:'Azeret Mono',ui-monospace,monospace;font-size:9px;font-weight:400;
+    letter-spacing:.24em;color:var(--dim);margin:20px 0 6px}
+  .seo p{margin:0 0 14px;color:var(--mute)}
+  .seo .seo-role{font-family:'Azeret Mono',ui-monospace,monospace;font-size:9.5px;
+    letter-spacing:.24em;text-transform:uppercase;color:var(--dim);margin-bottom:28px}
+  .seo a{color:var(--ice);text-decoration:underline;text-underline-offset:3px}
+  .seo ul{margin:0 0 14px;padding-left:18px;color:var(--mute)}
+  .seo li{margin:0 0 6px}
+  .seo-work{list-style:none;padding:0;display:grid;gap:18px;
+    grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}
+  .seo-work li{margin:0}
+  .seo-work img{display:block;width:100%;height:auto;border:1px solid var(--hair);margin-bottom:6px}
+  .seo-work span{font-family:'Azeret Mono',ui-monospace,monospace;font-size:9px;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+
   /* ── lightbox ─────────────────────────────────────── */
   .lens{position:fixed;inset:0;z-index:12;display:flex;align-items:center;justify-content:center;
     touch-action:none;opacity:0;visibility:hidden;transition:opacity .3s ease,visibility .3s}
@@ -663,7 +735,7 @@
     <div class="mark">
       <span class="mark-id">KF</span>
       <span>
-        <span class="mark-name">KIARASH FARAHMANDRAD</span>
+        <h1 class="mark-name">KIARASH FARAHMANDRAD</h1>
         <span class="mark-sub">MULTI-DISCIPLINARY DESIGNER</span>
       </span>
     </div>
@@ -697,7 +769,7 @@
 
 <div class="boot" id="boot">
   <div class="boot-in">
-    <span class="boot-t">KF SYSTEM</span>
+    <span class="boot-t">KIARAD SPACE</span>
     <div class="boot-bar"><i id="bootfill"></i></div>
     <span class="boot-s"><span id="bootmsg">INITIALIZING</span><b id="bootpct">00</b></span>
   </div>
@@ -3341,5 +3413,543 @@ fetch('content.json', { cache: 'no-cache' })
       '(<code>npx serve</code>) rather than opening the file directly.</p>' } };
   });
 </script>
+<!-- SEO:BODY:START -->
+<noscript>
+<div class="seo">
+<p class="seo-name">Kiarash Farahmandrad</p>
+<p class="seo-role">Multi-disciplinary designer · Tehran, Iran</p>
+
+<p>I work across identity, typography, 3D, motion, and digital experiences, moving between mediums to find the right form for an idea. I'm interested in the space where disciplines overlap, where a graphic can become an object, a typeface can become an environment, and a visual identity can become something you can interact with. Most things start as an experiment, and usually end somewhere no one expects.</p>
+
+<h2>Skills</h2>
+<h3>DISCIPLINES</h3>
+<p>Logo Design, Poster Design, 3D Design, UI/UX Design, XR Experience Design</p>
+<h3>SOFTWARE</h3>
+<p>Adobe Photoshop, Adobe Illustrator, Adobe InDesign, Adobe Premiere Pro, Adobe After Effects, Figma, Blender 3D, Cinema 4D</p>
+<h3>ALSO</h3>
+<p>Creative Coding, AI Visualization, Photography, Teaching</p>
+
+<h2>Selected work</h2>
+<h3>LOGOS — MARKS &amp; IDENTITY</h3>
+<ul class="seo-work">
+<li><img src="projects/01-logos/gravitas+/cover.webp" alt="GRAVITAS+ — Gravitas+, 2026" loading="lazy" decoding="async" width="240"><span>GRAVITAS+ — Gravitas+, 2026</span></li>
+<li><img src="projects/01-logos/archa/cover.webp" alt="ARCHA — Archa, 2025" loading="lazy" decoding="async" width="240"><span>ARCHA — Archa, 2025</span></li>
+<li><img src="projects/01-logos/latentspace/cover.webp" alt="LATENT SPACE — Latent Space, 2024" loading="lazy" decoding="async" width="240"><span>LATENT SPACE — Latent Space, 2024</span></li>
+<li><img src="projects/01-logos/mokhtarzade/cover.webp" alt="MOKHTARZADE — Mokhtarzade Construction Company, 2024" loading="lazy" decoding="async" width="240"><span>MOKHTARZADE — Mokhtarzade Construction Company, 2024</span></li>
+<li><img src="projects/01-logos/rushin/cover.webp" alt="RUSHIN — Rushin, 2024" loading="lazy" decoding="async" width="240"><span>RUSHIN — Rushin, 2024</span></li>
+<li><img src="projects/01-logos/xense/cover.webp" alt="XENSE — Xense, 2024" loading="lazy" decoding="async" width="240"><span>XENSE — Xense, 2024</span></li>
+<li><img src="projects/01-logos/aethera/cover.webp" alt="AETHERA PHARMACEUTICALS — Aethera Pharmaceuticals, 2023" loading="lazy" decoding="async" width="240"><span>AETHERA PHARMACEUTICALS — Aethera Pharmaceuticals, 2023</span></li>
+<li><img src="projects/01-logos/troid/Cover.webp" alt="TROID — Troid, 2023" loading="lazy" decoding="async" width="240"><span>TROID — Troid, 2023</span></li>
+<li><img src="projects/01-logos/upzone/cover.webp" alt="UPZONE — UpZone, 2023" loading="lazy" decoding="async" width="240"><span>UPZONE — UpZone, 2023</span></li>
+<li><img src="projects/01-logos/willow/cover.webp" alt="WILLOW — Willow Beauty Products, 2023" loading="lazy" decoding="async" width="240"><span>WILLOW — Willow Beauty Products, 2023</span></li>
+<li><img src="projects/01-logos/threeptych/cover.webp" alt="THREEPTYCH DESIGN STUDIO — Threeptych, 2022" loading="lazy" decoding="async" width="240"><span>THREEPTYCH DESIGN STUDIO — Threeptych, 2022</span></li>
+<li><img src="projects/01-logos/molko/cover.webp" alt="MOLKO — Molko, 2021" loading="lazy" decoding="async" width="240"><span>MOLKO — Molko, 2021</span></li>
+</ul>
+<h3>POSTERS — PRINT &amp; EDITORIAL</h3>
+<ul class="seo-work">
+<li><img src="projects/02-posters/divar-hackathon2025/cover.webp" alt="DIVAR'S HACKATHON 2025 — Divar, 2025" loading="lazy" decoding="async" width="240"><span>DIVAR'S HACKATHON 2025 — Divar, 2025</span></li>
+<li><img src="projects/02-posters/divar-yalda2025/cover.webp" alt="DIVAR'S YALDA 2024 — Divar, 2024" loading="lazy" decoding="async" width="240"><span>DIVAR'S YALDA 2024 — Divar, 2024</span></li>
+<li><img src="projects/02-posters/rushin-workshops/cover.webp" alt="RUSHIN WORKSHOPS — Rushin, 2024" loading="lazy" decoding="async" width="240"><span>RUSHIN WORKSHOPS — Rushin, 2024</span></li>
+</ul>
+<h3>SPATIAL — 3D &amp; XR</h3>
+<ul class="seo-work">
+<li><img src="projects/03-spatial/appear/cover.webp" alt="APPEAR — Children's Capital of Culture, 2025" loading="lazy" decoding="async" width="240"><span>APPEAR — Children's Capital of Culture, 2025</span></li>
+<li><img src="projects/03-spatial/threads/cover.webp" alt="3D THREADS LOGO — Self-initiated, 2023" loading="lazy" decoding="async" width="240"><span>3D THREADS LOGO — Self-initiated, 2023</span></li>
+</ul>
+<h3>MOTION — TIME &amp; SEQUENCE</h3>
+<ul class="seo-work">
+<li><span>GRAVITAS+ — Gravitas+, 2026</span></li>
+<li><span>RUSHIN — Rushin, 2024</span></li>
+</ul>
+
+<h2>Clients</h2>
+<ul><li>Divar</li><li>Nodet</li><li>Snapp Group</li><li>Tardid Virtual Philosophy School</li><li>Tehran University</li></ul>
+
+<h2>Contact</h2>
+<ul><li><a href="https://www.linkedin.com/in/kia-rad/" rel="me noopener">LINKEDIN</a></li><li><a href="https://letterboxd.com/kia_rad/" rel="me noopener">LETTERBOXD</a></li></ul>
+<p><a href="about/cv.pdf">Curriculum vitae (PDF)</a></p>
+<p>Enable JavaScript for the interactive version of this site.</p>
+</div>
+</noscript>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://kiarad.space/#website",
+      "url": "https://kiarad.space/",
+      "name": "Kiarad Space",
+      "alternateName": "Kiarash Farahmandrad",
+      "description": "Kiarash Farahmandrad is a multi-disciplinary designer in Tehran working across logo and identity design, posters, 3D, XR and motion. Selected work, clients and CV.",
+      "inLanguage": "en",
+      "publisher": {
+        "@id": "https://kiarad.space/#person"
+      }
+    },
+    {
+      "@type": "ProfilePage",
+      "@id": "https://kiarad.space/#webpage",
+      "url": "https://kiarad.space/",
+      "name": "Kiarash Farahmandrad — Multi-disciplinary designer",
+      "description": "Kiarash Farahmandrad is a multi-disciplinary designer in Tehran working across logo and identity design, posters, 3D, XR and motion. Selected work, clients and CV.",
+      "inLanguage": "en",
+      "isPartOf": {
+        "@id": "https://kiarad.space/#website"
+      },
+      "about": {
+        "@id": "https://kiarad.space/#person"
+      },
+      "mainEntity": {
+        "@id": "https://kiarad.space/#person"
+      },
+      "primaryImageOfPage": "https://kiarad.space/about/me.jpg"
+    },
+    {
+      "@type": "Person",
+      "@id": "https://kiarad.space/#person",
+      "name": "Kiarash Farahmandrad",
+      "alternateName": "Kiarad Space",
+      "url": "https://kiarad.space/",
+      "jobTitle": "Multi-disciplinary designer",
+      "description": "I work across identity, typography, 3D, motion, and digital experiences, moving between mediums to find the right form for an idea. I'm interested in the space where disciplines overlap, where a graphic can become an object, a typeface can become an environment, and a visual identity can become something you can interact with. Most things start as an experiment, and usually end somewhere no one expects.",
+      "knowsAbout": [
+        "Logo Design",
+        "Poster Design",
+        "3D Design",
+        "UI/UX Design",
+        "XR Experience Design",
+        "Adobe Photoshop",
+        "Adobe Illustrator",
+        "Adobe InDesign",
+        "Adobe Premiere Pro",
+        "Adobe After Effects",
+        "Figma",
+        "Blender 3D",
+        "Cinema 4D",
+        "Creative Coding",
+        "AI Visualization",
+        "Photography",
+        "Teaching",
+        "logos",
+        "posters",
+        "spatial",
+        "motion"
+      ],
+      "sameAs": [
+        "https://www.linkedin.com/in/kia-rad/",
+        "https://letterboxd.com/kia_rad/"
+      ],
+      "image": "https://kiarad.space/about/me.jpg",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Tehran",
+        "addressCountry": "Iran"
+      },
+      "alumniOf": [
+        {
+          "@type": "CollegeOrUniversity",
+          "name": "Tarbiat Modares University"
+        }
+      ],
+      "worksFor": [
+        {
+          "@type": "Organization",
+          "name": "Snapp Group"
+        },
+        {
+          "@type": "Organization",
+          "name": "Divar"
+        }
+      ]
+    },
+    {
+      "@type": "ItemList",
+      "@id": "https://kiarad.space/#work",
+      "name": "Selected work",
+      "numberOfItems": 19,
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "item": {
+            "@type": "CreativeWork",
+            "name": "GRAVITAS+",
+            "genre": "logos",
+            "creator": {
+              "@id": "https://kiarad.space/#person"
+            },
+            "url": "https://kiarad.space/",
+            "dateCreated": "2026",
+            "image": "https://kiarad.space/projects/01-logos/gravitas+/cover.webp",
+            "abstract": "Gravitas+ is a YouTube channel and website dedicated to educational and analytical content at the intersection of computational skills, physics, and modern scientific thought. The platform aims to make complex concepts accessible while maintaining intellectual depth and rigor. The visual identity wa",
+            "sourceOrganization": {
+              "@type": "Organization",
+              "name": "Gravitas+"
+            }
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "item": {
+            "@type": "CreativeWork",
+            "name": "ARCHA",
+            "genre": "logos",
+            "creator": {
+              "@id": "https://kiarad.space/#person"
+            },
+            "url": "https://kiarad.space/",
+            "dateCreated": "2025",
+            "image": "https://kiarad.space/projects/01-logos/archa/cover.webp",
+            "abstract": "Archa is a construction company focused on building and developing urban spaces. The brand identity was developed to communicate ideas of progress, reliability, construction, and long-term growth.",
+            "sourceOrganization": {
+              "@type": "Organization",
+              "name": "Archa"
+            }
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "item": {
+            "@type": "CreativeWork",
+            "name": "LATENT SPACE",
+            "genre": "logos",
+            "creator": {
+              "@id": "https://kiarad.space/#person"
+            },
+            "url": "https://kiarad.space/",
+            "dateCreated": "2024",
+            "image": "https://kiarad.space/projects/01-logos/latentspace/cover.webp",
+            "abstract": "Latent Space is a technology-driven company specializing in advanced AI solutions, data visualization, and predictive analytics. The project focused on developing a visual identity that reflects the brand's approach to uncovering hidden insights, navigating complex datasets, and enabling new possibi",
+            "sourceOrganization": {
+              "@type": "Organization",
+              "name": "Latent Space"
+            }
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "item": {
+            "@type": "CreativeWork",
+            "name": "MOKHTARZADE",
+            "genre": "logos",
+            "creator": {
+              "@id": "https://kiarad.space/#person"
+            },
+            "url": "https://kiarad.space/",
+            "dateCreated": "2024",
+            "image": "https://kiarad.space/projects/01-logos/mokhtarzade/cover.webp",
+            "abstract": "Mokhtarzade is a construction company branding project, developed as a flexible identity system for use across both digital and architectural applications. The identity was designed for social media as well as physical applications throughout buildings, including metal doors, glass surfaces, stone, ",
+            "sourceOrganization": {
+              "@type": "Organization",
+              "name": "Mokhtarzade Construction Company"
+            }
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "item": {
+            "@type": "CreativeWork",
+            "name": "RUSHIN",
+            "genre": "logos",
+            "creator": {
+              "@id": "https://kiarad.space/#person"
+            },
+            "url": "https://kiarad.space/",
+            "dateCreated": "2024",
+            "image": "https://kiarad.space/projects/01-logos/rushin/cover.webp",
+            "abstract": "Rushin is an educational and research-focused event platform designed to support academic and intellectual development through workshops, courses, field visits, camps, and hands-on learning experiences. The visual identity explores the connection between the human mind, nature, and generative system",
+            "sourceOrganization": {
+              "@type": "Organization",
+              "name": "Rushin"
+            }
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 6,
+          "item": {
+            "@type": "CreativeWork",
+            "name": "XENSE",
+            "genre": "logos",
+            "creator": {
+              "@id": "https://kiarad.space/#person"
+            },
+            "url": "https://kiarad.space/",
+            "dateCreated": "2024",
+            "image": "https://kiarad.space/projects/01-logos/xense/cover.webp",
+            "abstract": "Xense is a Canadian company focused on the development and production of biosensors for the detection and measurement of target substances. Its technologies have applications across fields including medicine, agriculture, and industrial wastewater treatment, bringing sensing and measurement technolo",
+            "sourceOrganization": {
+              "@type": "Organization",
+              "name": "Xense"
+            }
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 7,
+          "item": {
+            "@type": "CreativeWork",
+            "name": "AETHERA PHARMACEUTICALS",
+            "genre": "logos",
+            "creator": {
+              "@id": "https://kiarad.space/#person"
+            },
+            "url": "https://kiarad.space/",
+            "dateCreated": "2023",
+            "image": "https://kiarad.space/projects/01-logos/aethera/cover.webp",
+            "abstract": "Aethera Pharmaceuticals is a pharmaceutical company focused on improving human health through innovation, integrity, and transparency. The brand aims to build trust through forward-thinking healthcare solutions while maintaining a strong commitment to patients and ethical practices.",
+            "sourceOrganization": {
+              "@type": "Organization",
+              "name": "Aethera Pharmaceuticals"
+            }
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 8,
+          "item": {
+            "@type": "CreativeWork",
+            "name": "TROID",
+            "genre": "logos",
+            "creator": {
+              "@id": "https://kiarad.space/#person"
+            },
+            "url": "https://kiarad.space/",
+            "dateCreated": "2023",
+            "image": "https://kiarad.space/projects/01-logos/troid/Cover.webp",
+            "abstract": "Troid was a gaming platform focused on buying and selling video games across console and PC platforms. Alongside its online store, the brand also developed content around gaming culture through YouTube and Instagram, including reviews, analysis, and other video content related to the world of games.",
+            "sourceOrganization": {
+              "@type": "Organization",
+              "name": "Troid"
+            }
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 9,
+          "item": {
+            "@type": "CreativeWork",
+            "name": "UPZONE",
+            "genre": "logos",
+            "creator": {
+              "@id": "https://kiarad.space/#person"
+            },
+            "url": "https://kiarad.space/",
+            "dateCreated": "2023",
+            "image": "https://kiarad.space/projects/01-logos/upzone/cover.webp",
+            "abstract": "UpZone is an interior architecture and design platform that helps clients design, renovate, and transform their homes. The service provides interior design and renovation solutions through its website, helping users improve their living spaces with professional guidance.",
+            "sourceOrganization": {
+              "@type": "Organization",
+              "name": "UpZone"
+            }
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 10,
+          "item": {
+            "@type": "CreativeWork",
+            "name": "WILLOW",
+            "genre": "logos",
+            "creator": {
+              "@id": "https://kiarad.space/#person"
+            },
+            "url": "https://kiarad.space/",
+            "dateCreated": "2023",
+            "image": "https://kiarad.space/projects/01-logos/willow/cover.webp",
+            "abstract": "Willow is a beauty brand dedicated to natural, plant-based skincare. The brand's ethos centers on the idea that true beauty comes from nature, with products crafted using sustainable botanical ingredients to nourish and enhance the skin. The visual identity was developed to reflect Willow's natural,",
+            "sourceOrganization": {
+              "@type": "Organization",
+              "name": "Willow Beauty Products"
+            }
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 11,
+          "item": {
+            "@type": "CreativeWork",
+            "name": "THREEPTYCH DESIGN STUDIO",
+            "genre": "logos",
+            "creator": {
+              "@id": "https://kiarad.space/#person"
+            },
+            "url": "https://kiarad.space/",
+            "dateCreated": "2022",
+            "image": "https://kiarad.space/projects/01-logos/threeptych/cover.webp",
+            "abstract": "Threeptych Design Studio is a design studio focused on developing creative visual solutions across different disciplines.",
+            "sourceOrganization": {
+              "@type": "Organization",
+              "name": "Threeptych"
+            }
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 12,
+          "item": {
+            "@type": "CreativeWork",
+            "name": "MOLKO",
+            "genre": "logos",
+            "creator": {
+              "@id": "https://kiarad.space/#person"
+            },
+            "url": "https://kiarad.space/",
+            "dateCreated": "2021",
+            "image": "https://kiarad.space/projects/01-logos/molko/cover.webp",
+            "abstract": "Molko is an educational website focused on chemistry, created to make chemistry-related knowledge and learning resources more accessible through a digital platform.",
+            "sourceOrganization": {
+              "@type": "Organization",
+              "name": "Molko"
+            }
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 13,
+          "item": {
+            "@type": "CreativeWork",
+            "name": "DIVAR'S HACKATHON 2025",
+            "genre": "posters",
+            "creator": {
+              "@id": "https://kiarad.space/#person"
+            },
+            "url": "https://kiarad.space/",
+            "dateCreated": "2025",
+            "image": "https://kiarad.space/projects/02-posters/divar-hackathon2025/cover.webp",
+            "abstract": "Divar Hackathon 2025 was an event organized by Divar, bringing together participants to collaborate, experiment, and develop solutions around real-world challenges. The main theme of this edition was security, with participants working intensively throughout the hackathon to explore ideas and build ",
+            "sourceOrganization": {
+              "@type": "Organization",
+              "name": "Divar"
+            }
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 14,
+          "item": {
+            "@type": "CreativeWork",
+            "name": "DIVAR'S YALDA 2024",
+            "genre": "posters",
+            "creator": {
+              "@id": "https://kiarad.space/#person"
+            },
+            "url": "https://kiarad.space/",
+            "dateCreated": "2024",
+            "image": "https://kiarad.space/projects/02-posters/divar-yalda2025/cover.webp",
+            "abstract": "Divar Yalda is an internal celebration organized for Divar employees around Yalda Night, one of the most important Iranian cultural traditions. The event brings together the team to celebrate Yalda Night.",
+            "sourceOrganization": {
+              "@type": "Organization",
+              "name": "Divar"
+            }
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 15,
+          "item": {
+            "@type": "CreativeWork",
+            "name": "RUSHIN WORKSHOPS",
+            "genre": "posters",
+            "creator": {
+              "@id": "https://kiarad.space/#person"
+            },
+            "url": "https://kiarad.space/",
+            "dateCreated": "2024",
+            "image": "https://kiarad.space/projects/02-posters/rushin-workshops/cover.webp",
+            "abstract": "Rushin Workshops is a series of educational and scientific workshops designed for students, covering different subjects and hands-on learning experiences. Each workshop introduces participants to a specific scientific field through practical activities, experiments, and exploration.",
+            "sourceOrganization": {
+              "@type": "Organization",
+              "name": "Rushin"
+            }
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 16,
+          "item": {
+            "@type": "CreativeWork",
+            "name": "APPEAR",
+            "genre": "spatial",
+            "creator": {
+              "@id": "https://kiarad.space/#person"
+            },
+            "url": "https://kiarad.space/",
+            "dateCreated": "2025",
+            "image": "https://kiarad.space/projects/03-spatial/appear/cover.webp",
+            "abstract": "AppeaR is a location-based augmented reality experience that brings the creativity of children and young people across Rotherham, UK, into public space. Drawings, crafts, stories, and music created during a two-year workshop program were transformed into interactive AR experiences, allowing visitors",
+            "sourceOrganization": {
+              "@type": "Organization",
+              "name": "Children's Capital of Culture"
+            }
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 17,
+          "item": {
+            "@type": "CreativeWork",
+            "name": "3D THREADS LOGO",
+            "genre": "spatial",
+            "creator": {
+              "@id": "https://kiarad.space/#person"
+            },
+            "url": "https://kiarad.space/",
+            "dateCreated": "2023",
+            "image": "https://kiarad.space/projects/03-spatial/threads/cover.webp",
+            "abstract": "3D Threads Logo is a self-initiated exploration of the Threads logo through a three-dimensional approach. The project investigates how an existing digital brand mark can be reinterpreted as a physical-looking 3D object while incorporating elements of Instagram's visual language."
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 18,
+          "item": {
+            "@type": "CreativeWork",
+            "name": "GRAVITAS+",
+            "genre": "motion",
+            "creator": {
+              "@id": "https://kiarad.space/#person"
+            },
+            "url": "https://kiarad.space/",
+            "dateCreated": "2026",
+            "abstract": "Gravitas+ is a YouTube channel and website dedicated to educational and analytical content at the intersection of computational skills, physics, and modern scientific thought. The platform aims to make complex concepts accessible while maintaining intellectual depth and rigor. The visual identity wa",
+            "sourceOrganization": {
+              "@type": "Organization",
+              "name": "Gravitas+"
+            }
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 19,
+          "item": {
+            "@type": "CreativeWork",
+            "name": "RUSHIN",
+            "genre": "motion",
+            "creator": {
+              "@id": "https://kiarad.space/#person"
+            },
+            "url": "https://kiarad.space/",
+            "dateCreated": "2024",
+            "abstract": "Rushin is an educational and research-focused event platform designed to support academic and intellectual development through workshops, courses, field visits, camps, and hands-on learning experiences. The visual identity explores the connection between the human mind, nature, and generative system",
+            "sourceOrganization": {
+              "@type": "Organization",
+              "name": "Rushin"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- SEO:BODY:END -->
+
 </body>
 </html>

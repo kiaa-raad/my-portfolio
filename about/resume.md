@@ -23,6 +23,12 @@ Graphic Design Teacher | Allameh Helli 1 High School · Part-time | Sep 2021 –
 Master of Arts, Visual Communication | Tarbiat Modares University | 2020 – 2023 · GPA 4.00/4.00 | https://en.modares.ac.ir/ | Tarbiat Modares.png
 - MA Thesis: "Investigating Typography Features in AR/VR Environments (A Case Study of Selected Persian Typefaces)" — accompanied by a practical project, "Designing Twelve Posters Using 3D Typography."
 
+## Skills
+
+Disciplines: Logo Design, Poster Design, 3D Design, UI/UX Design, XR Experience Design
+Software: Adobe Photoshop, Adobe Illustrator, Adobe InDesign, Adobe Premiere Pro, Adobe After Effects, Figma, Blender 3D, Cinema 4D
+Also: Creative Coding, AI Visualization, Photography, Teaching
+
 ## Certifications
 
 Packaging Design | Inverse School | Dec 2024 | -
@@ -49,4 +55,4 @@ Persian | Native | -
 Email: k.farahmandrad@gmail.com
 Phone: +98 919 335 4762
 LinkedIn: https://www.linkedin.com/in/kia-rad/
-Website: https://kiaa-raad.github.io/my-portfolio/
+Portfolio: https://kiarad.space/

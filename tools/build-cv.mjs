@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Builds about/cv.pdf from about/resume.md + about/about.md.
+ * Builds about/cv.pdf from about/resume.md.
  *
  * The resume markdown stays the single source of truth: edit it, re-run this,
  * and the PDF follows. Rendering goes through headless Chrome, which is what
@@ -50,10 +50,10 @@ function entries(body) {
   return out;
 }
 
-/** "Disciplines: a, b, c" lines under the ## Skills heading of about.md. */
+/** "Disciplines: a, b, c" lines under the ## Skills heading of resume.md. */
 function skills(body) {
   const out = [];
-  for (const line of (sections(body).skills || '').split(/\r?\n/)) {
+  for (const line of (body || '').split(/\r?\n/)) {
     const m = /^([^:]{1,30}):\s*(.+)$/.exec(line.trim());
     if (m) out.push({ label: m[1].trim().toUpperCase(), items: m[2].split(',').map(s => s.trim()).filter(Boolean) });
   }
@@ -70,7 +70,7 @@ const pretty = u => String(u || '').replace(/^https?:\/\//, '').replace(/^www\./
 const ICON = {
   email: '<path d="M2.6 5.6h18.8v12.8H2.6z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/><path d="M2.6 6.3 12 13.2l9.4-6.9" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>',
   phone: '<path d="M6.2 2.9h3.1l1.6 4.1-2.1 1.6a12.4 12.4 0 0 0 6.6 6.6l1.6-2.1 4.1 1.6v3.1a2.1 2.1 0 0 1-2.3 2.1A18.6 18.6 0 0 1 4.1 5.2a2.1 2.1 0 0 1 2.1-2.3z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/>',
-  website: '<circle cx="12" cy="12" r="9.2" fill="none" stroke="currentColor" stroke-width="1.9"/><ellipse cx="12" cy="12" rx="3.9" ry="9.2" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M3.4 9h17.2M3.4 15h17.2" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>',
+  portfolio: '<circle cx="12" cy="12" r="9.2" fill="none" stroke="currentColor" stroke-width="1.9"/><ellipse cx="12" cy="12" rx="3.9" ry="9.2" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M3.4 9h17.2M3.4 15h17.2" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>',
   linkedin: '<path d="M4.6 8.9h3.3V21H4.6zM6.25 3a2.05 2.05 0 1 1 0 4.1 2.05 2.05 0 0 1 0-4.1zM10.4 8.9h3.16v1.65h.05c.44-.83 1.52-1.71 3.13-1.71 3.35 0 3.97 2.2 3.97 5.07V21h-3.3v-5.32c0-1.27-.02-2.9-1.77-2.9-1.77 0-2.04 1.38-2.04 2.81V21h-3.3z" fill="currentColor"/>'
 };
 
@@ -199,8 +199,6 @@ const lines = list => list.map(({ meta }) => {
 
 function build() {
   const resume = sections(read(join(ROOT, 'about', 'resume.md')));
-  const about = read(join(ROOT, 'about', 'about.md')).replace(/^---[\s\S]*?\r?\n---\r?\n/, '');
-
   const experience = entries(resume.experience);
   const education = entries(resume.education);
 
@@ -215,12 +213,20 @@ function build() {
 
   const config = JSON.parse(read(join(ROOT, 'site.config.json')));
 
-  /* The four channels, each with an icon — the panel the reader must not miss. */
+  /* "Website" names an address; "Portfolio" names the work waiting at it —
+     older resumes wrote the former, so both keys are read. */
+  const portfolio = contact.portfolio || contact.website;
+
+  /* The four channels, each with an icon — the panel the reader must not miss.
+     Ordered by what the reader is meant to do first: see the work, then the
+     professional record behind it, and only then the two ways to reply. The
+     panel is a two-column grid filling row by row, so this reads
+     portfolio / linkedin across the top and email / phone underneath. */
   const channels = [
+    ['portfolio', 'PORTFOLIO', pretty(portfolio), portfolio],
+    ['linkedin', 'LINKEDIN', pretty(contact.linkedin), contact.linkedin],
     ['email', 'EMAIL', contact.email, 'mailto:' + contact.email],
-    ['phone', 'PHONE', contact.phone, 'tel:' + String(contact.phone || '').replace(/[^\d+]/g, '')],
-    ['website', 'WEBSITE', pretty(contact.website), contact.website],
-    ['linkedin', 'LINKEDIN', pretty(contact.linkedin), contact.linkedin]
+    ['phone', 'PHONE', contact.phone, 'tel:' + String(contact.phone || '').replace(/[^\d+]/g, '')]
   ].filter(c => c[2]);
 
   const panel = `<div class="contact">${channels.map(([k, label, value, href]) =>
@@ -233,7 +239,7 @@ function build() {
     + bullets.map(b => `<div class="note">${esc(b)}</div>`).join('')
   ).join('');
 
-  const skillsHtml = skills(about).map(({ label, items }) =>
+  const skillsHtml = skills(resume.skills).map(({ label, items }) =>
     `<div class="skill"><div class="skill-lbl">${esc(label)}</div>`
     + `<div class="tags">${items.map(i => `<span class="tag">${esc(i)}</span>`).join('')}</div></div>`
   ).join('');

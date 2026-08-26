@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-25T21:20:53.497Z",
+  "generated": "2026-08-26T13:02:08.917Z",
   "site": {
     "name": "Kiarash Farahmandrad",
     "role": "Multi-disciplinary designer",
@@ -203,13 +203,13 @@
         "email": "k.farahmandrad@gmail.com",
         "phone": "+98 919 335 4762",
         "linkedin": "https://www.linkedin.com/in/kia-rad/",
-        "website": "https://kiaa-raad.github.io/my-portfolio/"
+        "portfolio": "https://kiarad.space/"
       }
     },
     "cv": {
       "src": "about/cv.pdf",
-      "hash": "60e6734b",
-      "updated": "2026-08-25",
+      "hash": "5a069889",
+      "updated": "2026-08-26",
       "size": "131 KB"
     }
   },
@@ -229,7 +229,7 @@
         "src": "clients/Snapp Group.png"
       },
       {
-        "name": "Tardid   Virtual Philosophy School",
+        "name": "Tardid Virtual Philosophy School",
         "src": "clients/Tardid - Virtual Philosophy School.png"
       },
       {
