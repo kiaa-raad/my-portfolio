@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-26T21:23:21.315Z",
+  "generated": "2026-08-27T12:45:20.500Z",
   "site": {
     "name": "Kiarash Farahmandrad",
     "role": "Multi-disciplinary designer",
@@ -182,11 +182,9 @@
       ],
       "languages": [
         {
-          "name": "English",
+          "name": "English — Academic IELTS 7.5 (Listening 8.0, Reading 9.0, Writing 6.5, Speaking 7.0)",
           "level": "Full professional proficiency",
-          "bullets": [
-            "Academic IELTS 7.5 — Listening 8.0, Reading 9.0, Writing 6.5, Speaking 7.0"
-          ]
+          "bullets": []
         },
         {
           "name": "French",
@@ -208,9 +206,9 @@
     },
     "cv": {
       "src": "about/cv.pdf",
-      "hash": "e2ba08c6",
-      "updated": "2026-08-26",
-      "size": "131 KB"
+      "hash": "b7faa2dc",
+      "updated": "2026-08-27",
+      "size": "130 KB"
     }
   },
   "clients": {
@@ -309,7 +307,7 @@
         "year": "2023"
       },
       {
-        "name": "THREEPTYCH",
+        "name": "THREEPTYCH STUDIO",
         "scope": "CREATIVE DIRECTION",
         "year": "2022"
       },
@@ -691,8 +689,8 @@
           "a": "I developed the logo and visual identity around the number “3”. The numeral is divided into three distinct sections, following the proportions and visual logic of traditional triptych paintings. The resulting mark creates a direct connection between the studio's name and the history of three-panel compositions, while providing a simple and recognizable visual system that can be extended across the studio's identity and applications.",
           "credit": null,
           "clients": [
-            "Threeptych",
-            "Threeptych Studio"
+            "Threeptych Studio",
+            "Threeptych"
           ],
           "roles": [
             "Creative Direction",
