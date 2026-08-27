@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-27T12:45:20.500Z",
+  "generated": "2026-08-27T16:06:14.906Z",
   "site": {
     "name": "Kiarash Farahmandrad",
     "role": "Multi-disciplinary designer",
@@ -670,7 +670,7 @@
         {
           "slug": "threeptych",
           "t": "THREEPTYCH STUDIO",
-          "c": "",
+          "c": "Threeptych Studio",
           "y": "2022",
           "r": "Creative Director & Designer",
           "img": "projects/01-logos/threeptych/cover.webp",
@@ -688,10 +688,6 @@
           "b": "Threeptych Design Studio is a design studio focused on developing creative visual solutions across different disciplines.",
           "a": "I developed the logo and visual identity around the number “3”. The numeral is divided into three distinct sections, following the proportions and visual logic of traditional triptych paintings. The resulting mark creates a direct connection between the studio's name and the history of three-panel compositions, while providing a simple and recognizable visual system that can be extended across the studio's identity and applications.",
           "credit": null,
-          "clients": [
-            "Threeptych Studio",
-            "Threeptych"
-          ],
           "roles": [
             "Creative Direction",
             "Logo Design",

@@ -243,6 +243,16 @@
   .readout span{display:flex;gap:10px}
   .readout b{font-weight:400;color:var(--dim);min-width:66px}
   .readout em{font-style:normal}
+  /* how far the hold has got. It only exists while a hand is on the clay, so
+     the line below the model is a readout at rest and an instrument in use */
+  .cure{align-self:center;width:58px;height:3px;background:var(--hair);
+        border:1px solid var(--hair);opacity:0;transition:opacity .28s ease;
+        overflow:hidden;flex:0 0 auto}
+  .cure.on{opacity:1}
+  .cure u{display:block;height:100%;width:100%;text-decoration:none;
+          background:var(--mute);transform:scaleX(0);transform-origin:left center}
+  .cure.done u{background:var(--key)}
+  .cure.done{border-color:var(--line)}
   .tail{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
   .tools{display:flex;align-items:center;gap:8px}
   .hud .tgl{display:flex;align-items:center;gap:7px;color:var(--mute);background:var(--plate);
@@ -789,7 +799,7 @@
 
   <footer class="bot">
     <div class="readout">
-      <span><b>MATERIAL</b><em id="material">GOO / UNSET</em></span>
+      <span><b>FORM</b><em id="material">UNSET</em><i class="cure" id="cure" aria-hidden="true"><u id="curefill"></u></i></span>
       <span><b>PRACTICE</b><em id="practice">LOGOS / POSTERS / SPATIAL / MOTION</em></span>
       <span><b>RENDER</b><em id="fps">--</em> FPS</span>
     </div>
@@ -1591,8 +1601,14 @@ const SHAPES = [
 
   /* A convex polyhedron, but taken over a soft max of its face planes rather
      than a hard one, so the edges carry a real bevel instead of being knife
-     edges that the shading then has to apologise for. */
-  { key:'FACET', nsmooth:NSM(1), rf:d => 1 / Math.max(0.05, smaxDot(d, D_ICO20, 0.075)) },
+     edges that the shading then has to apologise for. The bevel is kept just
+     inside a vertex spacing — narrow enough that the edge reads as an edge,
+     wide enough that the mesh still has somewhere to put it — and the shape
+     takes its normals raw. The averaging pass was spreading over the ring
+     around each vertex, which on a form read entirely by its edges is the
+     one place it costs more than it gives; a coarse mesh has always run this
+     shape with no pass at all, and it is the crisper of the two. */
+  { key:'FACET', nsmooth:NSM(0), rf:d => 1 / Math.max(0.05, smaxDot(d, D_ICO20, 0.050)) },
 
   /* Fluted, like a melon — the one shape here whose relief runs in lines
      rather than in points, which is what makes it read as its own thing next
@@ -1942,13 +1958,27 @@ const bootfill = document.getElementById('bootfill');
 const bootpct = document.getElementById('bootpct');
 
 /* ── working the clay ─────────────────────────────────────────────────────
-   Press and it sets; let go and it slumps. Both are the same spring run with
-   different weights — stiff and lightly damped on the way in, so the shape
-   arrives with a snap and overshoots a hair before it settles; slack and
-   heavy on the way out, so it sags rather than springs. A tap is just a very
-   short press, and MIN_HOLD is what stops one being over before it has been
-   seen. */
-const MIN_HOLD = 1.15;
+   Press and hold and it sets; let go and it slumps. Both are the same spring
+   run with different weights — stiff and lightly damped on the way in, so the
+   shape arrives with a snap and overshoots a hair before it settles; slack and
+   heavy on the way out, so it sags rather than springs.
+
+   The hold is the whole gesture, and it is reversible: setting is metered by
+   how long the hand stays down, so a hand lifted halfway takes the form back
+   down to goo with it and nothing is left standing. Only a hold that runs the
+   full FORM_HOLD earns the shape, and once earned the shape keeps — it has
+   cured, and only the next press works it again. A tap now does nothing but
+   dimple the surface, which is the point: the form has to be committed to. */
+const FORM_HOLD = 0.70;          // unbroken contact needed to set a shape
+const CURE_UNDO = 3.0;           // how fast an abandoned hold gives it back
+const SET_DWELL = 0.85;          // how long a cured shape stands after release
+const RESUME_MIN = 0.11;         // above this much form left, a press picks it up
+const RISE_P = 0.60, RISE_A = 0.86;   // the shape of the ramp, shared with the
+                                      // inverse below so a resumed hold starts
+                                      // exactly where the eye left the form
+let dwell = 0;                   // ticking through that
+let holdT = 0;                   // how much of FORM_HOLD has been earned
+let formed = false;              // the shape has taken and stays taken
 
 let shapeIx = -1, pressed = false;
 
@@ -1975,11 +2005,13 @@ function bagDraw(bag, n, last){
 const shapeBag = [];
 let lastDrawn = -1;
 let flatNow = 0;                    // whether this shape wants hard facets
-let setV = 0, setVel = 0, holding = false, pressAt = 0, landed = false;
+let setV = 0, setVel = 0, holding = false, landed = false;
 let pending = -1;                   // a shape waiting for the surface to clear
 let scriptTimer = null;
 const matOut = document.getElementById('material');
-let matState = '';
+const cureEl = document.getElementById('cure');
+const cureFill = document.getElementById('curefill');
+let matState = '', cureShown = -1, cureOn = false, cureDone = false;
 
 function applyShape(i){
   const S = shapeData(i);
@@ -2006,18 +2038,42 @@ function applyShape(i){
    of the way first, quickly, and takes the new shape on the way up. It reads
    as the piece collapsing under the hand before being worked again, which is
    what clay would actually do. */
-function startForm(){
+/* A hand that comes back while the form is still on its way down is not
+   asking for another shape, it is reaching for the one it just watched start
+   to go — so the shape stays, the verb stays, and the hold picks up at
+   whatever is still standing rather than at zero. That is the inverse of the
+   ramp: solve the curve for the set the eye can currently see, and the meter
+   continues from there with no jump in it. It makes no difference whether the
+   hold that put it there ran out of patience or ran all the way to cured;
+   what decides is only how much form is left to catch. Below RESUME_MIN there
+   is none — the lump is goo again, and a press there draws the next shape the
+   way it always did. */
+function resumeForm(){
+  if(shapeIx < 0 || pending >= 0 || setV <= RESUME_MIN) return false;
+  holding = true;
+  pressed = true;
+  landed = false;
+  formed = false;
+  clearTimeout(scriptTimer);
+  holdT = Math.min(FORM_HOLD, Math.pow(Math.min(1, setV/RISE_A), 1/RISE_P) * FORM_HOLD);
+  morphSound();
+  return true;
+}
+
+function startForm(resumeOk){
   if(!ready || !SHAPES.length) return;
+  if(resumeOk && resumeForm()) return;
   const want = bagDraw(shapeBag, SHAPES.length, lastDrawn);
   lastDrawn = want;
   stepVerb();
   holding = true;
   pressed = true;
   landed = false;
+  formed = false;               // whatever was standing is being worked again
+  holdT = 0;
   clearTimeout(scriptTimer);
   if(setV < 0.15 && applyShape(want)){
     pending = -1;
-    pressAt = performance.now();
   }else{
     pending = want;             // taken as soon as the surface is clear
   }
@@ -2038,7 +2094,8 @@ document.addEventListener('visibilitychange', ()=>{ if(document.hidden) endForm(
 function startMorph(){
   if(!ready) return;
   startForm();
-  scriptTimer = setTimeout(()=>{ holding = false; }, 1700);
+  // the script has to outlast a full cure or the mark would collapse unformed
+  scriptTimer = setTimeout(()=>{ holding = false; }, FORM_HOLD*1000 + 420);
 }
 
 function stepMorph(dt){
@@ -2049,13 +2106,34 @@ function stepMorph(dt){
   // an ordinary release, so the collapse reads as intent rather than delay
   if(pending >= 0 && setV < 0.12 && applyShape(pending)){
     pending = -1;
-    pressAt = performance.now();      // the hold is counted from here, so a
-  }                                   // tap during a slump still gets its shape
-  const hold = pending < 0 &&
-    (holding || (pressAt > 0 && performance.now() - pressAt < MIN_HOLD*1000));
-  const goal = hold ? 1 : 0;
-  const stiff = goal ? 46 : (pending >= 0 ? 40 : 16);
-  const damp  = goal ? 10.5 : (pending >= 0 ? 13 : 7.4);
+    holdT = 0;                        // the hold is counted from here, so the
+  }                                   // collapse never eats into the new shape
+
+  /* The meter, and everything downstream of it. Contact adds to it in real
+     time; letting go takes it back faster than it went on, so an abandoned
+     hold unwinds visibly rather than just stopping. It is only banked at the
+     top — that is the one moment the form stops being reversible. */
+  const working = holding && pending < 0;
+  if(working) holdT = Math.min(FORM_HOLD, holdT + dt);
+  else if(!formed) holdT = Math.max(0, holdT - dt*CURE_UNDO);
+  if(holdT >= FORM_HOLD && !formed){ formed = true; }
+  // a shape that has cured stands on its own for a while — the reward for
+  // holding on is time with the form, not a form that never lets go
+  if(formed && !working){
+    dwell += dt;
+    if(dwell > SET_DWELL){ formed = false; holdT = 0; }
+  }else dwell = 0;
+  const cure = formed ? 1 : holdT / FORM_HOLD;
+
+  // the last stretch is held back so the shape still arrives with a snap
+  // instead of merely finishing the ramp it was already on
+  // eased rather than linear: the form leaves the goo promptly so the hold
+  // never feels like waiting, and the ramp flattens out near the top where
+  // the meter is doing the talking anyway
+  const goal = formed ? 1 : Math.pow(cure, RISE_P) * RISE_A;
+  const rising = working || formed;
+  const stiff = rising ? 46 : (pending >= 0 ? 40 : 16);
+  const damp  = rising ? 10.5 : (pending >= 0 ? 13 : 7.4);
   setVel += ((goal - setV)*stiff - setVel*damp) * dt;
   setV += setVel * dt;
   if(setV < -0.05){ setV = -0.05; setVel = 0; }
@@ -2073,12 +2151,35 @@ function stepMorph(dt){
 
   // the readout says what the clay is doing, in the same register as the
   // frame rate beside it — unset, being worked, or holding a shape
-  const state = setV < 0.06 ? 'GOO / UNSET'
-              : setV > 0.86 ? 'GOO / SET — ' + (SHAPES[shapeIx] ? SHAPES[shapeIx].key : 'FORM')
-              : 'GOO / WORKING';
+  // the same word the tag under the hand is showing, so the readout and the
+  // cursor are narrating one gesture, not two — and it carries the tense of
+  // the moment: the act while the hold is running, the act finished once the
+  // shape is standing, with the shape itself named at that point and only
+  // that point, because until then there is nothing there to name
+  const verb = verbIx >= 0 ? VERBS[verbIx] : null;
+  const state = formed && setV > 0.86
+                  ? (verb ? past(verb) : 'SET') + ': ' +
+                    (SHAPES[shapeIx] ? SHAPES[shapeIx].key : 'FORM')
+              : working || holdT > 0.001 ? (verb ? ing(verb) : 'FORMING')
+              : setV < 0.06 ? 'UNSET'
+              : 'RELAXING';
   if(state !== matState){
     matState = state;
     if(matOut) matOut.textContent = state;
+  }
+
+  /* and the same number as a line, because a hold has to show its own cost
+     while it is being paid — a bar that fills under the thumb is the only
+     thing telling a first-time hand that staying down is what makes the
+     shape, and that lifting off now would spend the whole of it back. */
+  if(cureEl){
+    const show = cure > 0.001 && !(formed && dwell > 0.3);
+    if(show !== cureOn){ cureOn = show; cureEl.classList.toggle('on', show); }
+    if(formed !== cureDone){ cureDone = formed; cureEl.classList.toggle('done', formed); }
+    if(show && Math.abs(cure - cureShown) > 0.004){
+      cureShown = cure;
+      cureFill.style.transform = 'scaleX(' + cure.toFixed(3) + ')';
+    }
   }
 }
 
@@ -3325,6 +3426,16 @@ const VERBS = ['MORPH','TRANSFORM','RESHAPE','EVOLVE','REFINE',
 let verbIx = -1;
 const verbBag = [];
 
+/* The tag under the hand names the act about to happen, so it stays an
+   imperative; the readout is describing the act while it runs, so it takes
+   the participle. Every verb in the list ends either in a consonant or a
+   silent e, which is the whole of the rule needed here. */
+const ing = w => w.replace(/E$/, '') + 'ING';
+/* and the same word again once the thing is done. The -ed is as regular as
+   the -ing was, bar the one strong verb in the list, which is spelt out. */
+const PAST = { BUILD:'BUILT' };
+const past = w => PAST[w] || w + (w.endsWith('E') ? 'D' : 'ED');
+
 // the verbs are drawn the same way as the shapes, and for the same reason —
 // so the tag is not a list being read out in order, and so no press ever
 // repeats the word the one before it used
@@ -3447,7 +3558,7 @@ addEventListener('pointerdown', e=>{
     hoverForm = true;
     dismissCue();
     strikeAt(hit);
-    startForm();
+    startForm(true);
     syncTag();
     refreshExplore();
   }
