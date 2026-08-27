@@ -45,8 +45,7 @@ Editor & Layout Designer | Namaye Nazdik Magazine — Cinema & Photography | Oct
 
 ## Languages
 
-English | Full professional proficiency | -
-- Academic IELTS 7.5 — Listening 8.0, Reading 9.0, Writing 6.5, Speaking 7.0
+English — Academic IELTS 7.5 (Listening 8.0, Reading 9.0, Writing 6.5, Speaking 7.0) | Full professional proficiency | -
 French | Elementary proficiency | -
 Persian | Native | -
 
