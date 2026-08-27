@@ -1495,6 +1495,19 @@ function smax(a, b, k){
    can resolve. This is that spacing, in the same units the radii are in. */
 const VSPACE = 2.2 / Math.pow(2, DETAIL);      // ≈ mean angle between vertices
 
+/* A coarse mesh has twice the spacing, so a fillet held at the same multiple
+   of it comes out twice as wide in the world — which is why the studs read
+   soft on a phone and crisp on a desktop. The floor is a couple of spacings,
+   not three, so on a coarse mesh the multipliers are pulled back to just
+   above that floor rather than scaled up in full. */
+const KSCALE = DETAIL >= 5 ? 1 : 0.72;
+
+/* One pass of normal averaging spreads over a vertex's ring of neighbours,
+   so on a coarse mesh it covers twice the angle and rounds off the very edges
+   it was only meant to de-band. Shapes that are read by their edges drop a
+   pass per level of detail lost rather than inherit a fatter one. */
+const NSM = p => Math.max(0, p - (5 - DETAIL));
+
 // the closest two directions in a set come — what decides how fat a feature
 // can be grown on each of them before its neighbour runs into it
 function minSep(S){
@@ -1579,7 +1592,7 @@ const SHAPES = [
   /* A convex polyhedron, but taken over a soft max of its face planes rather
      than a hard one, so the edges carry a real bevel instead of being knife
      edges that the shading then has to apologise for. */
-  { key:'FACET', rf:d => 1 / Math.max(0.05, smaxDot(d, D_ICO20, 0.075)) },
+  { key:'FACET', nsmooth:NSM(1), rf:d => 1 / Math.max(0.05, smaxDot(d, D_ICO20, 0.075)) },
 
   /* Fluted, like a melon — the one shape here whose relief runs in lines
      rather than in points, which is what makes it read as its own thing next
@@ -1609,14 +1622,14 @@ const SHAPES = [
      the faces of an icosahedron, so every neighbour is exactly the same
      distance away, and the radius is then clamped to whatever leaves a real
      gap at that separation. No pair can run into another. */
-  { key:'STUD', nsmooth:2, rf:(function(){
+  { key:'STUD', nsmooth:NSM(2), rf:(function(){
       const S = D_ICO20, base = 0.86, H = 1.26;
       /* The side wall of a cylinder is close to edge-on from the centre of
          the ball, which is the worst case for a radial mesh — few vertices
          land on it and any error there is magnified. Keeping the studs short
          and their fillets fat is what takes the banding off them. */
-      const KR = VSPACE*3.0;        // the rim, where cap meets side
-      const KF = VSPACE*3.8;        // the foot, where the stud meets the ball
+      const KR = VSPACE*3.0*KSCALE; // the rim, where cap meets side
+      const KF = VSPACE*3.8*KSCALE; // the foot, where the stud meets the ball
       /* What can actually collide is the cylinders themselves, and that is a
          question about angles: two studs are clear of each other as long as
          the half-angle each subtends is under half the angle between their
