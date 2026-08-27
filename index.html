@@ -668,8 +668,12 @@
     .tools{order:1;justify-content:space-between}
     .readout{order:2}
     .rights{order:3}
+    /* label and value read as one pair here rather than as a padded column —
+       there is only the one row left by this width, so the column the label
+       was holding open for the rows above it has nothing left to align to */
     .readout{font-size:8px;gap:4px}
-    .readout b{min-width:58px}
+    .readout span{gap:12px}
+    .readout b{min-width:0}
     .readout span:nth-child(2){display:none}
 
     /* the ring flattens into a strip you can thumb through */
