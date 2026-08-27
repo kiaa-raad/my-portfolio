@@ -2097,10 +2097,6 @@ function sizeDust(){}
 // everything here is synthesised in the browser — no audio files, nothing streamed.
 // nothing is armed until the visitor actually interacts.
 let actx = null, soundOn = true, started = false;
-// when the first press lands there is no audio graph yet to play it on — the
-// unlock is still resolving — so the sound that press should have made is held
-// here rather than dropped, and fired the moment the graph exists
-let pendingBoop = 0;
 let master = null, ambientBus = null, sfxBus = null, verb = null, startedAt = 0;
 let chordTimer = null, bellTimer = null, chordIx = 0;
 const AMB = 0.17;
@@ -2136,9 +2132,7 @@ const BELLS = [440.00, 523.25, 587.33, 659.25, 783.99, 880.00, 1046.50];
 function scheduleChord(first){
   const ac = ctx(), t = ac.currentTime;
   const notes = CHORDS[chordIx++ % CHORDS.length];
-  // the first chord is the one a visitor hears as the answer to their touch,
-  // so it opens quickly; every chord after it is atmosphere and can drift in
-  const dur = 17, fade = first ? 0.4 : 4.0, out = 5.0;
+  const dur = 17, fade = first ? 1.6 : 4.0, out = 5.0;
   notes.forEach((f, i)=>{
     for(let u=0; u<2; u++){
       const o = ac.createOscillator();
@@ -2235,26 +2229,9 @@ function buildAudio(){
     chordTimer = setInterval(scheduleChord, 15000);
     setTimeout(scheduleBell, 1500);
 
-    // A time constant of 0.35 is roughly a second to reach full, which is
-    // longer than the press that started it — the bed was still on its way up
-    // as the finger came off, so the sound read as a response to the release
-    // rather than to the touch. At 0.07 it is there in about two tenths, still
-    // a fade rather than a click.
-    master.gain.setTargetAtTime(soundOn ? 1 : 0, ac.currentTime, 0.07);
+    // short fade — the bed is audible almost immediately
+    master.gain.setTargetAtTime(soundOn ? 1 : 0, ac.currentTime, 0.35);
   }catch(e){ started = false; }
-  // The press that got us here still owes the visitor a sound, and `holding` is
-  // the honest test of whether it is still owed: if the finger has not come off
-  // yet the gesture is still happening, however long the unlock took, and on an
-  // old phone the first press can block the main thread for well over a second
-  // before the audio graph exists — a fixed freshness window throws the sound
-  // away on exactly the devices that took the longest to get there. The window
-  // is kept only for the case where the hand is already gone, so that an unlock
-  // arriving late reads as an answer to the touch rather than a stray noise.
-  if(started && pendingBoop && (holding || performance.now() - pendingBoop < 1000)){
-    pendingBoop = 0;
-    boop();
-  }
-  pendingBoop = 0;
   paintSound();
   syncTag();
   refreshExplore();
@@ -2308,13 +2285,7 @@ function duck(){
 }
 
 function boop(){
-  if(!soundOn) return;
-  if(!started){
-    // the press that unlocks the audio is the one press guaranteed to fall in
-    // this gap. Returning here is what made the very first touch silent.
-    pendingBoop = performance.now();
-    return;
-  }
+  if(!soundOn || !started) return;
   try{
     const ac = ctx(), t = ac.currentTime;
     const d = 1 + (Math.random() - 0.5) * 0.05;
