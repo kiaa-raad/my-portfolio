@@ -2268,7 +2268,10 @@ function startAudio(){
     });
     let n = 0;
     audioWatch = setInterval(()=>{
-      if(tryBuild() || ++n > 40){ clearInterval(audioWatch); audioWatch = null; }
+      // six seconds rather than the two and a half this used to run for: a
+      // press-and-hold is measured in seconds, and giving up while the finger
+      // is still down is what left the gesture looking like it had failed
+      if(tryBuild() || ++n > 100){ clearInterval(audioWatch); audioWatch = null; }
     }, 60);
   }
 }
@@ -2592,16 +2595,22 @@ function setActive(i){
    retires it for the rest of the session. Nothing repeats it, because by then
    the hand has already done the thing it was asking for. */
 const cue = document.getElementById('cue');
-let cueDone = !coarse, cueLive = false, cueTimer = null;
+let cueDone = !coarse, cueLive = false, bootDone = false;
 
 function syncCue(){
   if(cueDone) return;
   if(!cueLive){
-    // holding it back until the intro has settled — a line of type arriving
-    // over a form that is still assembling reads as part of the loading
-    if(!ready || cueTimer) return;
-    cueTimer = setTimeout(()=>{ cueLive = true; syncCue(); }, 1400);
-    return;
+    // The sentence belongs to the page, not to the loading screen. `ready` is
+    // only the moment the form finished building, and the overlay stays up and
+    // keeps counting for a good while after it — so waiting on `ready` put the
+    // instruction on screen over the top of the loader often enough to read as
+    // a bug, and the 1400ms that was meant to keep it clear was a guess at a
+    // duration nobody controls. It waits for the overlay to start clearing
+    // instead, then fades in on its own half-second against the boot's
+    // six-tenths, which lands it with the rest of the interface rather than
+    // trailing in behind it.
+    if(!bootDone) return;
+    cueLive = true;
   }
   cue.style.left = (VX + VW/2) + 'px';
   cue.style.top  = (VY + cueY) + 'px';
@@ -2612,7 +2621,6 @@ function syncCue(){
 function dismissCue(){
   if(cueDone) return;
   cueDone = true;
-  clearTimeout(cueTimer);
   cue.classList.remove('on');
 }
 
@@ -3396,6 +3404,14 @@ let tilt = 0, tiltV = 0, grab = null;
 addEventListener('touchstart', startAudio, { passive:true });
 addEventListener('mousedown', startAudio);
 addEventListener('click', startAudio);
+// and again when the hand comes off. This is the press-and-hold case: if the
+// unlock does not take at touchstart — which on older iOS is common enough to
+// plan for — the only thing still trying is the watch below, and a hold that
+// outlasts it ends in silence with no gesture left to retry on. The release is
+// a fresh user activation and the last one this gesture will produce, so it
+// gets its own attempt. Both are no-ops once audio is actually running.
+addEventListener('touchend', startAudio, { passive:true });
+addEventListener('pointerup', startAudio);
 
 addEventListener('pointerdown', e=>{
   // unlock audio on the very first touch contact anywhere on the page —
@@ -3650,6 +3666,8 @@ function frame(now){
       first = false;
       bootmsg.textContent = 'READY';
       boot.classList.add('gone');
+      // the one moment the interface arrives; the cue is part of it
+      bootDone = true; syncCue();
       setTimeout(()=>boot.remove(), 900);
     }
   }
