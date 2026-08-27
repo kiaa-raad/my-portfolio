@@ -51,7 +51,6 @@ Persian | Native | -
 
 ## Contact
 
-Email: k.farahmandrad@gmail.com
-Phone: +98 919 335 4762
+Email: kiarad.space@gmail.com
 LinkedIn: https://www.linkedin.com/in/kia-rad/
 Portfolio: https://kiarad.space/
