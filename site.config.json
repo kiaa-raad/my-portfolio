@@ -11,7 +11,7 @@
 
   "_email_note": "Split into parts on purpose. The full address is never written out in any file the browser downloads, so scrapers that grep for user@host.tld find nothing. index.html reassembles it at runtime.",
   "email": {
-    "user": "k.farahmandrad",
+    "user": "kiarad.space",
     "domain": "gmail",
     "tld": "com"
   },

@@ -1,10 +1,10 @@
 {
-  "generated": "2026-08-27T16:06:14.906Z",
+  "generated": "2026-08-27T16:37:57.868Z",
   "site": {
     "name": "Kiarash Farahmandrad",
     "role": "Multi-disciplinary designer",
     "email": {
-      "user": "k.farahmandrad",
+      "user": "kiarad.space",
       "domain": "gmail",
       "tld": "com"
     },
@@ -198,17 +198,16 @@
         }
       ],
       "contact": {
-        "email": "k.farahmandrad@gmail.com",
-        "phone": "+98 919 335 4762",
+        "email": "kiarad.space@gmail.com",
         "linkedin": "https://www.linkedin.com/in/kia-rad/",
         "portfolio": "https://kiarad.space/"
       }
     },
     "cv": {
       "src": "about/cv.pdf",
-      "hash": "b7faa2dc",
+      "hash": "e0b17ff4",
       "updated": "2026-08-27",
-      "size": "130 KB"
+      "size": "128 KB"
     }
   },
   "clients": {
