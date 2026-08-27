@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-27T22:15:47.965Z",
+  "generated": "2026-08-27T22:22:23.299Z",
   "site": {
     "name": "Kiarash Farahmandrad",
     "role": "Multi-disciplinary designer",
@@ -205,9 +205,9 @@
     },
     "cv": {
       "src": "about/cv.pdf",
-      "hash": "e0b17ff4",
+      "hash": "2fe98872",
       "updated": "2026-08-27",
-      "size": "128 KB"
+      "size": "127 KB"
     }
   },
   "clients": {
@@ -832,7 +832,7 @@
           "tag": "XR / AUGMENTED REALITY / 2025",
           "lb": "OVERVIEW",
           "la": "CONTRIBUTION",
-          "b": "AppeaR is a location-based augmented reality experience that brings the creativity of children and young people across Rotherham, UK, into public space. Drawings, crafts, stories, and music created during a two-year workshop program were transformed into interactive AR experiences, allowing visitors to explore the city through a new generation's perspective.",
+          "b": "<a href=\"https://apps.apple.com/ar/app/appear-app/id6743809751\" target=\"_blank\" rel=\"noopener\" data-tag=\"APPEAR\">AppeaR</a> is a location-based augmented reality experience that brings the creativity of children and young people across Rotherham, UK, into public space. Drawings, crafts, stories, and music created during a two-year workshop program were transformed into interactive AR experiences, allowing visitors to explore the city through a new generation's perspective.",
           "a": "As a 3D Artist, I was responsible for creating and optimizing real-time assets for the AR experience. The work focused on translating children's artwork into engaging three-dimensional content while maintaining visual clarity and performance for mobile AR.",
           "credit": "Project developed under the art direction of <a href=\"https://www.instagram.com/seyyedebrahimi/\" target=\"_blank\" rel=\"noopener\" data-tag=\"MOSTAFA SEYYED EBRAHIMI\">Mostafa Seyyed Ebrahimi</a> at <a href=\"https://deeez.co/\" target=\"_blank\" rel=\"noopener\" data-tag=\"DEEEZ\">DEEEZ</a> design studio.",
           "clients": [
