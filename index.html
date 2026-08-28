@@ -1964,18 +1964,26 @@ const bootpct = document.getElementById('bootpct');
 /* ── working the clay ─────────────────────────────────────────────────────
    Press and hold and it sets; let go and it slumps. Both are the same spring
    run with different weights — stiff and lightly damped on the way in, so the
-   shape arrives with a snap and overshoots a hair before it settles; slack and
-   heavy on the way out, so it sags rather than springs.
+   shape arrives with a snap and overshoots a hair before it settles; a shade
+   softer but just past critical on the way out, so the release drops promptly
+   and lands without bouncing — a hand that has lifted off should not have to
+   wait out a sag before the clay can be worked again.
 
    The hold is the whole gesture, and it is reversible: setting is metered by
    how long the hand stays down, so a hand lifted halfway takes the form back
    down to goo with it and nothing is left standing. Only a hold that runs the
    full FORM_HOLD earns the shape, and once earned the shape keeps — it has
    cured, and only the next press works it again. A tap now does nothing but
-   dimple the surface, which is the point: the form has to be committed to. */
+   dimple the surface, which is the point: the form has to be committed to.
+
+   An abandoned hold costs nothing but the hold: the next press offers the
+   same shape again, from the top. Seeing what comes next is the reward for
+   staying down, so only a cured hold moves the bag along — otherwise letting
+   go early would be answered with a fresh shape, and the one the hand walked
+   away from would never be seen standing. */
 const FORM_HOLD = 0.70;          // unbroken contact needed to set a shape
-const CURE_UNDO = 3.0;           // how fast an abandoned hold gives it back
-const SET_DWELL = 0.85;          // how long a cured shape stands after release
+const CURE_UNDO = 6.0;           // how fast an abandoned hold gives it back
+const SET_DWELL = 0.50;          // how long a cured shape stands after release
 const RESUME_MIN = 0.11;         // above this much form left, a press picks it up
 const RISE_P = 0.60, RISE_A = 0.86;   // the shape of the ramp, shared with the
                                       // inverse below so a resumed hold starts
@@ -1983,6 +1991,8 @@ const RISE_P = 0.60, RISE_A = 0.86;   // the shape of the ramp, shared with the
 let dwell = 0;                   // ticking through that
 let holdT = 0;                   // how much of FORM_HOLD has been earned
 let formed = false;              // the shape has taken and stays taken
+let cured = true;                // the last hold ran its course, so the next
+                                 // press is owed a shape it has not seen
 
 let shapeIx = -1, pressed = false;
 
@@ -2054,6 +2064,7 @@ function applyShape(i){
    way it always did. */
 function resumeForm(){
   if(shapeIx < 0 || pending >= 0 || setV <= RESUME_MIN) return false;
+  cured = false;                // a fresh hold, whatever the last one earned
   holding = true;
   pressed = true;
   landed = false;
@@ -2067,16 +2078,29 @@ function resumeForm(){
 function startForm(resumeOk){
   if(!ready || !SHAPES.length) return;
   if(resumeOk && resumeForm()) return;
-  const want = bagDraw(shapeBag, SHAPES.length, lastDrawn);
-  lastDrawn = want;
-  stepVerb();
+  /* A press after a hold that never cured is a second run at the same shape,
+     not a request for the next one. The bag only moves along for a hold that
+     earned its form, so here the draw is skipped and the verb stands: the
+     press just starts the meter again at zero, on the shape the hand walked
+     away from. Whatever is queued counts as that shape too, since it is the
+     one on its way up. */
+  const cur = pending >= 0 ? pending : shapeIx;
+  const retry = !cured && cur >= 0;
+  const want = retry ? cur : bagDraw(shapeBag, SHAPES.length, lastDrawn);
+  if(!retry){
+    lastDrawn = want;
+    stepVerb();
+  }
+  cured = false;
   holding = true;
   pressed = true;
   landed = false;
   formed = false;               // whatever was standing is being worked again
   holdT = 0;
   clearTimeout(scriptTimer);
-  if(setV < 0.15 && applyShape(want)){
+  if(want === shapeIx && pending < 0){
+    /* already the shape on the surface — nothing to hand the GPU */
+  }else if(setV < 0.15 && applyShape(want)){
     pending = -1;
   }else{
     pending = want;             // taken as soon as the surface is clear
@@ -2120,7 +2144,8 @@ function stepMorph(dt){
   const working = holding && pending < 0;
   if(working) holdT = Math.min(FORM_HOLD, holdT + dt);
   else if(!formed) holdT = Math.max(0, holdT - dt*CURE_UNDO);
-  if(holdT >= FORM_HOLD && !formed){ formed = true; }
+  // and this is the one moment the bag is allowed to move on
+  if(holdT >= FORM_HOLD && !formed){ formed = true; cured = true; }
   // a shape that has cured stands on its own for a while — the reward for
   // holding on is time with the form, not a form that never lets go
   if(formed && !working){
@@ -2136,8 +2161,8 @@ function stepMorph(dt){
   // the meter is doing the talking anyway
   const goal = formed ? 1 : Math.pow(cure, RISE_P) * RISE_A;
   const rising = working || formed;
-  const stiff = rising ? 46 : (pending >= 0 ? 40 : 16);
-  const damp  = rising ? 10.5 : (pending >= 0 ? 13 : 7.4);
+  const stiff = rising ? 46 : (pending >= 0 ? 40 : 30);
+  const damp  = rising ? 10.5 : (pending >= 0 ? 13 : 11.5);
   setVel += ((goal - setV)*stiff - setVel*damp) * dt;
   setV += setVel * dt;
   if(setV < -0.05){ setV = -0.05; setVel = 0; }
