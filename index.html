@@ -309,10 +309,16 @@
   .panel-bar{display:flex;justify-content:space-between;align-items:center;gap:14px;
     padding:16px clamp(16px,2.4vw,26px);border-bottom:1px solid var(--hair);
     font-family:'Azeret Mono',ui-monospace,monospace}
-  .panel-title{display:flex;flex-direction:column;gap:4px}
+  /* The bar is one line whatever the field is called. Without min-width:0 a
+     flex item refuses to shrink below its content, so on a 320px screen
+     "12 WORKS — MARKS & IDENTITY" wrapped to three lines and pushed the bar
+     to twice its height; the nav keeps its natural width and the title takes
+     what is left, clipped rather than folded. */
+  .panel-title{display:flex;flex-direction:column;gap:4px;min-width:0;flex:1 1 auto}
+  .panel-title b,.panel-title i{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .panel-title b{font-weight:500;font-size:12px;letter-spacing:.24em;color:var(--ice)}
   .panel-title i{font-style:normal;font-size:8px;letter-spacing:.22em;color:var(--dim)}
-  .panel-nav{display:flex;align-items:center;gap:6px}
+  .panel-nav{display:flex;align-items:center;gap:6px;flex:0 0 auto}
   .pbtn{display:inline-flex;align-items:center;justify-content:center;gap:7px;
     height:30px;padding:0 10px;line-height:1;
     font-family:'Azeret Mono',ui-monospace,monospace;font-size:9px;letter-spacing:.18em;
@@ -627,7 +633,15 @@
      center it on the page, independent of the footer's own padding */
   @media (min-width:901px){
     .rights{position:fixed;left:50%;bottom:clamp(20px,3vw,36px);
-      transform:translateX(-50%);z-index:4}
+      transform:translateX(-50%);z-index:4;
+      transition:opacity .36s ease,visibility .36s}
+
+    /* Centred on the page, the line runs under an open panel and is cut off
+       mid-word — visible from 901px up to about 1200, where the panel is
+       still 48vw and the line is still wide. Re-centring it on the free half
+       only walks it into the readout at those same widths, so it stands
+       down while the panel is up and comes back when the panel closes. */
+    body.pan .rights{opacity:0;visibility:hidden}
   }
 
 
@@ -677,13 +691,21 @@
     .readout span:nth-child(2){display:none}
 
     /* the ring flattens into a strip you can thumb through */
+    /* the strip runs past both edges, so it says so: the ends dissolve
+       instead of being guillotined, and a flick settles a chip under the
+       thumb rather than stopping wherever the momentum ran out. */
     .explore{top:auto;left:0;right:0;height:auto;
       display:flex;gap:8px;align-items:center;padding:0 14px;
-      overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none}
+      overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;
+      scroll-snap-type:x proximity;scroll-padding:0 14px;
+      -webkit-mask-image:linear-gradient(to right,transparent 0,#000 18px,
+        #000 calc(100% - 26px),transparent 100%);
+      mask-image:linear-gradient(to right,transparent 0,#000 18px,
+        #000 calc(100% - 26px),transparent 100%)}
     .explore::-webkit-scrollbar{display:none}
     .explore.on{pointer-events:auto}
     .chip{position:static;flex:0 0 auto;padding:10px 14px;font-size:9px;
-      transform:translateY(12px)}
+      scroll-snap-align:center;transform:translateY(12px)}
     .explore.on .chip{transform:none}
     .chip.hot{transform:none}
     .who{grid-template-columns:1fr;gap:16px}
@@ -2077,6 +2099,7 @@ function resumeForm(){
 
 function startForm(resumeOk){
   if(!ready || !SHAPES.length) return;
+  scriptedMorph = false;        // a hand is on it; startMorph sets this back
   if(resumeOk && resumeForm()) return;
   /* A press after a hold that never cured is a second run at the same shape,
      not a request for the next one. The bag only moves along for a hold that
@@ -2122,6 +2145,7 @@ document.addEventListener('visibilitychange', ()=>{ if(document.hidden) endForm(
 function startMorph(){
   if(!ready) return;
   startForm();
+  scriptedMorph = true;         // set after, since startForm clears it
   // the script has to outlast a full cure or the mark would collapse unformed
   scriptTimer = setTimeout(()=>{ holding = false; }, FORM_HOLD*1000 + 420);
 }
@@ -2145,7 +2169,13 @@ function stepMorph(dt){
   if(working) holdT = Math.min(FORM_HOLD, holdT + dt);
   else if(!formed) holdT = Math.max(0, holdT - dt*CURE_UNDO);
   // and this is the one moment the bag is allowed to move on
-  if(holdT >= FORM_HOLD && !formed){ formed = true; cured = true; }
+  if(holdT >= FORM_HOLD && !formed){
+    formed = true; cured = true;
+    // opening a discipline runs the clay through a cure of its own to change
+    // the mark behind the panel; that is housekeeping, not anybody's hold
+    if(!scriptedMorph) fireCure();
+    scriptedMorph = false;
+  }
   // a shape that has cured stands on its own for a while — the reward for
   // holding on is time with the form, not a form that never lets go
   if(formed && !working){
@@ -2568,8 +2598,28 @@ function chime(){
 let wave = null;
 const waveWorld = new THREE.Vector3();
 
+/* ── and the cure, which is that ring run backwards ────────────────────────
+   Pressing the clay sends a ring out from under the hand. Holding until the
+   shape banks brings it home: the same ring, the same centre, travelling the
+   other way, arriving under the finger at the moment the form stops being
+   reversible. Nothing new is drawn — it is the one gesture, closed.
+
+   The return cancels whatever is still on its way out, so the two never drive
+   the shared uniforms in the same frame. Scripted cures fire nothing; only a
+   hand that stayed down is owed an answer. */
+const holdLocal = new THREE.Vector3();
+let cureFx = null, scriptedMorph = false;
+
+function fireCure(){
+  wave = null;                                   // the outward trip is over
+  cureFx = { t: 0, life: 0.60, local: holdLocal.clone() };
+}
+
 function strikeAt(hit){
   const local = matte.worldToLocal(hit.point.clone());
+  // kept past this ring's own 1.15s life, so the cure can send it back to the
+  // same place however long the hand stays down
+  holdLocal.copy(local);
   const normal = hit.face ? hit.face.normal.clone().normalize() : local.clone().normalize();
 
   wave = { t:0, life:1.15, local };
@@ -2805,6 +2855,10 @@ function showPanel(){
   panelOpen = true;
   hoverChips = false; hoverForm = false;
   panel.classList.add('on');
+  /* Marks the page while the panel is up, so the stylesheet can move the few
+     bits of HUD the panel would otherwise sit on top of — currently just the
+     centred rights line, which the panel cuts off mid-word. */
+  document.body.classList.add('pan');
   panel.setAttribute('aria-hidden','false');
   refreshExplore();
   blip(920, 0.05);
@@ -3106,6 +3160,7 @@ function stepWork(d){
 function closePanel(){
   panelOpen = false;
   panel.classList.remove('on');
+  document.body.classList.remove('pan');
   panel.setAttribute('aria-hidden','true');
   haltMedia(panel);
   showGrid();
@@ -3680,6 +3735,11 @@ function applyTheme(){
   themeLabel.textContent = mode === 'light' ? 'DARK' : 'LIGHT';
   themeIcon.textContent = mode === 'light' ? '◑' : '◐';
   themeBtn.setAttribute('aria-pressed', String(mode === 'light'));
+  /* Under 420px the word is dropped and only the half-disc is left, which
+     leaves a screen reader announcing the glyph and nothing else. The label
+     is written out here so the button says what it does at every width. */
+  themeBtn.setAttribute('aria-label',
+    mode === 'light' ? 'Switch to dark theme' : 'Switch to light theme');
 
   renderer.toneMappingExposure = T.exposure;
   scene.background = new THREE.Color(T.bg);
@@ -3903,6 +3963,28 @@ function frame(now){
         uPI.value = Math.pow(1 - k, 1.7);
         waveI = uPI.value;
         waveWorld.copy(wave.local); group.localToWorld(waveWorld);
+      }
+    }
+    if(cureFx){
+      cureFx.t += dt;
+      const k = cureFx.t / cureFx.life;
+      if(k >= 1){
+        cureFx = null; uPI.value = 0; uPR.value = 0;
+      }else{
+        uPC.value.copy(cureFx.local);
+        /* 0.75 rather than a straight line: the radius falls slowly while the
+           ring is out wide and quickly at the end, so it closes on the hand
+           rather than drifting in at one rate. The tap does the opposite —
+           leaves fast, slows as it goes — which is what makes this read as
+           the same trip backwards. */
+        uPR.value = 0.02 + 3.70 * Math.pow(1 - k, 0.75);
+        /* Faint at the rim, brightest as it comes in, and it holds that most
+           of the way home — the ninth power is what keeps it lit close to the
+           centre and then takes it off sharply at the very end, so the ring
+           arrives rather than fading out somewhere short of the hand. */
+        uPI.value = 1.5 * Math.pow(k, 0.9) * (1 - Math.pow(k, 9));
+        waveI = uPI.value;
+        waveWorld.copy(cureFx.local); group.localToWorld(waveWorld);
       }
     }
     if(strike.visible){
