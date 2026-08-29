@@ -3,7 +3,7 @@
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://kiarad.space/</loc>
-    <lastmod>2026-08-28</lastmod>
+    <lastmod>2026-08-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
     <image:image>
@@ -585,6 +585,14 @@
     <image:image>
       <image:loc>https://kiarad.space/projects/03-spatial/appear/cover.webp</image:loc>
       <image:title>APPEAR — spatial</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://kiarad.space/projects/03-spatial/periodic-keyboard/cover.webp</image:loc>
+      <image:title>PERIODIC KEYBOARD — spatial</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://kiarad.space/projects/03-spatial/periodic-keyboard/01.webp</image:loc>
+      <image:title>PERIODIC KEYBOARD — spatial</image:title>
     </image:image>
     <image:image>
       <image:loc>https://kiarad.space/projects/03-spatial/threads/cover.webp</image:loc>

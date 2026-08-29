@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-28T09:41:10.345Z",
+  "generated": "2026-08-29T22:06:06.146Z",
   "site": {
     "name": "Kiarash Farahmandrad",
     "role": "Multi-disciplinary designer",
@@ -844,6 +844,31 @@
             "Real-time Asset Creation",
             "AR Content Production"
           ]
+        },
+        {
+          "slug": "periodic-keyboard",
+          "t": "PERIODIC KEYBOARD",
+          "c": "Self-Initiated",
+          "y": "2024",
+          "r": "3D Artist & Designer",
+          "img": "projects/03-spatial/periodic-keyboard/cover.webp",
+          "video": null,
+          "gallery": [
+            "projects/03-spatial/periodic-keyboard/01.webp"
+          ],
+          "link": null,
+          "tag": "3D / BLENDER / SELF-INITIATED / 2024",
+          "lb": "OVERVIEW",
+          "la": "CONTRIBUTION",
+          "b": "Periodic Keyboard is a self-initiated 3D experiment exploring the idea of combining two familiar systems: a computer keyboard and the periodic table of elements. The concept asks a simple question: what would a keyboard look like if every key represented a chemical element?",
+          "a": "I developed and modeled the concept entirely in Blender, translating the structure and visual language of the periodic table into a functional keyboard form. Each key represents an individual element, turning the keyboard into a three-dimensional interpretation of the periodic table.\nThe project allowed me to explore the intersection of digital interfaces, physical objects, and scientific systems through 3D modeling and visual experimentation.",
+          "credit": null,
+          "roles": [
+            "3D Design",
+            "Blender",
+            "3D Modeling"
+          ],
+          "self": true
         },
         {
           "slug": "threads",
