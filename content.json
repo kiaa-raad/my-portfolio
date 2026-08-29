@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-29T22:06:06.146Z",
+  "generated": "2026-08-29T22:59:03.273Z",
   "site": {
     "name": "Kiarash Farahmandrad",
     "role": "Multi-disciplinary designer",
@@ -68,7 +68,8 @@
           "dates": "Dec 2024 – Dec 2025 · 1 yr",
           "link": "https://deeez.co/",
           "bullets": [
-            "Created 3D visualizations and XR assets in collaboration with product and marketing teams to support prototyping, improve usability, and enhance user engagement."
+            "Built around 100 3D and XR assets with product and marketing teams, taking concepts from early prototype to production-ready.",
+            "Fed the assets into prototyping and usability review, so they shaped how the product was tested, not only how it was shown."
           ]
         },
         {
@@ -77,7 +78,8 @@
           "dates": "Sep 2024 – Present · Occasional",
           "link": "https://snapp.ir/",
           "bullets": [
-            "Created recruitment campaigns, onboarding materials, and internal communications while managing multiple design requests efficiently."
+            "Designed recruitment campaigns and internal communications, from posters and presentations to digital content, plus the onboarding guides new hires are handed on day one.",
+            "Ran three to four projects concurrently, delivering each to brief and on deadline."
           ]
         },
         {
@@ -86,7 +88,8 @@
           "dates": "Feb 2024 – Present · Occasional",
           "link": "https://divar.ir",
           "bullets": [
-            "Designed visuals and contributed to various HR projects and events, improving employee experience and engagement."
+            "Designed a personalised Nowruz gift for more than 350 staff on a compressed deadline: one system, 350+ individual outputs.",
+            "Designed visuals for HR projects and internal events, from campaign artwork to the material used on the day."
           ]
         },
         {
@@ -95,7 +98,8 @@
           "dates": "Nov 2023 – Dec 2024 · 1 yr 2 mos",
           "link": "https://www.rushinco.com/",
           "bullets": [
-            "Developed brand identity and led end-to-end design projects, ensuring quality and timely delivery while mentoring junior designers."
+            "Designed the company logo and built the visual identity system behind every brand communication that followed.",
+            "Led an eight-person team across design, videography and video editing, producing marketing and digital assets tied to business goals."
           ]
         },
         {
@@ -104,7 +108,8 @@
           "dates": "Dec 2020 – Nov 2023 · 3 yrs",
           "link": "https://scischool.ir",
           "bullets": [
-            "Led 50+ educational and marketing design projects and mentored junior designers to improve team performance and creativity."
+            "Directed 50+ educational and marketing design projects, holding each to one brand identity and a clear teaching goal.",
+            "Mentored junior designers on a four-person team and set up the workflows it delivered on under tight deadlines."
           ]
         },
         {
@@ -113,7 +118,8 @@
           "dates": "Sep 2021 – Sep 2022 · 1 yr",
           "link": null,
           "bullets": [
-            "Delivered graphic design curriculum and organized workshops and exhibitions to boost student engagement and showcase their work."
+            "Built and taught a structured graphic design curriculum covering both practical craft and theory.",
+            "Organised 5 workshops and exhibitions drawing 100+ attendees to show student work."
           ]
         }
       ],
@@ -124,7 +130,7 @@
           "dates": "2020 – 2023 · GPA 4.00/4.00",
           "link": "https://en.modares.ac.ir/",
           "bullets": [
-            "MA Thesis: \"Investigating Typography Features in AR/VR Environments (A Case Study of Selected Persian Typefaces)\" — accompanied by a practical project, \"Designing Twelve Posters Using 3D Typography.\""
+            "MA Thesis: \"Investigating Typography Features in AR/VR Environments (A Case Study of Selected Persian Typefaces)\", accompanied by a practical project, \"Designing Twelve Posters Using 3D Typography.\""
           ]
         }
       ],
@@ -169,20 +175,20 @@
       "volunteering": [
         {
           "role": "Deputy Secretary",
-          "org": "K. N. Toosi University of Technology — Cinema & Photography Club",
+          "org": "K. N. Toosi University of Technology, Cinema & Photography Club",
           "dates": "Oct 2015 – Oct 2018 · 3 yrs",
           "link": null
         },
         {
           "role": "Editor & Layout Designer",
-          "org": "Namaye Nazdik Magazine — Cinema & Photography",
+          "org": "Namaye Nazdik Magazine, Cinema & Photography",
           "dates": "Oct 2015 – Oct 2018 · 3 yrs",
           "link": null
         }
       ],
       "languages": [
         {
-          "name": "English — Academic IELTS 7.5",
+          "name": "English (Academic IELTS 7.5)",
           "level": "Full professional proficiency",
           "bullets": []
         },
@@ -205,9 +211,9 @@
     },
     "cv": {
       "src": "about/cv.pdf",
-      "hash": "2fe98872",
-      "updated": "2026-08-27",
-      "size": "127 KB"
+      "hash": "3dfd1db0",
+      "updated": "2026-08-29",
+      "size": "130 KB"
     }
   },
   "clients": {
