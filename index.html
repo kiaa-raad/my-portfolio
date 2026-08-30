@@ -179,6 +179,21 @@
     clip-path:polygon(7px 0,100% 0,100% calc(100% - 7px),calc(100% - 7px) 100%,0 100%,0 7px);
     transition:opacity .5s cubic-bezier(.2,.8,.3,1),transform .5s cubic-bezier(.2,.8,.3,1)}
   .cue.on{opacity:.92;transform:translate(-50%,-50%)}
+  /* The instruction is two words and can hold one line anywhere. The line that
+     replaces it is a sentence, and a sentence held to one line at this tracking
+     runs wider than a phone — so this phase alone is allowed to wrap, and is
+     centred and held to a measure rather than left to set its own width.
+
+     It also drops the chip the instruction wears. A box is what makes the
+     instruction read as a control worth acting on; this one is not asking for
+     anything, and framed the same way it reads as a second piece of interface
+     sitting under the first. Set on the page with nothing round it, it reads
+     as a caption, which is what it is. Everything the chip brought has to go
+     with it — the ground, the hairline, the blur behind it and the cut corner
+     the padding was holding clear. */
+  .cue.creed{white-space:pre-line;max-width:min(76vw,290px);text-align:center;line-height:1.75;
+    background:none;border:0;padding:0;clip-path:none;
+    -webkit-backdrop-filter:none;backdrop-filter:none}
 
   /* ── hud shell ────────────────────────────────────── */
   .hud{position:relative;z-index:3;height:100vh;height:100dvh;display:flex;flex-direction:column;
@@ -1569,6 +1584,53 @@ function smaxDot(d, S, k){
   return m;
 }
 
+/* A superellipsoid, which is a radius outright: the exponent is the whole
+   character of it. Two is an ellipsoid, four and up is a rounded box, and
+   under two the faces pull in and the axes become points — one function that
+   covers the coin and the crystal below without a single boolean. */
+function sellip(a, b, c, p){
+  const ia = 1/a, ib = 1/b, ic = 1/c, ip = -1/p;
+  return d => Math.pow(
+    Math.pow(Math.abs(d[0])*ia, p) +
+    Math.pow(Math.abs(d[1])*ib, p) +
+    Math.pow(Math.abs(d[2])*ic, p), ip);
+}
+
+/* The same curve spun around the vertical instead of laid on three axes —
+   the difference between a rounded box and a rounded disc, which is the
+   difference between a tile and a coin. */
+function srev(a, b, p){
+  const ia = 1/a, ib = 1/b, ip = -1/p;
+  return d => Math.pow(
+    Math.pow(Math.hypot(d[0], d[2])*ia, p) +
+    Math.pow(Math.abs(d[1])*ib, p), ip);
+}
+
+/* Where the craters go. An even cover is not a nicety here: any pair sitting
+   closer than the rest overlaps while the others do not, and a union taken
+   over an uneven set leaves a crease exactly where that odd pair meets — which
+   is what the ragged edges were, not the mesh under them. A Fibonacci spiral
+   is even on average and its nearest-neighbour angle still swings by 1.7 to 1.
+   The twelve corners of an icosahedron together with its twenty face centres
+   are a truncated icosahedron — a football — and every one of those 32 has all
+   of its neighbours at the same 0.65 rad, so either every pit overlaps or none
+   does. A coarse mesh cannot resolve a pit that small at all, so it gets the
+   twelve corners on their own, opened out to match. */
+const D_DIMPLE = DETAIL >= 5
+  ? (()=>{
+      const o = new Float32Array(D_ICO12.length + D_ICO20.length);
+      o.set(D_ICO12); o.set(D_ICO20, D_ICO12.length);
+      return o;
+    })()
+  : D_ICO12;
+/* Kept just inside half the separation — 0.326 for the 32, 0.554 for the
+   twelve — so no two pits ever reach each other. That is the whole reason the
+   even set was worth having: with pits that cannot overlap there is no union
+   to take, and a union is the only place a crease can come from. The land
+   between them is left at full radius, and it is what the pits are read
+   against. */
+const DIMPLE_A = DETAIL >= 5 ? 0.32 : 0.52;
+
 /* ── the shapes ───────────────────────────────────────────────────────────
    Each one is a radius as a function of direction, which is the whole trick:
    a sphere-topology target the same vertices can be pulled onto, no matter
@@ -1735,6 +1797,81 @@ const SHAPES = [
         const band = 0.5 + 0.5*Math.cos(TAU*ph);
         const taper = Math.pow(Math.max(0, 1 - d[1]*d[1]), 0.30);
         return 0.80 + 0.38*Math.pow(band, 1.7)*taper;
+      };
+    })() },
+
+  /* A coin with a hub on it. Everything above stands out from a body that is
+     roughly a ball, so the one thing the set had no answer for was a form
+     that is simply flat — and a flat one is read by its profile rather than
+     by its relief, which is a different way of being told apart. Two
+     profiles spun around the vertical: a wide shallow plate with a squarer,
+     taller boss set
+     in the middle of both faces, met with a soft max so the boss rolls
+     into the plate instead of standing on a step. */
+  { key:'DISC', nsmooth:NSM(1), rf:(function(){
+      const plate = srev(1.20, 0.34, 4);
+      const hub   = srev(0.44, 0.66, 6);
+      const K = VSPACE*3.2*KSCALE;
+      return d => smax(plate(d), hub(d), K);
+    })() },
+
+  /* A square column with a half-turn wound into it. The twist has to be
+     driven by the direction rather than by the height, because the height of
+     a point on a radial surface is not known until the radius is — so the
+     angle is taken from the latitude, which is fixed along a ray. It reads
+     as the same twist either way, and it is the only form here whose two
+     ends are the same shape rotated rather than mirrored. */
+  { key:'TWIST', nsmooth:NSM(2), rf:(function(){
+      const H = 1.12, W = 0.70, TW = 2.1, P = 4;
+      const KR = VSPACE*3.0*KSCALE;   // the rim, where the cap meets the wall
+      return d=>{
+        const s = Math.max(1e-4, Math.hypot(d[0], d[2]));
+        const lon = Math.atan2(d[2], d[0]) - TW*d[1];
+        const w = W / Math.pow(Math.pow(Math.abs(Math.cos(lon)), P) +
+                               Math.pow(Math.abs(Math.sin(lon)), P), 1/P);
+        return smin(H / Math.max(1e-4, Math.abs(d[1])), w/s, KR);
+      };
+    })() },
+
+  /* A crystal — the same superellipsoid with the exponent taken below two,
+     which pulls the faces in and turns the axes into points, then stretched
+     on one of them. Next to the faceted solid it is the opposite reading:
+     that one is a ball with edges on it, this one is edges with barely any
+     ball left. */
+  { key:'SHARD', rf: sellip(0.74, 1.30, 0.74, 1.5) },
+
+  /* Craters, not studs. Every other relief in this set is added to the body,
+     and a form is just as recognisable for what has been taken out of it —
+     so this is a plain ball with a spherical cover of pits sunk into it, the
+     land between them left at full radius. The pit radius is set against how
+     far apart the directions are: any wider and the pits merge into one
+     another and the ridges that make it legible are gone. */
+  { key:'DIMPLE', nsmooth:NSM(2), rf:(function(){
+      const S = D_DIMPLE, C0 = Math.cos(DIMPLE_A), IA = 1/DIMPLE_A, D = 0.28;
+      return d=>{
+        let g = 0;
+        for(let i=0;i<S.length;i+=3){
+          const c = d[0]*S[i] + d[1]*S[i+1] + d[2]*S[i+2];
+          if(c <= C0) continue;
+          /* The angle, not the cosine of it. Normalising the dot product
+             looks like the same ramp and is not: the cosine barely moves at
+             the centre of the pit and moves fastest at its edge, which piles
+             the whole wall up against the rim and doubles how sharply it has
+             to turn there. Taking the angle spreads the wall evenly across
+             the pit, and on its own it halves the worst angle between two
+             neighbouring facets. The acos is only ever reached inside a pit,
+             and no direction is inside more than one. */
+          const t = 1 - Math.acos(Math.min(1, c))*IA;
+          /* Quintic rather than the usual smoothstep. A cubic arrives at the
+             rim with its slope at zero but its curvature still stepping, and
+             a step in curvature on a radial surface is a ring — the shading
+             picks it out and the facets then draw it. This one is flat to
+             second order at the rim and at the floor both, so the pit has no
+             edge on it at any magnification. */
+          const v = t*t*t*(t*(t*6 - 15) + 10);
+          if(v > g) g = v;
+        }
+        return 1 - D*g;
       };
     })() }
 ];
@@ -2173,7 +2310,13 @@ function stepMorph(dt){
     formed = true; cured = true;
     // opening a discipline runs the clay through a cure of its own to change
     // the mark behind the panel; that is housekeeping, not anybody's hold
-    if(!scriptedMorph) fireCure();
+    if(!scriptedMorph){
+      fireCure();
+      /* and the same test decides whether the sentence has been earned. It
+         cannot be asked for at the landing below, because this line is where
+         the flag is cleared — by then every cure looks like somebody's. */
+      if(!creedState && !panelOpen) creedArmed = true;
+    }
     scriptedMorph = false;
   }
   // a shape that has cured stands on its own for a while — the reward for
@@ -2205,7 +2348,16 @@ function stepMorph(dt){
   // goo would look like a rendering fault rather than a decision
   uFlat.value = flatNow * sstep((setV - 0.22)/0.5);
 
-  if(!landed && setV > 0.9){ landed = true; chime(); }
+  if(!landed && setV > 0.9){
+    landed = true; chime();
+    /* The first form to stand up is the only point in the session where the
+       visitor has already done the thing before being told what it meant, so
+       it is the one place the sentence lands as a reveal instead of a label.
+       Armed at the cure, said here — the cure is the moment it was earned,
+       this is the moment the form is actually standing. Said once, then
+       never again. */
+    if(creedArmed){ creedArmed = false; showCreed(); }
+  }
   if(landed && setV < 0.35) landed = false;
 
   // the readout says what the clay is doing, in the same register as the
@@ -2411,40 +2563,58 @@ function buildAudio(){
 }
 
 let audioWatch = null;
-function startAudio(){
-  if(started) return;
-  const ac = ctx();
 
-  // playing a single silent sample inside the gesture is what actually lifts the
-  // lock on iOS — resume() alone is often accepted and then quietly ignored
+/* One attempt at lifting the lock. Deliberately cheap and idempotent, because
+   the only reliable way through a touch device's autoplay rules is to keep
+   asking: a browser that refused a moment ago may say yes on the very next
+   frame, the instant it decides the gesture counts. */
+function pokeAudio(){
+  if(started) return true;
+  const ac = ctx();
+  if(ac.state === 'running'){ buildAudio(); return started; }
+  // Retrying resume() — not merely re-reading .state — is the point. The old
+  // watch only watched, so if the resume fired at touch-down was refused there
+  // was nothing left trying, and the press-and-hold sat in silence until the
+  // finger came off and produced a fresh gesture.
   try{
+    const pr = ac.resume();
+    if(pr && pr.then) pr.then(()=>{ if(!started && ac.state === 'running') buildAudio(); }).catch(()=>{});
+  }catch(e){}
+  return false;
+}
+
+/* Playing a single silent sample inside the gesture is what actually lifts the
+   lock on iOS — resume() alone is often accepted and then quietly ignored.
+   It has to run in the event handler itself, so it lives apart from the poll. */
+function nudgeAudio(){
+  if(started) return;
+  try{
+    const ac = ctx();
     const s = ac.createBufferSource();
     s.buffer = ac.createBuffer(1, 1, 22050);
     s.connect(ac.destination);
     s.start(0);
   }catch(e){}
+}
 
-  const tryBuild = ()=>{
-    if(!started && ac.state === 'running') buildAudio();
-    return started;
-  };
-  if(tryBuild()) return;
+function startAudio(){
+  if(started) return;
+  nudgeAudio();
+  if(pokeAudio()) return;
 
-  const p = ac.resume();
-  if(p && p.then) p.then(tryBuild).catch(()=>{});
-
+  const ac = ctx();
   // the state can flip a beat after resume() settles, and nobody should have to
   // tap twice to be heard — so watch for it rather than waiting for another tap
   if(!audioWatch){
     ac.addEventListener('statechange', function onState(){
-      if(tryBuild()) ac.removeEventListener('statechange', onState);
+      if(pokeAudio()) ac.removeEventListener('statechange', onState);
     });
     let n = 0;
     audioWatch = setInterval(()=>{
       // six seconds rather than the two and a half this used to run for: a
       // press-and-hold is measured in seconds, and giving up while the finger
       // is still down is what left the gesture looking like it had failed
-      if(tryBuild() || ++n > 100){ clearInterval(audioWatch); audioWatch = null; }
+      if(pokeAudio() || ++n > 100){ clearInterval(audioWatch); audioWatch = null; }
     }, 60);
   }
 }
@@ -2790,9 +2960,45 @@ function setActive(i){
 const cue = document.getElementById('cue');
 let cueDone = !coarse, cueLive = false, bootDone = false;
 
+/* The same slot under the form, used twice. First it asks for the gesture —
+   only where there is no reticle to hang the words off — and retires the
+   moment the gesture happens. Then, once a form has actually stood up, it
+   comes back once to say what the gesture was for. Two sentences, one element:
+   they cannot collide, because the second cannot fire until after the press
+   that dismissed the first. */
+/* The break is written into it rather than left to the measure. Two clauses
+   of almost the same length will otherwise wrap wherever the box happens to
+   run out, which put it mid-clause; broken at the full stop the two lines
+   balance and each one is a whole thought. It still wraps on its own if a
+   narrow enough screen makes it. */
+const CREED = `ROUGH FIRST, THEN SET.
+LIKE EVERY PROJECT HERE`;
+const CREED_HOLD = 7200;         // long enough to read twice, short enough not to sit there
+let creedState = 0;              // 0 not yet, 1 saying it, 2 said
+let creedArmed = false;          // a hand cured it, and the form is still rising
+let creedTimer = null;
+
+function showCreed(){
+  if(creedState || panelOpen || lensOpen()) return;
+  creedState = 1;
+  cue.textContent = CREED;
+  cue.classList.add('creed');
+  syncCue();
+  creedTimer = setTimeout(retireCreed, CREED_HOLD);
+}
+
+// it has been read, or the visitor has gone to the work, which is better than
+// reading it — either way it does not come back
+function retireCreed(){
+  if(creedState !== 1) return;
+  creedState = 2;
+  clearTimeout(creedTimer);
+  cue.classList.remove('on');
+}
+
 function syncCue(){
-  if(cueDone) return;
-  if(!cueLive){
+  if(cueDone && creedState !== 1) return;
+  if(!cueDone && !cueLive){
     // The sentence belongs to the page, not to the loading screen. `ready` is
     // only the moment the form finished building, and the overlay stays up and
     // keeps counting for a good while after it — so waiting on `ready` put the
@@ -2806,7 +3012,7 @@ function syncCue(){
     cueLive = true;
   }
   cue.style.left = (VX + VW/2) + 'px';
-  cue.style.top  = (VY + cueY) + 'px';
+  cue.style.top  = (VY + (creedState === 1 ? creedY : cueY)) + 'px';
   cue.classList.toggle('on', !panelOpen && !lensOpen());
 }
 
@@ -2853,6 +3059,7 @@ let panelOpen = false, fieldIx = 0, workIx = -1;
 
 function showPanel(){
   panelOpen = true;
+  retireCreed();            // they have reached for the work; the sentence has been overtaken
   hoverChips = false; hoverForm = false;
   panel.classList.add('on');
   /* Marks the page while the panel is up, so the stylesheet can move the few
@@ -3164,6 +3371,14 @@ function closePanel(){
   panel.setAttribute('aria-hidden','true');
   haltMedia(panel);
   showGrid();
+  /* Coming back out of a panel is the same situation as arriving: the pointer
+     is parked on a close button that is no longer there, so the stale hover
+     flags say the pointer is nowhere near the form and the ring would stay
+     hidden until the visitor happened to sweep back over the clay. Re-arming
+     the intro puts the wheel back out and leaves it out until they reach for
+     it again, which is what it does on first load. */
+  exploreIntro = true;
+  hoverChips = false; hoverForm = false;
   refreshExplore();          // without this the chip strip stays hidden on touch
   blip(640, 0.045);
 }
@@ -3491,7 +3706,7 @@ let reveal = 0;   // how open the wireframe reveal is — mouse hover only, neve
 const ndc = new THREE.Vector3();
 let mx=0, my=0, px=0, py=0, touched=false, clock=0, intro=0, radius=0, rGoal=0;
 let pointerX = innerWidth/2, pointerY = innerHeight/2, retX = pointerX, retY = pointerY;
-let VX = 0, VY = 0, VW = innerWidth, VH = innerHeight, visH = 4.5, centreY = 0, formScale = 1, formScaleGoal = 1, cueY = 0;
+let VX = 0, VY = 0, VW = innerWidth, VH = innerHeight, visH = 4.5, centreY = 0, formScale = 1, formScaleGoal = 1, cueY = 0, creedY = 0;
 // the goo is fitted to the same box whatever shape it is holding, so these
 // no longer move — they are kept because fitView still frames against them
 let letterW = SHAPE_R*2, letterH = SHAPE_R*2;
@@ -3620,6 +3835,12 @@ addEventListener('click', startAudio);
 // gets its own attempt. Both are no-ops once audio is actually running.
 addEventListener('touchend', startAudio, { passive:true });
 addEventListener('pointerup', startAudio);
+// and all the way through the hold in between. A finger resting on the clay is
+// never perfectly still, so touchmove fires steadily for the whole gesture and
+// costs nothing once audio is running — it gives the unlock a live retry at the
+// exact moments the browser is most willing to grant one, instead of leaving
+// the poll to guess.
+addEventListener('touchmove', startAudio, { passive:true });
 
 addEventListener('pointerdown', e=>{
   // unlock audio on the very first touch contact anywhere on the page —
@@ -3827,6 +4048,16 @@ function fitView(){
 
   // the touch cue sits centred on the form itself
   cueY = centrePx;
+
+  /* The line that comes after a form has stood up cannot sit where the
+     instruction does. The instruction is aimed at a finger that has not
+     arrived yet, so lying over the form is exactly right for it. The line is
+     aimed at a hand that has just been there — so the same spot puts it under
+     the pointer's own tag, and over the shape it is describing. It goes below
+     the whole composition instead, clear of the ring and just above the
+     readout, where it reads as a caption on the thing above it rather than a
+     label stuck to it. Held below the form even on a short viewport. */
+  creedY = Math.max(centrePx + freeH*hFrac*0.5 + 24, VH - band.b - 26);
 }
 
 function fitPoster(){
@@ -3867,7 +4098,18 @@ function frame(now){
   // handing it back to the main thread is what keeps scrolling, tapping and
   // the panel responsive, which is the part a visitor actually feels.
   if(cheap && now - last < 31) return;
-  const dt = Math.min(0.05, (now - last)/1000 || 0.016);
+  /* Clamped at both ends, and the low end is not paranoia. `last` is seeded
+     from performance.now() while every frame after it carries the rAF
+     timestamp, and those are not the same clock — the frame time is the start
+     of the frame, so it can land before a performance.now() taken during the
+     work that preceded it. One negative delta was enough to cure the clay on
+     its own: the meter gives a hold back at `holdT - dt*CURE_UNDO`, and with
+     dt negative that term adds six times its size, which cleared FORM_HOLD in
+     a single frame. The mark then set itself, sounded its cure and took the
+     next shape out of the bag with nobody touching it. Every other integrator
+     here — the set, the dwell, the goo clock — was being run backwards by the
+     same frame. */
+  const dt = Math.min(0.05, Math.max(0, (now - last)/1000) || 0.016);
   last = now;
   clock += 0.0068;
 
@@ -4202,7 +4444,7 @@ fetch('content.json', { cache: 'no-cache' })
 <p class="seo-name">Kiarash Farahmandrad</p>
 <p class="seo-role">Multi-disciplinary designer · Tehran, Iran</p>
 
-<p>I work across identity, typography, 3D, motion, and digital experiences, moving between mediums to find the right form for an idea. I'm interested in the space where disciplines overlap, where a graphic can become an object, a typeface can become an environment, and a visual identity can become something you can interact with. I like to start while an idea is still soft, and shape it with you rather than hand it back finished. Most things start as an experiment, and usually end somewhere no one expects.</p>
+<p>I work across identity, typography, 3D, motion, and digital experiences, moving between mediums to find the right form for an idea. I'm interested in the space where disciplines overlap, where a graphic can become an object, a typeface can become an environment, and a visual identity can become something you can interact with. I like to start while an idea is still rough, and shape it with you rather than hand it back finished. Most things start as an experiment, and usually end somewhere no one expects.</p>
 
 <h2>Skills</h2>
 <h3>DISCIPLINES</h3>
@@ -4250,7 +4492,7 @@ fetch('content.json', { cache: 'no-cache' })
 <ul><li>Divar</li><li>Nodet</li><li>Snapp Group</li><li>Tardid Virtual Philosophy School</li><li>Tehran University</li></ul>
 
 <h2>Contact</h2>
-<ul><li><a href="https://www.linkedin.com/in/kia-rad/" rel="me noopener">LINKEDIN</a></li><li><a href="https://letterboxd.com/kia_rad/" rel="me noopener">LETTERBOXD</a></li></ul>
+<ul><li><a href="https://www.linkedin.com/in/kia-rad/" rel="me noopener">LINKEDIN</a></li><li><a href="https://open.spotify.com/user/kiarash.fr" rel="me noopener">SPOTIFY</a></li><li><a href="https://letterboxd.com/kia_rad/" rel="me noopener">LETTERBOXD</a></li></ul>
 <p><a href="about/cv.pdf">Curriculum vitae (PDF)</a></p>
 <p>Enable JavaScript for the interactive version of this site.</p>
 </div>
@@ -4297,7 +4539,7 @@ fetch('content.json', { cache: 'no-cache' })
       "alternateName": "Kiarad Space",
       "url": "https://kiarad.space/",
       "jobTitle": "Multi-disciplinary designer",
-      "description": "I work across identity, typography, 3D, motion, and digital experiences, moving between mediums to find the right form for an idea. I'm interested in the space where disciplines overlap, where a graphic can become an object, a typeface can become an environment, and a visual identity can become something you can interact with. I like to start while an idea is still soft, and shape it with you rather than hand it back finished. Most things start as an experiment, and usually end somewhere no one expects.",
+      "description": "I work across identity, typography, 3D, motion, and digital experiences, moving between mediums to find the right form for an idea. I'm interested in the space where disciplines overlap, where a graphic can become an object, a typeface can become an environment, and a visual identity can become something you can interact with. I like to start while an idea is still rough, and shape it with you rather than hand it back finished. Most things start as an experiment, and usually end somewhere no one expects.",
       "knowsAbout": [
         "Logo Design",
         "Poster Design",
@@ -4323,6 +4565,7 @@ fetch('content.json', { cache: 'no-cache' })
       ],
       "sameAs": [
         "https://www.linkedin.com/in/kia-rad/",
+        "https://open.spotify.com/user/kiarash.fr",
         "https://letterboxd.com/kia_rad/"
       ],
       "image": "https://kiarad.space/about/me.jpg",
