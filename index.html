@@ -20,9 +20,14 @@
 <meta name="theme-color" content="#070708" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#edebe6" media="(prefers-color-scheme: light)">
 
+<link rel="alternate" hreflang="en" href="https://kiarad.space/">
+<link rel="alternate" hreflang="fr" href="https://kiarad.space/?lang=fr">
+<link rel="alternate" hreflang="x-default" href="https://kiarad.space/">
+
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Kiarad Space">
 <meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
 <meta property="og:url" content="https://kiarad.space/">
 <meta property="og:title" content="Kiarash Farahmandrad — Multi-disciplinary designer">
 <meta property="og:description" content="Kiarash Farahmandrad is a multi-disciplinary designer in Tehran working across logo and identity design, posters, 3D, XR and motion. Selected work, clients and CV.">
@@ -228,7 +233,7 @@
   .mark-id img{height:var(--markh);width:auto;display:block;
     filter:invert(1) drop-shadow(var(--tsh));transition:filter .7s ease}
   body.light .mark-id img{filter:drop-shadow(var(--tsh))}
-  .mark-name{display:block;font-weight:600;font-size:12.5px;letter-spacing:.16em;line-height:1.5;
+  .mark-name{display:block;text-transform:uppercase;font-weight:600;font-size:12.5px;letter-spacing:.16em;line-height:1.5;
     text-shadow:var(--tsh)}
   .mark-sub{display:block;font-family:'Azeret Mono',ui-monospace,monospace;font-weight:300;
     font-size:8.5px;line-height:1.35;letter-spacing:.24em;color:var(--mute);margin-top:3px;
@@ -751,6 +756,26 @@
   @media (prefers-reduced-motion:reduce){
     .sweep,.sound.live .bars i{animation:none}
   }
+  /* ── the language switcher ────────────────────────────
+     One control, one state per language, sized like the two beside it. Each
+     label carries its own `lang`, so a language whose label is not Latin
+     would still be handed to the right face rather than to whatever the
+     Latin stack happens to have at that codepoint. */
+  .hud .lang{display:flex;align-items:stretch;background:var(--plate);
+    -webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
+    border:1px solid var(--hair);
+    clip-path:polygon(0 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%)}
+  .hud .lang button{padding:7px 9px;line-height:1;
+    font-family:'Azeret Mono',ui-monospace,monospace;
+    font-size:8.5px;letter-spacing:.2em;color:var(--dim);
+    transition:color .25s,background .25s}
+  .hud .lang button + button{border-inline-start:1px solid var(--hair)}
+  .hud .lang button:hover{color:var(--ice)}
+  .hud .lang button[aria-pressed=true]{color:var(--void);background:var(--ice)}
+  /* the menu label is its own element so the numeral beside it survives a
+     language change; it should still weigh what the button weighs */
+  .hud .menu b{font-weight:inherit}
+
   /* ── the cheap tier ────────────────────────────────────────
      Three atmospherics that cost far more than they look like they should on
      an older phone. Every backdrop-filter is its own offscreen pass, and there
@@ -832,9 +857,9 @@
       </span>
     </div>
     <nav class="menu">
-      <button type="button" data-page="ABOUT" data-tag="ABOUT"><i>01</i>ABOUT</button>
-      <button type="button" data-page="CLIENTS" data-tag="CLIENTS"><i>02</i>CLIENTS</button>
-      <button type="button" data-page="CONTACT" data-tag="CONTACT"><i>03</i>CONTACT</button>
+      <button type="button" data-page="ABOUT"><i>01</i><b>ABOUT</b></button>
+      <button type="button" data-page="CLIENTS"><i>02</i><b>CLIENTS</b></button>
+      <button type="button" data-page="CONTACT"><i>03</i><b>CONTACT</b></button>
     </nav>
   </header>
 
@@ -849,12 +874,16 @@
         <button class="tgl" id="theme" type="button" data-tag="THEME" aria-pressed="false">
           <i id="themeicon">◐</i><b id="themelabel">LIGHT</b>
         </button>
-        <a class="sound" id="sound" href="#" role="switch" aria-checked="false" data-tag="AUDIO">
+        <!-- The switcher is built from LOCALES in the module: the list of
+             languages is one fact, and it lives with the strings rather than
+             being written out a second time here where it could drift. -->
+        <div class="lang" id="lang" role="group"></div>
+        <a class="sound" id="sound" href="#" role="switch" aria-checked="false">
           <span class="bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
           <span id="soundlabel">AUDIO STANDBY</span>
         </a>
       </div>
-      <span class="rights">&copy; <span id="year">2026</span> ALL RIGHTS RESERVED</span>
+      <span class="rights" id="rights"></span>
     </div>
   </footer>
 </div>
@@ -876,6 +905,192 @@
 
 <script type="module">
 import * as THREE from 'three';
+
+/* ══ languages ════════════════════════════════════════════════════════════
+   Two languages, one document. The build writes content.json per language —
+   content.fr.json beside it — so switching is a fetch and a repaint rather
+   than a reload, and the form behind the panel never has to be built twice.
+
+   What lives here is only the chrome: the words the interface says about
+   itself, which have no markdown file to come from. Everything a project or
+   a client says comes down the wire with the content, already translated.
+   The two are kept apart on purpose — a new project never touches this
+   table, and a new label never touches projects/.
+
+   The identifiers stay English throughout. `PAGES.ABOUT`, `data-page=ABOUT`,
+   a shape's `key` and a verb's index are names the code holds onto; what a
+   visitor reads is looked up from them at the moment it is painted.
+
+   Both languages shipped here are Latin-script and left-to-right, and the
+   stylesheet assumes it. A right-to-left language would need more than a row
+   in this table: the panel's edge, the reticle's tag, the arrow rotations and
+   the lightbox buttons all write a side down literally, and the interface's
+   .2em tracking has to come off for any script whose letters join. */
+
+const LOCALES = ['en', 'fr'];
+const DEFAULT_LOCALE = 'en';
+
+/* The switcher's own labels, each written in its own language — a person
+   looking for their language finds it by recognising it, not by decoding an
+   abbreviation in a language they do not read. */
+const LOCALE_LABEL = { en: 'EN', fr: 'FR' };
+const LOCALE_NAME  = { en: 'English', fr: 'Français' };
+
+/* ── the verbs ────────────────────────────────────────────────────────────
+   Three forms of one word: the imperative under the pointer, naming the act
+   about to happen; the participle in the readout while it runs; and the same
+   word once more when the shape is standing. English derives all three from
+   one stem, because it can — the rule is regular enough to write down in two
+   lines, and the comments below are the reasoning. The other languages are
+   given their forms outright, since neither inflects in a way worth guessing
+   at from a stem. */
+const VERBS = ['MORPH','TRANSFORM','RESHAPE','EVOLVE','REFINE',
+               'VISUALIZE','MATERIALIZE','ANIMATE','BUILD','DEFINE'];
+
+/* The tag under the hand names the act about to happen, so it stays an
+   imperative; the readout is describing the act while it runs, so it takes
+   the participle. Every verb in the list ends either in a consonant or a
+   silent e, which is the whole of the rule needed here. */
+const ing = w => w.replace(/E$/, '') + 'ING';
+/* and the same word again once the thing is done. The -ed is as regular as
+   the -ing was, bar the one strong verb in the list, which is spelt out. */
+const PAST = { BUILD: 'BUILT' };
+const past = w => PAST[w] || w + (w.endsWith('E') ? 'D' : 'ED');
+
+const EN_VERBS = VERBS.map(v => [v, ing(v), past(v)]);
+
+const STRINGS = {
+  en: {
+    nav: { ABOUT: 'ABOUT', CLIENTS: 'CLIENTS', CONTACT: 'CONTACT' },
+    readout: { form: 'FORM', practice: 'PRACTICE', render: 'RENDER', fps: 'FPS' },
+    state: { unset: 'UNSET', relaxing: 'RELAXING', forming: 'FORMING', set: 'SET', form: 'FORM' },
+    verbs: EN_VERBS,
+    shapes: {},                       // the English keys are already the words
+    cue: { hold: 'PRESS & HOLD',
+           creed: 'ROUGH FIRST, THEN SET.\nLIKE EVERY PROJECT HERE' },
+    boot: { init: 'INITIALIZING', ready: 'READY' },
+    tools: { light: 'LIGHT', dark: 'DARK',
+             toDark: 'Switch to dark theme', toLight: 'Switch to light theme',
+             standby: 'AUDIO STANDBY', on: 'AUDIO ON', off: 'AUDIO OFF',
+             language: 'Language' },
+    panel: { works: 'WORKS', top: 'TOP', index: 'INDEX', close: 'CLOSE', of: 'OF' },
+    tag: { open: 'OPEN', view: 'VIEW', play: 'PLAY', next: 'NEXT', prev: 'PREV',
+           close: 'CLOSE', back: 'BACK', email: 'EMAIL', theme: 'THEME',
+           audio: 'AUDIO', lang: 'LANG', interact: 'INTERACT' },
+    aria: { prev: 'Previous work', next: 'Next work', close: 'Close',
+            prevImg: 'Previous image', nextImg: 'Next image',
+            images: 'Project images', image: 'View image' },
+    info: { brief: 'BRIEF', approach: 'APPROACH', client: 'CLIENT',
+            clients: 'CLIENTS', role: 'ROLE', year: 'YEAR' },
+    block: { elsewhere: 'ELSEWHERE', documents: 'DOCUMENTS', details: 'DETAILS',
+             engagements: 'ENGAGEMENTS', skills: 'SKILLS',
+             cv: 'CURRICULUM VITAE', pdf: 'PDF' },
+    page: { profile: 'PROFILE', organisations: 'ORGANISATIONS', touch: 'GET IN TOUCH',
+            lede: 'Open to commissions, collaborations and the occasional strange brief.',
+            noLogos: 'Drop a logo into clients/ and it appears here.' },
+    watch: 'WATCH',
+    rights: 'ALL RIGHTS RESERVED',
+    error: { sub: 'UNAVAILABLE', readout: 'CONTENT UNAVAILABLE',
+             lede: 'The site index could not be loaded.',
+             note: 'content.json is generated by tools/build-content.mjs. ' +
+                   'Run <code>node tools/build-content.mjs</code>, then serve the folder ' +
+                   'over HTTP (<code>npx serve</code>) rather than opening the file directly.' }
+  },
+
+  fr: {
+    nav: { ABOUT: 'PROFIL', CLIENTS: 'CLIENTS', CONTACT: 'CONTACT' },
+    readout: { form: 'FORME', practice: 'PRATIQUE', render: 'RENDU', fps: 'IPS' },
+    state: { unset: 'BRUT', relaxing: 'RELÂCHE', forming: 'EN FORMATION',
+             set: 'FIGÉ', form: 'FORME' },
+    verbs: [
+      ['MODELER',      'MODELAGE',        'MODELÉ'],
+      ['TRANSFORMER',  'TRANSFORMATION',  'TRANSFORMÉ'],
+      ['REMODELER',    'REMODELAGE',      'REMODELÉ'],
+      ['ÉVOLUER',      'ÉVOLUTION',       'ÉVOLUÉ'],
+      ['AFFINER',      'AFFINAGE',        'AFFINÉ'],
+      ['VISUALISER',   'VISUALISATION',   'VISUALISÉ'],
+      ['MATÉRIALISER', 'MATÉRIALISATION', 'MATÉRIALISÉ'],
+      ['ANIMER',       'ANIMATION',       'ANIMÉ'],
+      ['CONSTRUIRE',   'CONSTRUCTION',    'CONSTRUIT'],
+      ['DÉFINIR',      'DÉFINITION',      'DÉFINI']
+    ],
+    shapes: { LOBE:'LOBE', STELLA:'STELLA', FACET:'FACETTE', FLUTE:'CANNELURE',
+              SPINE:'ARÊTE', STUD:'PLOT', CROSS:'CROIX', COIL:'SPIRE',
+              DISC:'DISQUE', TWIST:'TORSION', SHARD:'ÉCLAT', DIMPLE:'FOSSETTE' },
+    cue: { hold: 'APPUYEZ & MAINTENEZ',
+           creed: "D'ABORD BRUT, PUIS FIGÉ.\nCOMME CHAQUE PROJET ICI" },
+    boot: { init: 'INITIALISATION', ready: 'PRÊT' },
+    tools: { light: 'CLAIR', dark: 'SOMBRE',
+             toDark: 'Passer au thème sombre', toLight: 'Passer au thème clair',
+             standby: 'AUDIO EN VEILLE', on: 'AUDIO ACTIF', off: 'AUDIO COUPÉ',
+             language: 'Langue' },
+    panel: { works: 'PROJETS', top: 'HAUT', index: 'INDEX', close: 'FERMER', of: 'SUR' },
+    tag: { open: 'OUVRIR', view: 'VOIR', play: 'LIRE', next: 'SUIV.', prev: 'PRÉC.',
+           close: 'FERMER', back: 'RETOUR', email: 'EMAIL', theme: 'THÈME',
+           audio: 'AUDIO', lang: 'LANGUE', interact: 'INTERAGIR' },
+    aria: { prev: 'Projet précédent', next: 'Projet suivant', close: 'Fermer',
+            prevImg: 'Image précédente', nextImg: 'Image suivante',
+            images: 'Images du projet', image: "Voir l'image" },
+    info: { brief: 'APERÇU', approach: 'APPROCHE', client: 'CLIENT',
+            clients: 'CLIENTS', role: 'RÔLE', year: 'ANNÉE' },
+    block: { elsewhere: 'AILLEURS', documents: 'DOCUMENTS', details: 'DÉTAILS',
+             engagements: 'MISSIONS', skills: 'COMPÉTENCES',
+             cv: 'CURRICULUM VITÆ', pdf: 'PDF' },
+    page: { profile: 'PROFIL', organisations: 'ORGANISATIONS', touch: 'PRENDRE CONTACT',
+            lede: 'Ouvert aux commandes, aux collaborations et aux briefs bizarres.',
+            noLogos: 'Déposez un logo dans clients/ et il apparaît ici.' },
+    watch: 'REGARDER',
+    rights: 'TOUS DROITS RÉSERVÉS',
+    error: { sub: 'INDISPONIBLE', readout: 'CONTENU INDISPONIBLE',
+             lede: "L'index du site n'a pas pu être chargé.",
+             note: 'content.json est généré par tools/build-content.mjs. ' +
+                   'Lancez <code>node tools/build-content.mjs</code>, puis servez le dossier ' +
+                   'en HTTP (<code>npx serve</code>) plutôt que d\'ouvrir le fichier directement.' }
+  }
+};
+
+/* Where the language comes from — and only ever from a choice somebody made.
+   The address is what this visit asked for; localStorage is what the last
+   visit clicked. If neither says anything, the site opens in English.
+
+   `navigator.languages` is deliberately not consulted. A browser's locale is
+   set by the machine it was installed on, not by the person reading a
+   portfolio, and letting it decide meant a first-time visitor could land in a
+   language they never asked for, on a URL that says nothing about it — with
+   the switcher the only clue that anything had been decided for them. One
+   default, the same for everyone arriving, and the two buttons in the corner
+   are the whole of the mechanism for changing it.
+
+   A `?lang=` that names a language nobody has translated is not an error
+   worth showing anyone — it simply does not match, and the search continues
+   past it. */
+function pickLocale(){
+  const asked = new URLSearchParams(location.search).get('lang');
+  if(asked && LOCALES.includes(asked)) return asked;
+
+  let saved = null;
+  try{ saved = localStorage.getItem('lang'); }catch(err){}
+  if(saved && LOCALES.includes(saved)) return saved;
+
+  return DEFAULT_LOCALE;
+}
+
+let LANG = pickLocale();
+
+/* Spelt out rather than shortened to `T`, which is already taken: the theme
+   functions bind `const T = TH()` for the palette, and a one-letter global
+   would be silently shadowed there — the failure being a colour object
+   asked for a word, several hundred lines from anything about language. */
+let WORDS = STRINGS[LANG] || STRINGS[DEFAULT_LOCALE];
+
+/* The chrome is painted from `WORDS` in a dozen places; this is the one that
+   settles what the document itself is. It runs before the first frame, so
+   the boot screen is already in the right language rather than flipping once
+   the content arrives. */
+function markDocument(){
+  document.documentElement.lang = LANG;
+}
+markDocument();
 
 /* ══ the hero ═════════════════════════════════════════════════════════════
    There is no model. Nothing is fetched, nothing is parsed, nothing waits on
@@ -2367,13 +2582,17 @@ function stepMorph(dt){
   // the moment: the act while the hold is running, the act finished once the
   // shape is standing, with the shape itself named at that point and only
   // that point, because until then there is nothing there to name
-  const verb = verbIx >= 0 ? VERBS[verbIx] : null;
+  const verb = verbForms();
+  const key = SHAPES[shapeIx] ? SHAPES[shapeIx].key : null;
+  /* A shape's key is an identifier first and a word second. English reads it
+     as it stands; the other tables name it, and anything they have not named
+     yet falls back to the key rather than to a blank. */
+  const shape = key ? (WORDS.shapes[key] || key) : WORDS.state.form;
   const state = formed && setV > 0.86
-                  ? (verb ? past(verb) : 'SET') + ': ' +
-                    (SHAPES[shapeIx] ? SHAPES[shapeIx].key : 'FORM')
-              : working || holdT > 0.001 ? (verb ? ing(verb) : 'FORMING')
-              : setV < 0.06 ? 'UNSET'
-              : 'RELAXING';
+                  ? (verb ? verb[2] : WORDS.state.set) + ': ' + shape
+              : working || holdT > 0.001 ? (verb ? verb[1] : WORDS.state.forming)
+              : setV < 0.06 ? WORDS.state.unset
+              : WORDS.state.relaxing;
   if(state !== matState){
     matState = state;
     if(matOut) matOut.textContent = state;
@@ -2971,8 +3190,6 @@ let cueDone = !coarse, cueLive = false, bootDone = false;
    run out, which put it mid-clause; broken at the full stop the two lines
    balance and each one is a whole thought. It still wraps on its own if a
    narrow enough screen makes it. */
-const CREED = `ROUGH FIRST, THEN SET.
-LIKE EVERY PROJECT HERE`;
 const CREED_HOLD = 7200;         // long enough to read twice, short enough not to sit there
 let creedState = 0;              // 0 not yet, 1 saying it, 2 said
 let creedArmed = false;          // a hand cured it, and the form is still rising
@@ -2981,7 +3198,7 @@ let creedTimer = null;
 function showCreed(){
   if(creedState || panelOpen || lensOpen()) return;
   creedState = 1;
-  cue.textContent = CREED;
+  cue.textContent = WORDS.cue.creed;
   cue.classList.add('creed');
   syncCue();
   creedTimer = setTimeout(retireCreed, CREED_HOLD);
@@ -3075,7 +3292,8 @@ function openPage(k){
   const p = PAGES[k];
   if(!p) return;
   fieldIx = -1; workIx = -1;
-  pField.textContent = k;
+  panelState = { kind:'page', key:k };
+  pField.textContent = WORDS.nav[k] || k;
   pSub.textContent = p.sub;
   haltMedia(gridEl);
   gridEl.className = 'page';
@@ -3085,23 +3303,27 @@ function openPage(k){
   showPanel();
 }
 
-function openField(i){
+/* `quiet` rebuilds the same grid without working the clay — what a language
+   change needs, since the visitor did not reach for anything and the form
+   behind the panel has no business changing shape because a word did. */
+function openField(i, quiet){
   /* Reaching for a discipline works the clay too, so the mark behind the panel
      is never the one that was standing when the visitor arrived — but not in
      this frame. Building the grid below is the heaviest main-thread moment on
      the page, and handing the new target to the GPU in the same frame put the
      two costs on top of each other, which is what was felt as a stutter. */
-  requestAnimationFrame(()=>requestAnimationFrame(startMorph));
+  if(!quiet) requestAnimationFrame(()=>requestAnimationFrame(startMorph));
   fieldIx = i; workIx = -1;
+  panelState = { kind:'field', i };
   const f = FIELDS[i];
   haltMedia(gridEl);
   gridEl.className = 'grid';
   pField.textContent = f.key;
-  pSub.textContent = String(f.works.length).padStart(2,'0') + ' WORKS — ' + f.sub;
+  pSub.textContent = String(f.works.length).padStart(2,'0') + ' ' + WORDS.panel.works + ' — ' + f.sub;
   gridEl.innerHTML = '';
   f.works.forEach((w,k)=>{
     const c = document.createElement('button');
-    c.type = 'button'; c.className = 'card'; c.dataset.tag = 'OPEN';
+    c.type = 'button'; c.className = 'card'; c.dataset.tag = WORDS.tag.open;
     c.innerHTML = '<span class="thumb">'+workMedia(w, f, i*97 + k*13 + 5, true)+'</span>' +
       '<span class="meta"><b>'+esc(w.t)+'</b><span>'+esc(w.y || '')+'</span></span>';
     c.style.opacity = '0'; c.style.transform = 'translateY(16px)';
@@ -3125,7 +3347,7 @@ function openField(i){
 function showGrid(){
   haltMedia(detailView);
   workIx = -1;
-  pBack.textContent = fieldIx < 0 ? 'TOP' : 'INDEX';
+  pBack.textContent = fieldIx < 0 ? WORDS.panel.top : WORDS.panel.index;
   gridView.classList.remove('hide');
   detailView.classList.add('hide');
   pPrev.hidden = pNext.hidden = pBack.hidden = true;
@@ -3241,21 +3463,21 @@ const chips_ = list => list.map(x=>'<span>'+x+'</span>').join('');
 
 function workInfo(w){
   let h = '';
-  if(w.b) h += '<div><b>'+(w.lb||'BRIEF')+'</b><p>'+w.b+'</p></div>';
+  if(w.b) h += '<div><b>'+(w.lb||WORDS.info.brief)+'</b><p>'+w.b+'</p></div>';
   if(w.a || w.credit){
-    h += '<div><b>'+(w.la||'APPROACH')+'</b>' +
+    h += '<div><b>'+(w.la||WORDS.info.approach)+'</b>' +
       (w.a ? '<p>'+w.a+'</p>' : '') +
       (w.credit ? '<p>'+w.credit+'</p>' : '') +
     '</div>';
   }
   const clientList = (w.clients && w.clients.length) ? w.clients : (w.c ? [w.c] : []);
-  if(clientList.length) h += '<div><b>CLIENT'+(clientList.length > 1 ? 'S' : '')+
+  if(clientList.length) h += '<div><b>'+(clientList.length > 1 ? WORDS.info.clients : WORDS.info.client)+
     '</b><div class="tags">'+chips_(clientList)+'</div></div>';
-  if(w.roles)   h += '<div><b>ROLE</b><div class="tags">'+chips_(w.roles)+'</div></div>';
+  if(w.roles)   h += '<div><b>'+WORDS.info.role+'</b><div class="tags">'+chips_(w.roles)+'</div></div>';
 
   const row =
-    (w.y ? '<div><b>YEAR</b><p>'+esc(w.y)+'</p></div>' : '') +
-    (!w.roles && w.r ? '<div><b>ROLE</b><p>'+esc(w.r)+'</p></div>' : '');
+    (w.y ? '<div><b>'+WORDS.info.year+'</b><p>'+esc(w.y)+'</p></div>' : '') +
+    (!w.roles && w.r ? '<div><b>'+WORDS.info.role+'</b><p>'+esc(w.r)+'</p></div>' : '');
   if(row) h += '<div class="row">'+row+'</div>';
 
   return h;
@@ -3264,10 +3486,11 @@ function workInfo(w){
 function openWork(k){
   const f = FIELDS[fieldIx], w = f.works[k];
   workIx = k;
+  panelState = { kind:'work', i:fieldIx, k };
 
   const media = workMedia(w, f, fieldIx*97 + k*13 + 5, false);
   const play = w.link
-    ? '<a class="play" href="'+w.link+'" target="_blank" rel="noopener" data-tag="PLAY">'+PLAY_ICON+'WATCH</a>'
+    ? '<a class="play" href="'+w.link+'" target="_blank" rel="noopener" data-tag="'+esc(WORDS.tag.play)+'">'+PLAY_ICON+esc(WORDS.watch)+'</a>'
     : '';
   const dimg = document.getElementById('detailimg');
   haltMedia(dimg);
@@ -3311,7 +3534,7 @@ function openWork(k){
   const hero = w.img ? dimg.querySelector('img') : null;
   if(hero && shots.length){
     const open = ()=>openLens(shots, 0, w.t);
-    hero.dataset.tag = 'VIEW';
+    hero.dataset.tag = WORDS.tag.view;
     hero.setAttribute('role', 'button');
     hero.setAttribute('tabindex', '0');
     hero.addEventListener('click', open);
@@ -3322,7 +3545,7 @@ function openWork(k){
 
   document.getElementById('detailtitle').textContent = w.t;
   document.getElementById('detailtag').textContent = w.tag
-    || (f.key + ' / ' + w.y + ' / ' + String(k+1).padStart(2,'0') + ' OF ' + String(f.works.length).padStart(2,'0'));
+    || (f.key + ' / ' + w.y + ' / ' + String(k+1).padStart(2,'0') + ' ' + WORDS.panel.of + ' ' + String(f.works.length).padStart(2,'0'));
   document.getElementById('detailinfo').innerHTML = workInfo(w);
 
   const gal = document.getElementById('detailgal');
@@ -3332,8 +3555,8 @@ function openWork(k){
   /* A cached ratio is written straight into the markup, so the tile is born
      the right shape — nothing to correct afterwards. */
   gal.innerHTML = rest.map((src,n)=>
-    '<button class="gshot skel" type="button" data-tag="VIEW"'+arVar(src)+
-      ' aria-label="View image '+(n+1+offset)+'">' +
+    '<button class="gshot skel" type="button" data-tag="'+esc(WORDS.tag.view)+'"'+arVar(src)+
+      ' aria-label="'+esc(WORDS.aria.image)+' '+(n+1+offset)+'">' +
       '<img src="'+esc(src)+'" alt="'+esc(w.t)+' \u2014 '+(n+1+offset)+'" decoding="async">' +
     '</button>'
   ).join('');
@@ -3415,7 +3638,7 @@ function paintLens(){
 
 function showShot(){
   lensImg.src = lensSet[lensIx];
-  lensImg.alt = lensName + ' \u2014 ' + (lensIx + 1) + ' of ' + lensSet.length;
+  lensImg.alt = lensName + ' \u2014 ' + (lensIx + 1) + ' ' + WORDS.panel.of + ' ' + lensSet.length;
 }
 
 function openLens(set, i, name){
@@ -3719,33 +3942,29 @@ let spin = 0, spinV = 0, groupX = 0;
    outright; from the moment they have done it once the tag stops instructing
    and starts naming the act instead, a different verb each time the clay is
    worked. Same word under the pointer as the one the press is about to carry
-   out — it is a label, not a caption. */
-const VERBS = ['MORPH','TRANSFORM','RESHAPE','EVOLVE','REFINE',
-               'VISUALIZE','MATERIALIZE','ANIMATE','BUILD','DEFINE'];
+   out — it is a label, not a caption.
+
+   The three forms of each verb are in the language table at the top of the
+   file; what is held here is only which verb, by index. So a language change
+   mid-gesture swaps the word the tag is showing without disturbing the draw
+   — the bag has no idea a language exists. */
 let verbIx = -1;
 const verbBag = [];
 
-/* The tag under the hand names the act about to happen, so it stays an
-   imperative; the readout is describing the act while it runs, so it takes
-   the participle. Every verb in the list ends either in a consonant or a
-   silent e, which is the whole of the rule needed here. */
-const ing = w => w.replace(/E$/, '') + 'ING';
-/* and the same word again once the thing is done. The -ed is as regular as
-   the -ing was, bar the one strong verb in the list, which is spelt out. */
-const PAST = { BUILD:'BUILT' };
-const past = w => PAST[w] || w + (w.endsWith('E') ? 'D' : 'ED');
+const verbForms = () => WORDS.verbs[verbIx] || null;
 
 // the verbs are drawn the same way as the shapes, and for the same reason —
 // so the tag is not a list being read out in order, and so no press ever
 // repeats the word the one before it used
 function stepVerb(){
-  verbIx = bagDraw(verbBag, VERBS.length, verbIx);
+  verbIx = bagDraw(verbBag, WORDS.verbs.length, verbIx);
   syncTag();
 }
 
 function syncTag(){
   if(!hoverForm){ retTag.textContent = ''; return; }
-  retTag.textContent = verbIx < 0 ? 'PRESS & HOLD' : VERBS[verbIx];
+  const v = verbForms();
+  retTag.textContent = v ? v[0] : WORDS.cue.hold;
 }
 
 function toWorld(cx, cy){
@@ -3932,9 +4151,49 @@ const soundLabel = document.getElementById('soundlabel');
 function paintSound(){
   const live = started && soundOn;
   soundBtn.classList.toggle('live', live);
-  soundLabel.textContent = !started ? 'AUDIO STANDBY' : (soundOn ? 'AUDIO ON' : 'AUDIO OFF');
+  soundLabel.textContent = !started ? WORDS.tools.standby : (soundOn ? WORDS.tools.on : WORDS.tools.off);
   soundBtn.setAttribute('aria-checked', String(live));
 }
+
+/* ── the row must not move under a press ──────────────────────────────────
+   .tools takes its width from its contents and sits against the right edge,
+   so a control that changes width drags its neighbours sideways: 36px on a
+   desktop, and on a phone — where the row is justified space-between — 18px
+   for whichever control is in the middle. The language buttons are 33px wide.
+
+   Normally that costs nothing, because a width only ever changes as the
+   *result* of a click. The audio label is the one exception. The first
+   pointerdown anywhere on the page unlocks the audio, and this label goes
+   from its longest state to its shortest while the button is still held
+   down — so the control being pressed slid out from under the cursor before
+   the click was dispatched, and the click landed on whatever had taken its
+   place. That is why the first attempt to change the language, or the theme,
+   used to do nothing but start the sound, and why the second attempt worked.
+
+   So for the one press that can do this, the button keeps the width it had
+   when the finger landed, and gives it up on the frame after the finger
+   lifts — by which time the click has been dispatched against the element
+   that was actually pressed. Nothing is reserved and nothing is resized: the
+   button is exactly as wide as its own label, a moment later than before.
+   If the release is ever missed, the button simply stays at its widest,
+   which is how it looked an instant earlier — the failure is invisible
+   rather than wrong. */
+let widthHeld = false;
+
+addEventListener('pointerdown', ()=>{
+  // capture phase, so this runs before the handlers that unlock the audio
+  if(started || widthHeld) return;
+  widthHeld = true;
+  soundBtn.style.width = soundBtn.getBoundingClientRect().width + 'px';
+}, true);
+
+function releaseWidth(){
+  if(!widthHeld) return;
+  widthHeld = false;
+  requestAnimationFrame(()=>{ soundBtn.style.width = ''; });
+}
+addEventListener('pointerup', releaseWidth, true);
+addEventListener('pointercancel', releaseWidth, true);
 
 soundBtn.addEventListener('click', e=>{
   e.preventDefault();
@@ -3953,14 +4212,14 @@ const themeIcon = document.getElementById('themeicon');
 function applyTheme(){
   const T = TH();
   document.body.classList.toggle('light', mode === 'light');
-  themeLabel.textContent = mode === 'light' ? 'DARK' : 'LIGHT';
+  themeLabel.textContent = mode === 'light' ? WORDS.tools.dark : WORDS.tools.light;
   themeIcon.textContent = mode === 'light' ? '◑' : '◐';
   themeBtn.setAttribute('aria-pressed', String(mode === 'light'));
   /* Under 420px the word is dropped and only the half-disc is left, which
      leaves a screen reader announcing the glyph and nothing else. The label
      is written out here so the button says what it does at every width. */
   themeBtn.setAttribute('aria-label',
-    mode === 'light' ? 'Switch to dark theme' : 'Switch to light theme');
+    mode === 'light' ? WORDS.tools.toDark : WORDS.tools.toLight);
 
   renderer.toneMappingExposure = T.exposure;
   scene.background = new THREE.Color(T.bg);
@@ -4119,7 +4378,7 @@ function frame(now){
     bootpct.textContent = String(Math.round(Math.min(100, bootP))).padStart(2,'0');
     if(ready && bootP > 99.2 && first){
       first = false;
-      bootmsg.textContent = 'READY';
+      bootmsg.textContent = WORDS.boot.ready;
       boot.classList.add('gone');
       // the one moment the interface arrives; the cue is part of it
       bootDone = true; syncCue();
@@ -4305,13 +4564,13 @@ const tagblock_ = (title, items) =>
 /* about.skills is [{ label, items }] — one block per group */
 const skills_ = groups => (groups || [])
   .filter(g => g && g.items && g.items.length)
-  .map(g => tagblock_((g.label || 'SKILLS').toUpperCase(), g.items))
+  .map(g => tagblock_((g.label || WORDS.block.skills).toUpperCase(), g.items))
   .join('');
 
 const elsewhere_ = links => {
   const entries = Object.entries(links || {});
   return entries.length
-    ? block_('ELSEWHERE', rows_(entries.map(([k, v]) => [k.toUpperCase(), '', v, 'ur'])))
+    ? block_(WORDS.block.elsewhere, rows_(entries.map(([k, v]) => [k.toUpperCase(), '', v, 'ur'])))
     : '';
 };
 
@@ -4322,7 +4581,7 @@ function mailLink(email){
   if(!email || !email.user || !email.domain || !email.tld) return '';
   const at = String.fromCharCode(64);
   const addr = email.user + at + email.domain + '.' + email.tld;
-  return '<a class="mail" href="#" data-mail="'+esc(addr)+'" data-tag="EMAIL" ' +
+  return '<a class="mail" href="#" data-mail="'+esc(addr)+'" data-tag="'+esc(WORDS.tag.email)+'" ' +
     'rel="nofollow noreferrer">' + esc(addr) + '</a>';
 }
 
@@ -4344,7 +4603,7 @@ function buildPages(c){
   const cv = about.cv;
 
   pages.ABOUT = {
-    sub: (site.role || 'PROFILE').toUpperCase(),
+    sub: (site.role || WORDS.page.profile).toUpperCase(),
     html: ()=>
       '<div class="who">' +
         (about.headline ? '<h3>'+esc(about.headline)+'</h3>' : '') +
@@ -4352,9 +4611,9 @@ function buildPages(c){
         '<div class="said">' + paras.map(p=>'<p>'+p+'</p>').join('') + '</div>' +
       '</div>' +
       skills_(about.skills) +
-      (cv ? block_('DOCUMENTS', rows_([[
-        'CURRICULUM VITAE',
-        'PDF · ' + cv.size + ' · ' + cv.updated,
+      (cv ? block_(WORDS.block.documents, rows_([[
+        WORDS.block.cv,
+        WORDS.block.pdf + ' · ' + cv.size + ' · ' + cv.updated,
         cv.src + (cv.hash ? '?v=' + cv.hash : ''),
         'd'
       ]])) : '') +
@@ -4374,27 +4633,27 @@ function buildPages(c){
   const engagements = clients.engagements || [];
 
   pages.CLIENTS = {
-    sub: String(logos.length).padStart(2,'0') + ' ORGANISATIONS',
+    sub: String(logos.length).padStart(2,'0') + ' ' + WORDS.page.organisations,
     html: ()=>
       (clients.lede ? '<p class="lede">'+esc(clients.lede)+'</p>' : '') +
       (tiles ? '<div class="clients">'+tiles+'</div>' : '') +
       (engagements.length
-        ? block_('ENGAGEMENTS', rows_(engagements.map(e=>[e.name, e.year || ''])))
+        ? block_(WORDS.block.engagements, rows_(engagements.map(e=>[e.name, e.year || ''])))
         : '') +
-      (logos.length ? '' : '<p class="note">Drop a logo into clients/ and it appears here.</p>')
+      (logos.length ? '' : '<p class="note">'+esc(WORDS.page.noLogos)+'</p>')
   };
 
   /* ── CONTACT ── */
   const details = Object.entries(site.details || {});
 
   pages.CONTACT = {
-    sub: 'GET IN TOUCH',
+    sub: WORDS.page.touch,
     html: ()=>
-      '<p class="lede">Open to commissions, collaborations and the occasional strange brief.</p>' +
+      '<p class="lede">'+esc(WORDS.page.lede)+'</p>' +
       mailLink(site.email) +
       elsewhere_(site.links) +
       (details.length
-        ? block_('DETAILS', rows_(details.map(([k,v])=>[k.toUpperCase(), v])))
+        ? block_(WORDS.block.details, rows_(details.map(([k,v])=>[k.toUpperCase(), v])))
         : '')
   };
 
@@ -4409,12 +4668,166 @@ document.addEventListener('click', e=>{
   location.href = 'mailto:' + a.dataset.mail;
 });
 
-const yearEl = document.getElementById('year');
-if(yearEl) yearEl.textContent = String(new Date().getFullYear());
+/* ══ the interface, in whichever language ═════════════════════════════════
+   Everything the chrome says about itself, written out of `T` in one place.
+   It runs at boot and again on every switch, which is why it sets values
+   rather than toggling them: after it has run, no element is still carrying
+   a word from the language before.
+
+   The `data-tag` attributes are part of this. They are what the reticle
+   reads out under the pointer, so leaving them behind would have the cursor
+   narrating a translated interface in the language it was written in — the
+   one place a missed string would be loudest. */
+function paintChrome(){
+  markDocument();
+
+  document.querySelectorAll('.menu [data-page]').forEach(b=>{
+    const label = WORDS.nav[b.dataset.page] || b.dataset.page;
+    b.querySelector('b').textContent = label;
+    b.dataset.tag = label;
+  });
+
+  const set = (id, text) => { const el = document.getElementById(id); if(el) el.textContent = text; };
+  const tag = (id, value) => { const el = document.getElementById(id); if(el) el.dataset.tag = value; };
+  const aria = (id, value) => { const el = document.getElementById(id); if(el) el.setAttribute('aria-label', value); };
+
+  /* the readout labels; the values beside them are written every frame */
+  const labels = document.querySelectorAll('.readout > span > b');
+  const order = [WORDS.readout.form, WORDS.readout.practice, WORDS.readout.render];
+  labels.forEach((b, i) => { if(order[i]) b.textContent = order[i]; });
+  const render = document.querySelector('.readout > span:nth-child(3)');
+  if(render) render.lastChild.textContent = ' ' + WORDS.readout.fps;
+
+  set('bootmsg', bootDone ? WORDS.boot.ready : WORDS.boot.init);
+  set('rights', '© ' + new Date().getFullYear() + ' ' + WORDS.rights);
+
+  /* The cue is the one label with two lives — the instruction, then the
+     sentence. Whichever it is holding now is the one that gets rewritten. */
+  cue.textContent = creedState === 1 ? WORDS.cue.creed : WORDS.cue.hold;
+  syncTag();
+
+  pBack.textContent = fieldIx < 0 ? WORDS.panel.top : WORDS.panel.index;
+  const closeLbl = pClose.querySelector('.lbl');
+  if(closeLbl) closeLbl.textContent = WORDS.panel.close;
+
+  tag('pprev', WORDS.tag.prev);   aria('pprev', WORDS.aria.prev);
+  tag('pnext', WORDS.tag.next);   aria('pnext', WORDS.aria.next);
+  tag('pback', WORDS.tag.back);
+  tag('pclose', WORDS.tag.close); aria('pclose', WORDS.aria.close);
+  tag('lensclose', WORDS.tag.close); aria('lensclose', WORDS.aria.close);
+  tag('lensprev', WORDS.tag.prev);   aria('lensprev', WORDS.aria.prevImg);
+  tag('lensnext', WORDS.tag.next);   aria('lensnext', WORDS.aria.nextImg);
+  aria('lens', WORDS.aria.images);
+  tag('theme', WORDS.tag.theme);
+  tag('sound', WORDS.tag.audio);
+
+  const group = document.getElementById('lang');
+  if(group) group.setAttribute('aria-label', WORDS.tools.language);
+
+  paintSound();
+  applyTheme();
+
+  /* the readout is compared against its last value before it repaints, so
+     the old language's word has to stop counting as current */
+  matState = '';
+}
+
+/* ── the switcher ─────────────────────────────────────────────────────────
+   Three buttons, each labelled in its own language. The address is kept in
+   step with a replaceState rather than a navigation: the visitor's history
+   should record where they went on the site, not how many times they changed
+   their mind about the language, and a reload would throw away a form that
+   took a second and a half to build. */
+const langGroup = document.getElementById('lang');
+
+function buildLangs(){
+  if(!langGroup) return;
+  langGroup.innerHTML = '';
+  LOCALES.forEach(code=>{
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.lang = code;
+    b.textContent = LOCALE_LABEL[code] || code.toUpperCase();
+    b.dataset.lang = code;
+    b.dataset.tag = LOCALE_NAME[code] || code;
+    b.setAttribute('aria-label', LOCALE_NAME[code] || code);
+    b.addEventListener('pointerenter', ()=>blip(1180, 0.03));
+    b.addEventListener('click', ()=>{ startAudio(); setLang(code); });
+    langGroup.appendChild(b);
+  });
+  markLangs();
+}
+
+function markLangs(){
+  if(!langGroup) return;
+  langGroup.querySelectorAll('button').forEach(b=>
+    b.setAttribute('aria-pressed', String(b.dataset.lang === LANG)));
+}
+
+/* The address says which language is on screen, whether the visitor asked
+   for it in the URL or the browser remembered it from last time. Without
+   this a returning French reader is on a bare `/` that would hand an English
+   page to whoever they sent it to — the link would be lying about what they
+   were looking at. The default language is the bare address, so there is
+   exactly one canonical URL and not two spellings of it. */
+function syncUrl(){
+  const url = new URL(location.href);
+  const had = url.searchParams.get('lang');
+  if(LANG === DEFAULT_LOCALE) url.searchParams.delete('lang');
+  else url.searchParams.set('lang', LANG);
+  if(url.href !== location.href || had !== url.searchParams.get('lang')){
+    history.replaceState(null, '', url);
+  }
+}
+
+function setLang(code){
+  if(!LOCALES.includes(code) || code === LANG) return;
+  LANG = code;
+  WORDS = STRINGS[code] || STRINGS[DEFAULT_LOCALE];
+
+  try{ localStorage.setItem('lang', code); }catch(err){}
+  syncUrl();
+
+  markLangs();
+  paintChrome();
+  loadContent();
+  blip(1240, 0.05);
+}
+
+/* ══ content ══════════════════════════════════════════════════════════════ */
+
+/* Which panel is up, so a language change can put the visitor back where
+   they were rather than closing the thing they were reading. */
+let panelState = null;
+
+function restorePanel(){
+  if(!panelOpen || !panelState) return;
+  const s = panelState;
+  if(s.kind === 'page') openPage(s.key);
+  else if(s.kind === 'field') openField(s.i, true);
+  else if(FIELDS[s.i] && FIELDS[s.i].works[s.k]){ openField(s.i, true); openWork(s.k); }
+  else openField(Math.min(s.i, FIELDS.length - 1), true);
+}
 
 function applyContent(c){
   FIELDS = c.fields || [];
   PAGES = buildPages(c);
+
+  const site = c.site || {};
+  /* The name and the role are content, not chrome — they are in every
+     content.json already, and reading them from there is what keeps a
+     translated page from introducing its author in English. */
+  const name = document.querySelector('.mark-name');
+  const role = document.querySelector('.mark-sub');
+  if(name && site.name) name.textContent = site.name;
+  if(role && site.role) role.textContent = String(site.role).toUpperCase();
+
+  /* The tab is chrome the browser owns, but its words are content: a French
+     page announcing itself in English in the tab strip is the same mistake as
+     a French page with an English nav. The build writes the served <title>
+     for the default language and the crawlers read that one; this is for the
+     visitor who switched. */
+  if(site.name) document.title = [site.name, site.role].filter(Boolean).join(' — ');
 
   const practice = document.getElementById('practice');
   if(FIELDS.length) practice.textContent = FIELDS.map(f=>f.key).join(' / ');
@@ -4423,20 +4836,37 @@ function applyContent(c){
   placeChips();
   refreshExplore();
   warmCovers();
+  restorePanel();
 }
 
-fetch('content.json', { cache: 'no-cache' })
-  .then(r=>{ if(!r.ok) throw new Error('content.json \u2192 HTTP ' + r.status); return r.json(); })
-  .then(applyContent)
-  .catch(err=>{
-    console.error('[content]', err);
-    document.getElementById('practice').textContent = 'CONTENT UNAVAILABLE';
-    PAGES = { ABOUT: { sub:'UNAVAILABLE', html:()=>
-      '<p class="lede">The site index could not be loaded.</p>' +
-      '<p class="note">content.json is generated by tools/build-content.mjs. ' +
-      'Run <code>node tools/build-content.mjs</code>, then serve the folder over HTTP ' +
-      '(<code>npx serve</code>) rather than opening the file directly.</p>' } };
-  });
+/* The default language keeps the plain filename the build has always
+   written, so nothing about the English page changed; the others sit beside
+   it. `no-cache` is kept from before — the file is regenerated on every
+   push and a stale copy is a wrong site, not a slow one. */
+const contentFile = () => LANG === DEFAULT_LOCALE ? 'content.json' : 'content.' + LANG + '.json';
+
+function loadContent(){
+  const want = LANG;
+  const file = contentFile();
+  return fetch(file, { cache: 'no-cache' })
+    .then(r=>{ if(!r.ok) throw new Error(file + ' → HTTP ' + r.status); return r.json(); })
+    /* Two quick switches can land their responses out of order; the slower
+       one must not overwrite the language the visitor actually settled on. */
+    .then(c=>{ if(want === LANG) applyContent(c); })
+    .catch(err=>{
+      console.error('[content]', err);
+      if(want !== LANG) return;
+      document.getElementById('practice').textContent = WORDS.error.readout;
+      PAGES = { ABOUT: { sub: WORDS.error.sub, html:()=>
+        '<p class="lede">' + esc(WORDS.error.lede) + '</p>' +
+        '<p class="note">' + WORDS.error.note + '</p>' } };
+    });
+}
+
+buildLangs();
+syncUrl();
+paintChrome();
+loadContent();
 </script>
 <!-- SEO:BODY:START -->
 <noscript>
@@ -4444,7 +4874,7 @@ fetch('content.json', { cache: 'no-cache' })
 <p class="seo-name">Kiarash Farahmandrad</p>
 <p class="seo-role">Multi-disciplinary designer · Tehran, Iran</p>
 
-<p>I work across identity, typography, 3D, motion, and digital experiences, moving between mediums to find the right form for an idea. I'm interested in the space where disciplines overlap, where a graphic can become an object, a typeface can become an environment, and a visual identity can become something you can interact with. I like to start while an idea is still rough, and shape it with you rather than hand it back finished. Most things start as an experiment, and usually end somewhere no one expects.</p>
+<p>I work across identity, typography, 3D, motion, and digital experiences, moving between mediums to find the right form for an idea. I'm interested in the space where disciplines overlap, where a graphic can become an object, a typeface can become an environment, and a visual identity can become something you can interact with. I like to start while an idea is still soft, and shape it with you rather than hand it back finished. Most things start as an experiment, and usually end somewhere no one expects.</p>
 
 <h2>Skills</h2>
 <h3>DISCIPLINES</h3>
@@ -4495,6 +4925,9 @@ fetch('content.json', { cache: 'no-cache' })
 <ul><li><a href="https://www.linkedin.com/in/kia-rad/" rel="me noopener">LINKEDIN</a></li><li><a href="https://open.spotify.com/user/kiarash.fr" rel="me noopener">SPOTIFY</a></li><li><a href="https://letterboxd.com/kia_rad/" rel="me noopener">LETTERBOXD</a></li></ul>
 <p><a href="about/cv.pdf">Curriculum vitae (PDF)</a></p>
 <p>Enable JavaScript for the interactive version of this site.</p>
+
+<h2>Languages</h2>
+<ul><li><a href="https://kiarad.space/" hreflang="en" rel="canonical">English</a></li><li><a href="https://kiarad.space/?lang=fr" hreflang="fr">Français</a></li></ul>
 </div>
 </noscript>
 
@@ -4539,7 +4972,7 @@ fetch('content.json', { cache: 'no-cache' })
       "alternateName": "Kiarad Space",
       "url": "https://kiarad.space/",
       "jobTitle": "Multi-disciplinary designer",
-      "description": "I work across identity, typography, 3D, motion, and digital experiences, moving between mediums to find the right form for an idea. I'm interested in the space where disciplines overlap, where a graphic can become an object, a typeface can become an environment, and a visual identity can become something you can interact with. I like to start while an idea is still rough, and shape it with you rather than hand it back finished. Most things start as an experiment, and usually end somewhere no one expects.",
+      "description": "I work across identity, typography, 3D, motion, and digital experiences, moving between mediums to find the right form for an idea. I'm interested in the space where disciplines overlap, where a graphic can become an object, a typeface can become an environment, and a visual identity can become something you can interact with. I like to start while an idea is still soft, and shape it with you rather than hand it back finished. Most things start as an experiment, and usually end somewhere no one expects.",
       "knowsAbout": [
         "Logo Design",
         "Poster Design",

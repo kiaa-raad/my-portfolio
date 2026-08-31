@@ -18,6 +18,7 @@
 
   "links": {
     "LINKEDIN": "https://www.linkedin.com/in/kia-rad/",
+    "SPOTIFY": "https://open.spotify.com/user/kiarash.fr",
     "LETTERBOXD": "https://letterboxd.com/kia_rad/"
   },
   "details": {
@@ -26,5 +27,32 @@
     "RESPONSE": "Within a few days"
   },
   "clients_lede": "The list runs from technology platforms to cultural institutions. Some arrived for a single mark; others for a system a whole team would go on to run.",
-  "show_empty_categories": false
+  "show_empty_categories": false,
+
+  "_i18n_note": "`default` is the language index.html and content.json are written in; the others are served as content.<lang>.json and reached at ?lang=<lang>. Adding a language here is half the job — the other half is the sibling markdown: about.fr.md beside about.md, index.fr.md beside index.md. A missing translation falls back to the default, so a language can be added before its content exists. Every language shipped so far is left-to-right; an rtl one needs work in index.html that is not currently there.",
+  "i18n": {
+    "default": "en",
+    "locales": ["en", "fr"],
+    "labels": { "en": "EN", "fr": "FR" },
+    "og_locale": { "en": "en_US", "fr": "fr_FR" }
+  },
+
+  "_locales_note": "Per-language overrides of the fields above. Anything left out keeps the default language's value. `details` and `client_names` replace their object wholesale rather than merging key by key, because their keys are themselves display text. `client_names` maps the English name a clients/ filename yields onto its translation — it is the one place a client can be renamed for a language, and it feeds both the logo tiles and the engagements list.",
+  "locales": {
+    "fr": {
+      "role": "Designer multidisciplinaire",
+      "description": "Kiarash Farahmandrad est un designer multidisciplinaire basé à Téhéran, actif en identité visuelle et logotypes, affiches, 3D, XR et motion. Travaux choisis, clients et CV.",
+      "details": {
+        "BASÉ À": "Téhéran, Iran",
+        "DISPONIBILITÉ": "Ouvert aux commandes",
+        "RÉPONSE": "Sous quelques jours"
+      },
+      "clients_lede": "La liste va des plateformes technologiques aux institutions culturelles. Certains sont venus chercher une seule marque ; d'autres, un système qu'une équipe entière allait faire vivre.",
+      "client_names": {
+        "Nodet": "Lycée Allameh Helli 1",
+        "Tardid Virtual Philosophy School": "Tardid, École de philosophie en ligne",
+        "Tehran University": "Université de Téhéran"
+      }
+    }
+  }
 }
