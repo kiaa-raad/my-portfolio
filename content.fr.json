@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-31T15:15:11.084Z",
+  "generated": "2026-08-31T17:22:42.902Z",
   "lang": "fr",
   "site": {
     "name": "Kiarash Farahmandrad",
@@ -874,6 +874,40 @@
           "la": "APPROCHE",
           "b": "Clavier périodique est une expérimentation 3D personnelle qui croise deux systèmes familiers : le clavier d'ordinateur et le tableau périodique des éléments. Le concept pose une question simple : à quoi ressemblerait un clavier dont chaque touche serait un élément chimique ?",
           "a": "J'ai développé et modélisé le concept entièrement dans Blender, en traduisant la structure et le langage visuel du tableau périodique dans la forme fonctionnelle d'un clavier. Chaque touche représente un élément, ce qui fait du clavier une lecture tridimensionnelle du tableau.\nLe projet m'a permis d'explorer le croisement des interfaces numériques, des objets physiques et des systèmes scientifiques par la modélisation 3D et l'expérimentation visuelle.",
+          "credit": null,
+          "roles": [
+            "Design 3D",
+            "Blender",
+            "Modélisation 3D"
+          ],
+          "self": true
+        },
+        {
+          "slug": "macbookwallpaper",
+          "t": "MACBOOK PRO WALLPAPER",
+          "c": "Self-Initiated",
+          "y": "2024",
+          "r": "Artiste 3D & designer",
+          "img": "projects/03-spatial/macbookwallpaper/cover.webp",
+          "video": null,
+          "gallery": [
+            "projects/03-spatial/macbookwallpaper/02.webp",
+            "projects/03-spatial/macbookwallpaper/03.webp",
+            "projects/03-spatial/macbookwallpaper/04.webp",
+            "projects/03-spatial/macbookwallpaper/05.webp",
+            "projects/03-spatial/macbookwallpaper/06.webp",
+            "projects/03-spatial/macbookwallpaper/07.webp",
+            "projects/03-spatial/macbookwallpaper/08.webp",
+            "projects/03-spatial/macbookwallpaper/09.webp",
+            "projects/03-spatial/macbookwallpaper/10.webp",
+            "projects/03-spatial/macbookwallpaper/11.webp"
+          ],
+          "link": null,
+          "tag": "3D / BLENDER / 2024",
+          "lb": "APERÇU",
+          "la": "APPROCHE",
+          "b": "MacBook Pro Wallpaper est une petite expérimentation 3D née d'une demande d'un ami qui souhaitait avoir différentes options de couleurs pour le fond d'écran du MacBook Pro. Comme le design original n'était disponible qu'en noir, il m'a demandé de créer plusieurs variations colorées.",
+          "a": "J'ai recréé le fond d'écran du MacBook Pro dans Blender, en construisant la composition sous forme de scène 3D et en expérimentant différentes variations de couleurs tout en conservant le caractère visuel du design original.\nLe projet m'a permis d'explorer la modélisation 3D, les matériaux, l'éclairage et la couleur, en réinterprétant un visuel existant pour lui donner de nouvelles possibilités.",
           "credit": null,
           "roles": [
             "Design 3D",

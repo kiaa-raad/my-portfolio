@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-31T15:15:11.084Z",
+  "generated": "2026-08-31T17:22:42.902Z",
   "lang": "en",
   "site": {
     "name": "Kiarash Farahmandrad",
@@ -852,6 +852,40 @@
             "Real-time Asset Creation",
             "AR Content Production"
           ]
+        },
+        {
+          "slug": "macbookwallpaper",
+          "t": "MACBOOK PRO WALLPAPER",
+          "c": "Self-Initiated",
+          "y": "2024",
+          "r": "3D Artist & Designer",
+          "img": "projects/03-spatial/macbookwallpaper/cover.webp",
+          "video": null,
+          "gallery": [
+            "projects/03-spatial/macbookwallpaper/02.webp",
+            "projects/03-spatial/macbookwallpaper/03.webp",
+            "projects/03-spatial/macbookwallpaper/04.webp",
+            "projects/03-spatial/macbookwallpaper/05.webp",
+            "projects/03-spatial/macbookwallpaper/06.webp",
+            "projects/03-spatial/macbookwallpaper/07.webp",
+            "projects/03-spatial/macbookwallpaper/08.webp",
+            "projects/03-spatial/macbookwallpaper/09.webp",
+            "projects/03-spatial/macbookwallpaper/10.webp",
+            "projects/03-spatial/macbookwallpaper/11.webp"
+          ],
+          "link": null,
+          "tag": "3D / BLENDER / 2024",
+          "lb": "OVERVIEW",
+          "la": "CONTRIBUTION",
+          "b": "MacBook Pro Wallpaper is a small 3D experiment that started with a request from a friend who wanted alternative color options for the MacBook Pro wallpaper. Since the original design was only available in black, they asked me to create different color variations for them.",
+          "a": "I recreated the MacBook Pro wallpaper in Blender, building the composition as a 3D scene and experimenting with different color variations while keeping the visual character of the original design.\nThe project became a small exercise in 3D modeling, materials, lighting, and color exploration, using Blender to reinterpret the original wallpaper and create alternative versions.",
+          "credit": null,
+          "roles": [
+            "3D Design",
+            "3D Modeling",
+            "Blender"
+          ],
+          "self": true
         },
         {
           "slug": "periodic-keyboard",
