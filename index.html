@@ -185,20 +185,45 @@
     transition:opacity .5s cubic-bezier(.2,.8,.3,1),transform .5s cubic-bezier(.2,.8,.3,1)}
   .cue.on{opacity:.92;transform:translate(-50%,-50%)}
   /* The instruction is two words and can hold one line anywhere. The line that
-     replaces it is a sentence, and a sentence held to one line at this tracking
-     runs wider than a phone — so this phase alone is allowed to wrap, and is
-     centred and held to a measure rather than left to set its own width.
+     replaces it is a sentence in two clauses, and it is centred rather than
+     left to sit in a single row.
 
-     It also drops the chip the instruction wears. A box is what makes the
-     instruction read as a control worth acting on; this one is not asking for
-     anything, and framed the same way it reads as a second piece of interface
-     sitting under the first. Set on the page with nothing round it, it reads
-     as a caption, which is what it is. Everything the chip brought has to go
-     with it — the ground, the hairline, the blur behind it and the cut corner
-     the padding was holding clear. */
-  .cue.creed{white-space:pre-line;max-width:min(76vw,290px);text-align:center;line-height:1.75;
-    background:none;border:0;padding:0;clip-path:none;
-    -webkit-backdrop-filter:none;backdrop-filter:none}
+     It is not allowed to wrap. The break between the clauses is written into
+     the string, and white-space:pre keeps that break the only one there is:
+     held to a measure instead, the box ran out mid-clause on a phone and a
+     sentence meant as two balanced lines came apart into four ragged ones.
+     Nothing here needs the wrapping — at this size the longer of the two
+     clauses is around 180px, which every screen the site is served on can
+     hold, so the box simply takes the width of its longest line.
+
+     It keeps a ground, unlike the caption it used to be. Set below the whole
+     composition with nothing round it, it was clear of everything but also
+     far enough down the viewport to be missed entirely — the eye is on the
+     form it just made, not on the bottom edge. So it goes back over the form,
+     where the eye already is, and the ground is what makes that readable: a
+     shape is moving behind it, and eight-point letters set straight on live
+     clay are not text, they are noise.
+
+     What it does drop is the chip's frame. The hairline and the cut corner
+     are what make the instruction read as a control worth acting on; this one
+     is not asking for anything, and framed the same way it reads as a second
+     piece of interface. A plain rectangle of blurred ground, no border and no
+     notch — a plate to be read off, not a button.
+
+     A soft-edged plate was tried and is not what this wants: masked out to
+     nothing at its edges it stops being a plate and becomes a haze, and the
+     interface everywhere else on this page is built out of squared-off
+     surfaces that begin and end where they say they do. The edge stays.
+
+     It takes --plate rather than the chip's --sheet, which is the whole point
+     of the plate: at .86 alpha a backdrop blur sits behind an almost solid
+     wall and does nothing you can see. --plate is the token for the surfaces
+     meant to be seen through, and at .62 the clay stays legible behind the
+     words as a soft moving ground. Blurred harder than the chips are, because
+     what is behind this one is the busiest thing on the page. */
+  .cue.creed{white-space:pre;max-width:none;text-align:center;line-height:1.75;
+    background:var(--plate);border:0;padding:12px 16px;clip-path:none;
+    -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
 
   /* ── hud shell ────────────────────────────────────── */
   .hud{position:relative;z-index:3;height:100vh;height:100dvh;display:flex;flex-direction:column;
@@ -699,7 +724,17 @@
        be ordered against each other. */
     .bot{flex-direction:column;align-items:stretch;gap:12px}
     .tail{display:contents}
-    .tools{order:1;justify-content:space-between}
+    /* The two switches are a pair — they are the only controls that change
+       what the page looks like, and they are read together — so they stay
+       together at the left edge and the audio toggle is pushed out to the
+       right on its own. Spread evenly instead, the language buttons sat in
+       the middle of the row with nothing either side of them: a floating
+       third thing rather than the second half of a pair. It also settles the
+       row: the audio label is the one control whose width changes on its own,
+       and against the right edge it grows leftward into empty space instead
+       of shoving its neighbours along. */
+    .tools{order:1;justify-content:flex-start}
+    .tools .sound{margin-left:auto}
     .readout{order:2}
     .rights{order:3}
     /* label and value read as one pair here rather than as a padded column —
@@ -967,7 +1002,7 @@ const STRINGS = {
     verbs: EN_VERBS,
     shapes: {},                       // the English keys are already the words
     cue: { hold: 'PRESS & HOLD',
-           creed: 'ROUGH FIRST, THEN SET.\nLIKE EVERY PROJECT HERE' },
+           creed: 'ROUGH FIRST, THEN SET.\nLIKE EVERY PROJECT HERE.' },
     boot: { init: 'INITIALIZING', ready: 'READY' },
     tools: { light: 'LIGHT', dark: 'DARK',
              toDark: 'Switch to dark theme', toLight: 'Switch to light theme',
@@ -1018,7 +1053,7 @@ const STRINGS = {
               SPINE:'ARÊTE', STUD:'PLOT', CROSS:'CROIX', COIL:'SPIRE',
               DISC:'DISQUE', TWIST:'TORSION', SHARD:'ÉCLAT', DIMPLE:'FOSSETTE' },
     cue: { hold: 'APPUYEZ & MAINTENEZ',
-           creed: "D'ABORD BRUT, PUIS FIGÉ.\nCOMME CHAQUE PROJET ICI" },
+           creed: "D'ABORD BRUT, PUIS FIGÉ.\nCOMME CHAQUE PROJET ICI." },
     boot: { init: 'INITIALISATION', ready: 'PRÊT' },
     tools: { light: 'CLAIR', dark: 'SOMBRE',
              toDark: 'Passer au thème sombre', toLight: 'Passer au thème clair',
@@ -2368,6 +2403,16 @@ let formed = false;              // the shape has taken and stays taken
 let cured = true;                // the last hold ran its course, so the next
                                  // press is owed a shape it has not seen
 
+/* A discipline's mark is not a shape somebody is holding, it is the shape that
+   discipline has while its panel is up — so once the scripted cure has run it
+   is pinned, and stays standing for as long as the panel does. Nothing on the
+   glass can work it in the meantime: a press still turns the form, still
+   strikes it, still sounds, but it cannot start a hold, because the hand is
+   not being offered clay here. Closing the panel unpins it, and the form
+   slumps back to goo the way it would after any released hold — the mark
+   belonged to the panel and goes out with it. */
+let pinned = false;
+
 let shapeIx = -1, pressed = false;
 
 /* The order is shuffled, not cycled and not drawn fresh each time. Drawing at
@@ -2450,7 +2495,7 @@ function resumeForm(){
 }
 
 function startForm(resumeOk){
-  if(!ready || !SHAPES.length) return;
+  if(!ready || !SHAPES.length || pinned) return;
   scriptedMorph = false;        // a hand is on it; startMorph sets this back
   if(resumeOk && resumeForm()) return;
   /* A press after a hold that never cured is a second run at the same shape,
@@ -2496,10 +2541,22 @@ document.addEventListener('visibilitychange', ()=>{ if(document.hidden) endForm(
 // behind the panel is never the one that was standing when they arrived
 function startMorph(){
   if(!ready) return;
+  pinned = false;               // a second discipline replaces the first mark
   startForm();
   scriptedMorph = true;         // set after, since startForm clears it
   // the script has to outlast a full cure or the mark would collapse unformed
   scriptTimer = setTimeout(()=>{ holding = false; }, FORM_HOLD*1000 + 420);
+  pinned = true;                // held from here until the panel closes
+}
+
+// the panel is going; so is the mark it was standing for
+function unpinForm(){
+  if(!pinned) return;
+  pinned = false;
+  holding = false;
+  formed = false;               // it stops being banked, so the release below
+  holdT = 0;                    // unwinds it exactly like a hand coming off
+  dwell = 0;
 }
 
 function stepMorph(dt){
@@ -2536,7 +2593,7 @@ function stepMorph(dt){
   }
   // a shape that has cured stands on its own for a while — the reward for
   // holding on is time with the form, not a form that never lets go
-  if(formed && !working){
+  if(formed && !working && !pinned){
     dwell += dt;
     if(dwell > SET_DWELL){ formed = false; holdT = 0; }
   }else dwell = 0;
@@ -3188,9 +3245,11 @@ let cueDone = !coarse, cueLive = false, bootDone = false;
 /* The break is written into it rather than left to the measure. Two clauses
    of almost the same length will otherwise wrap wherever the box happens to
    run out, which put it mid-clause; broken at the full stop the two lines
-   balance and each one is a whole thought. It still wraps on its own if a
-   narrow enough screen makes it. */
-const CREED_HOLD = 7200;         // long enough to read twice, short enough not to sit there
+   balance and each one is a whole thought. The stylesheet holds it to those
+   two lines on every width — see .cue.creed. */
+const CREED_HOLD = 5400;         // long enough to read it through twice at a
+                                 // glance, short enough that it is gone before
+                                 // it starts being furniture
 let creedState = 0;              // 0 not yet, 1 saying it, 2 said
 let creedArmed = false;          // a hand cured it, and the form is still rising
 let creedTimer = null;
@@ -3229,7 +3288,7 @@ function syncCue(){
     cueLive = true;
   }
   cue.style.left = (VX + VW/2) + 'px';
-  cue.style.top  = (VY + (creedState === 1 ? creedY : cueY)) + 'px';
+  cue.style.top  = (VY + cueY) + 'px';
   cue.classList.toggle('on', !panelOpen && !lensOpen());
 }
 
@@ -3589,6 +3648,7 @@ function stepWork(d){
 
 function closePanel(){
   panelOpen = false;
+  unpinForm();
   panel.classList.remove('on');
   document.body.classList.remove('pan');
   panel.setAttribute('aria-hidden','true');
@@ -3929,7 +3989,7 @@ let reveal = 0;   // how open the wireframe reveal is — mouse hover only, neve
 const ndc = new THREE.Vector3();
 let mx=0, my=0, px=0, py=0, touched=false, clock=0, intro=0, radius=0, rGoal=0;
 let pointerX = innerWidth/2, pointerY = innerHeight/2, retX = pointerX, retY = pointerY;
-let VX = 0, VY = 0, VW = innerWidth, VH = innerHeight, visH = 4.5, centreY = 0, formScale = 1, formScaleGoal = 1, cueY = 0, creedY = 0;
+let VX = 0, VY = 0, VW = innerWidth, VH = innerHeight, visH = 4.5, centreY = 0, formScale = 1, formScaleGoal = 1, cueY = 0;
 // the goo is fitted to the same box whatever shape it is holding, so these
 // no longer move — they are kept because fitView still frames against them
 let letterW = SHAPE_R*2, letterH = SHAPE_R*2;
@@ -4157,9 +4217,11 @@ function paintSound(){
 
 /* ── the row must not move under a press ──────────────────────────────────
    .tools takes its width from its contents and sits against the right edge,
-   so a control that changes width drags its neighbours sideways: 36px on a
-   desktop, and on a phone — where the row is justified space-between — 18px
-   for whichever control is in the middle. The language buttons are 33px wide.
+   so a control that changes width drags its neighbours sideways by 36px on a
+   desktop. The language buttons are 33px wide, so that is a lost click. On a
+   phone the row is full-width with the audio toggle held against the right
+   edge by a margin, which means it grows into empty space and moves nobody —
+   but the desktop case is enough on its own to need what follows.
 
    Normally that costs nothing, because a width only ever changes as the
    *result* of a click. The audio label is the one exception. The first
@@ -4305,18 +4367,18 @@ function fitView(){
   const centrePx = band.t + freeH/2;
   centreY = (VH/2 - centrePx) * (visH / VH);
 
-  // the touch cue sits centred on the form itself
+  // the touch cue, and the line that replaces it, sit centred on the form
   cueY = centrePx;
 
-  /* The line that comes after a form has stood up cannot sit where the
-     instruction does. The instruction is aimed at a finger that has not
-     arrived yet, so lying over the form is exactly right for it. The line is
-     aimed at a hand that has just been there — so the same spot puts it under
-     the pointer's own tag, and over the shape it is describing. It goes below
-     the whole composition instead, clear of the ring and just above the
-     readout, where it reads as a caption on the thing above it rather than a
-     label stuck to it. Held below the form even on a short viewport. */
-  creedY = Math.max(centrePx + freeH*hFrac*0.5 + 24, VH - band.b - 26);
+  /* The line that comes after a form has stood up sits where the instruction
+     did: centred on the form. It was below the whole composition for a while,
+     clear of the ring and just above the readout, and it was legible there
+     and almost never read — a sentence that only ever appears once, at the
+     bottom edge, while the visitor is watching the shape they just made stand
+     up, is a sentence that gets missed. Over the form it is where the eye
+     already is, and the plate is what lets it survive being there — it
+     arrives on a form that has just stopped moving and holds while the clay
+     goes back to goo underneath it. */
 }
 
 function fitPoster(){
