@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-01T13:39:28.482Z",
+  "generated": "2026-09-01T16:40:24.169Z",
   "lang": "en",
   "site": {
     "name": "Kiarash Farahmandrad",
@@ -25,7 +25,7 @@
     "caption": "KIARASH FARAHMANDRAD",
     "headline": "",
     "paragraphs": [
-      "I work across identity, typography, 3D, motion, and digital experiences, moving between mediums to find the right form for an idea. I'm interested in the space where disciplines overlap, where a graphic can become an object, a typeface can become an environment, and a visual identity can become something you can interact with. I like to start while an idea is still soft, and shape it with you rather than hand it back finished. Most things start as an experiment, and usually end somewhere no one expects."
+      "I work across identity, typography, 3D, motion, and digital experiences, moving between mediums to find the right form for an idea. I'm interested in the space where disciplines overlap, where a graphic can become an object, a typeface can become an environment, and a visual identity can become something you can interact with. I like to start while an idea is still rough, and shape it with you rather than hand it back finished. Most things start as an experiment, and usually end somewhere no one expects."
     ],
     "skills": [
       {
@@ -213,9 +213,9 @@
     },
     "cv": {
       "src": "about/cv.pdf",
-      "hash": "b7be4ce3",
+      "hash": "5fc55ebf",
       "updated": "2026-09-01",
-      "size": "130 KB"
+      "size": "128 KB"
     }
   },
   "clients": {

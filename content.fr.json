@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-01T13:39:28.482Z",
+  "generated": "2026-09-01T16:40:24.169Z",
   "lang": "fr",
   "site": {
     "name": "Kiarash Farahmandrad",
@@ -25,7 +25,7 @@
     "caption": "KIARASH FARAHMANDRAD",
     "headline": "",
     "paragraphs": [
-      "Je travaille entre identité, typographie, 3D, motion et expériences numériques, passant d'un médium à l'autre pour trouver la forme juste d'une idée. Ce qui m'intéresse, c'est l'endroit où les disciplines se recouvrent : là où un graphisme peut devenir un objet, un caractère typographique un environnement, et une identité visuelle quelque chose avec quoi l'on interagit. J'aime commencer tant qu'une idée est encore molle, et la façonner avec vous plutôt que de la rendre finie. La plupart des projets démarrent comme une expérimentation, et finissent généralement là où personne ne les attendait."
+      "Je travaille entre identité, typographie, 3D, motion et expériences numériques, passant d'un médium à l'autre pour trouver la forme juste d'une idée. Ce qui m'intéresse, c'est l'endroit où les disciplines se recouvrent : là où un graphisme peut devenir un objet, un caractère typographique un environnement, et une identité visuelle quelque chose avec quoi l'on interagit. J'aime commencer tant qu'une idée est encore brute, et la façonner avec vous plutôt que de la rendre finie. La plupart des projets démarrent comme une expérimentation, et finissent généralement là où personne ne les attendait."
     ],
     "skills": [
       {
@@ -213,9 +213,9 @@
     },
     "cv": {
       "src": "about/cv.fr.pdf",
-      "hash": "c735fd01",
+      "hash": "5d7b12b9",
       "updated": "2026-09-01",
-      "size": "130 KB"
+      "size": "128 KB"
     }
   },
   "clients": {
