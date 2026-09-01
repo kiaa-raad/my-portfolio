@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-31T17:22:42.902Z",
+  "generated": "2026-09-01T10:11:08.928Z",
   "lang": "fr",
   "site": {
     "name": "Kiarash Farahmandrad",
@@ -132,7 +132,7 @@
           "dates": "2020 – 2023 · Mention 4,00/4,00",
           "link": "https://en.modares.ac.ir/",
           "bullets": [
-            "Mémoire : « Étude des caractéristiques de la typographie en environnement AR/VR (à partir d'une sélection de caractères persans) », accompagné d'un projet pratique, « Douze affiches en typographie 3D »."
+            "Mémoire : « Étude des caractéristiques de la typographie en environnement AR/VR (à partir d'une sélection de caractères en écriture arabe) », accompagné d'un projet pratique, « Douze affiches en typographie 3D »."
           ]
         }
       ],
@@ -212,9 +212,9 @@
       }
     },
     "cv": {
-      "src": "about/cv.pdf",
-      "hash": "3dfd1db0",
-      "updated": "2026-08-29",
+      "src": "about/cv.fr.pdf",
+      "hash": "c735fd01",
+      "updated": "2026-09-01",
       "size": "130 KB"
     }
   },
@@ -846,7 +846,7 @@
           "la": "APPROCHE",
           "b": "<a href=\"https://apps.apple.com/ar/app/appear-app/id6743809751\" target=\"_blank\" rel=\"noopener\" data-tag=\"APPEAR\">AppeaR</a> est une expérience de réalité augmentée géolocalisée qui fait entrer dans l'espace public la création des enfants et des jeunes de Rotherham, au Royaume-Uni. Dessins, objets, récits et musiques produits pendant deux ans d'ateliers ont été transformés en expériences AR interactives, permettant de parcourir la ville par le regard d'une nouvelle génération.",
           "a": "Comme artiste 3D, j'étais chargé de créer et d'optimiser les assets temps réel de l'expérience. Le travail a consisté à traduire les œuvres des enfants en contenus tridimensionnels vivants, sans perdre la lisibilité visuelle ni les performances qu'exige l'AR mobile.",
-          "credit": "Projet développé sous la direction artistique de <a href=\"https://www.instagram.com/seyyedebrahimi/\" target=\"_blank\" rel=\"noopener\" data-tag=\"MOSTAFA SEYYED EBRAHIMI\">Mostafa Seyyed Ebrahimi</a> au studio de design <a href=\"https://deeez.co/\" target=\"_blank\" rel=\"noopener\" data-tag=\"DEEEZ\">DEEEZ</a>.",
+          "credit": "Projet développé sous la direction artistique de <a href=\"https://www.linkedin.com/in/seyyedebrahimi/\" target=\"_blank\" rel=\"noopener\" data-tag=\"MOSTAFA SEYYED EBRAHIMI\">Mostafa Seyyed Ebrahimi</a> au sein du studio de design <a href=\"https://deeez.co/\" target=\"_blank\" rel=\"noopener\" data-tag=\"DEEEZ\">DEEEZ</a>, avec l’aide de <a href=\"https://www.linkedin.com/in/meghna-saji-53b0b4180/\" target=\"_blank\" rel=\"noopener\" data-tag=\"MEGHNA SAJI\">Meghna Saji</a>.",
           "clients": [
             "Children's Capital of Culture",
             "Rotherham Music"
