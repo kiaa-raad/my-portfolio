@@ -5,6 +5,7 @@
   "scripts": {
     "cv": "node tools/build-cv.mjs",
     "og": "node tools/build-og.mjs",
+    "linkedin": "node tools/build-linkedin.mjs",
     "build": "node tools/build-content.mjs",
     "start": "node tools/build-content.mjs && npx --yes serve ."
   }

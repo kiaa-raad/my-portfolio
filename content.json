@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-01T16:40:24.169Z",
+  "generated": "2026-09-01T17:28:42.924Z",
   "lang": "en",
   "site": {
     "name": "Kiarash Farahmandrad",
@@ -98,7 +98,7 @@
           "role": "Graphic Designer",
           "org": "Rushin · Full-time",
           "dates": "Nov 2023 – Dec 2024 · 1 yr 2 mos",
-          "link": "https://www.rushinco.com/",
+          "link": "https://www.linkedin.com/company/rushinco/",
           "bullets": [
             "Designed the company logo and built the visual identity system behind every brand communication that followed.",
             "Led an eight-person team across design, videography and video editing, producing marketing and digital assets tied to business goals."
@@ -108,7 +108,7 @@
           "role": "Graphic Designer",
           "org": "SciSchool · Full-time",
           "dates": "Dec 2020 – Nov 2023 · 3 yrs",
-          "link": "https://scischool.ir",
+          "link": "https://www.linkedin.com/company/scischool/",
           "bullets": [
             "Directed 50+ educational and marketing design projects, holding each to one brand identity and a clear teaching goal.",
             "Mentored junior designers on a four-person team and set up the workflows it delivered on under tight deadlines."
@@ -213,9 +213,9 @@
     },
     "cv": {
       "src": "about/cv.pdf",
-      "hash": "5fc55ebf",
+      "hash": "cf4710ac",
       "updated": "2026-09-01",
-      "size": "128 KB"
+      "size": "129 KB"
     }
   },
   "clients": {

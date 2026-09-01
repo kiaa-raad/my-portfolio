@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-01T16:40:24.169Z",
+  "generated": "2026-09-01T17:28:42.924Z",
   "lang": "fr",
   "site": {
     "name": "Kiarash Farahmandrad",
@@ -98,7 +98,7 @@
           "role": "Graphiste",
           "org": "Rushin · Temps plein",
           "dates": "nov. 2023 – déc. 2024 · 1 an 2 mois",
-          "link": "https://www.rushinco.com/",
+          "link": "https://www.linkedin.com/company/rushinco/",
           "bullets": [
             "Dessiné le logo de l'entreprise et construit le système d'identité visuelle qui a porté toute la communication de marque qui a suivi.",
             "Dirigé une équipe de huit personnes en design, vidéo et montage, produisant des assets marketing et numériques adossés aux objectifs de l'entreprise."
@@ -108,7 +108,7 @@
           "role": "Graphiste",
           "org": "SciSchool · Temps plein",
           "dates": "déc. 2020 – nov. 2023 · 3 ans",
-          "link": "https://scischool.ir",
+          "link": "https://www.linkedin.com/company/scischool/",
           "bullets": [
             "Dirigé plus de 50 projets de design pédagogique et marketing, chacun tenu à une seule identité de marque et à un objectif d'enseignement clair.",
             "Accompagné les designers juniors d'une équipe de quatre et mis en place les méthodes de travail qui lui ont permis de livrer dans des délais serrés."
@@ -213,9 +213,9 @@
     },
     "cv": {
       "src": "about/cv.fr.pdf",
-      "hash": "5d7b12b9",
+      "hash": "ab88129f",
       "updated": "2026-09-01",
-      "size": "128 KB"
+      "size": "129 KB"
     }
   },
   "clients": {

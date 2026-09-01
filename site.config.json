@@ -9,6 +9,9 @@
   "description": "Kiarash Farahmandrad is a multi-disciplinary designer in Tehran working across logo and identity design, posters, 3D, XR and motion. Selected work, clients and CV.",
   "og_image": "og.png",
 
+  "_alt_names_note": "Spellings of the same person that are not the one written in `name`. A transliterated name is a weak search key — someone typing the surname as two words, or typing it in Persian, is looking for this site and would otherwise miss it. These feed the Person's alternateName in the JSON-LD and a line under the name in the <noscript> mirror; the brand is added to the first of those on its own and does not belong here.",
+  "alternate_names": ["کیارش فرهمندراد", "Kiarash Farahmand Rad"],
+
   "_email_note": "Split into parts on purpose. The full address is never written out in any file the browser downloads, so scrapers that grep for user@host.tld find nothing. index.html reassembles it at runtime.",
   "email": {
     "user": "kiarad.space",

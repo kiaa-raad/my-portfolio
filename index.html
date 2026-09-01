@@ -306,7 +306,16 @@
     border:1px solid var(--hair);padding:7px 10px;
     transition:color .25s,border-color .25s,background .25s;
     clip-path:polygon(0 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%)}
-  .hud .tgl i{font-style:normal;font-size:10px;line-height:1;color:var(--dim);transition:color .25s}
+  .hud .tgl i{font-style:normal;font-size:10px;line-height:1;color:var(--dim);transition:color .25s;
+    display:flex;align-items:center}
+  /* The mark is one drawing for both themes: a sun whose disc is bitten by a
+     crescent. Mirroring it moves the crescent to the other side, so the two
+     states read as opposites without a second file to keep in step. The box is
+     a fixed 11px either way, so nothing in .tools shifts when it turns. */
+  .hud .tgl i svg{width:11px;height:11px;display:block;fill:currentColor;
+    transition:transform .45s cubic-bezier(.22,1,.36,1)}
+  body.light .hud .tgl i svg{transform:scaleX(-1)}
+  @media (prefers-reduced-motion:reduce){.hud .tgl i svg{transition:none}}
   .hud .tgl b{font-weight:400;min-width:34px;text-align:left}
   .hud .tgl:hover{color:var(--ice);border-color:var(--line)}
   .hud .tgl:hover i{color:var(--ice)}
@@ -615,6 +624,11 @@
   .seo h3{font-family:'Azeret Mono',ui-monospace,monospace;font-size:9px;font-weight:400;
     letter-spacing:.24em;color:var(--dim);margin:20px 0 6px}
   .seo p{margin:0 0 14px;color:var(--mute)}
+  /* The alternate spellings, sitting between the name and the role in the same
+     register as the role — but with none of its tracking: letter-spacing is
+     inserted *between* joined letters and pulls a Persian word into glyphs. */
+  .seo .seo-alt{font-family:'Azeret Mono',ui-monospace,monospace;font-size:9.5px;
+    color:var(--dim);margin:0 0 4px}
   .seo .seo-role{font-family:'Azeret Mono',ui-monospace,monospace;font-size:9.5px;
     letter-spacing:.24em;text-transform:uppercase;color:var(--dim);margin-bottom:28px}
   .seo a{color:var(--ice);text-decoration:underline;text-underline-offset:3px}
@@ -907,7 +921,7 @@
     <div class="tail">
       <div class="tools">
         <button class="tgl" id="theme" type="button" data-tag="THEME" aria-pressed="false">
-          <i id="themeicon">◐</i><b id="themelabel">LIGHT</b>
+          <i id="themeicon" aria-hidden="true"><svg viewBox="0 0 684.19 684.19" focusable="false"><path d="M559.89,365.59h124.31v-47h-124.31c-4.44-41.87-20.71-81.14-47.17-113.88l87.9-87.9-33.23-33.23-87.9,87.9c-32.74-26.47-72.02-42.73-113.88-47.17V0h-47v124.31c-16.39,1.75-32.47,5.32-48.04,10.71-24.38,8.42-46.54,20.87-65.85,36.45l-87.88-87.88-33.23,33.23,87.9,87.9c-25.88,32.18-42.6,71.55-47.16,113.88H0v47h124.3c4.44,41.87,20.71,81.14,47.17,113.89l-87.9,87.9,33.23,33.23,87.9-87.9c32.74,26.47,72.02,42.73,113.89,47.17v124.31h47v-124.32c42.42-4.54,81.78-21.24,113.93-47.11l87.85,87.85,33.23-33.23-87.84-87.84c15.96-19.82,28.63-42.65,37.06-67.81,5.02-14.97,8.38-30.42,10.05-46.13ZM514.14,342.1c0,14.76-1.86,29.31-5.52,43.4-14.58,3.94-29.65,5.94-44.95,5.94-94.86,0-172.04-77.18-172.04-172.04,0-14.75,1.86-29.3,5.53-43.41,14.57-3.93,29.63-5.93,44.93-5.93,94.87,0,172.05,77.18,172.05,172.04ZM342.09,514.14c-94.86,0-172.04-77.18-172.04-172.04,0-57.97,29.08-110.94,75.47-142.43-.58,6.54-.89,13.12-.89,19.73,0,58.51,22.78,113.51,64.15,154.88,41.37,41.37,96.38,64.16,154.89,64.16,7.3,0,14.57-.37,21.77-1.08-31.33,47.19-84.67,76.78-143.35,76.78Z"/></svg></i><b id="themelabel">LIGHT</b>
         </button>
         <!-- The switcher is built from LOCALES in the module: the list of
              languages is one fact, and it lives with the strings rather than
@@ -4269,17 +4283,15 @@ soundBtn.addEventListener('click', e=>{
 /* ══ theme ════════════════════════════════════════════════════════════════ */
 const themeBtn = document.getElementById('theme');
 const themeLabel = document.getElementById('themelabel');
-const themeIcon = document.getElementById('themeicon');
 
 function applyTheme(){
   const T = TH();
   document.body.classList.toggle('light', mode === 'light');
   themeLabel.textContent = mode === 'light' ? WORDS.tools.dark : WORDS.tools.light;
-  themeIcon.textContent = mode === 'light' ? '◑' : '◐';
   themeBtn.setAttribute('aria-pressed', String(mode === 'light'));
-  /* Under 420px the word is dropped and only the half-disc is left, which
-     leaves a screen reader announcing the glyph and nothing else. The label
-     is written out here so the button says what it does at every width. */
+  /* Under 420px the word is dropped and only the mark is left, and the mark
+     is aria-hidden, so a screen reader would reach an unnamed button. The
+     label is written out here so it says what it does at every width. */
   themeBtn.setAttribute('aria-label',
     mode === 'light' ? WORDS.tools.toDark : WORDS.tools.toLight);
 
@@ -4934,6 +4946,7 @@ loadContent();
 <noscript>
 <div class="seo">
 <p class="seo-name">Kiarash Farahmandrad</p>
+<p class="seo-alt"><span lang="fa" dir="rtl">کیارش فرهمندراد</span> · <span>Kiarash Farahmand Rad</span></p>
 <p class="seo-role">Multi-disciplinary designer · Tehran, Iran</p>
 
 <p>I work across identity, typography, 3D, motion, and digital experiences, moving between mediums to find the right form for an idea. I'm interested in the space where disciplines overlap, where a graphic can become an object, a typeface can become an environment, and a visual identity can become something you can interact with. I like to start while an idea is still rough, and shape it with you rather than hand it back finished. Most things start as an experiment, and usually end somewhere no one expects.</p>
@@ -5032,7 +5045,11 @@ loadContent();
       "@type": "Person",
       "@id": "https://kiarad.space/#person",
       "name": "Kiarash Farahmandrad",
-      "alternateName": "Kiarad Space",
+      "alternateName": [
+        "Kiarad Space",
+        "کیارش فرهمندراد",
+        "Kiarash Farahmand Rad"
+      ],
       "url": "https://kiarad.space/",
       "jobTitle": "Multi-disciplinary designer",
       "description": "I work across identity, typography, 3D, motion, and digital experiences, moving between mediums to find the right form for an idea. I'm interested in the space where disciplines overlap, where a graphic can become an object, a typeface can become an environment, and a visual identity can become something you can interact with. I like to start while an idea is still rough, and shape it with you rather than hand it back finished. Most things start as an experiment, and usually end somewhere no one expects.",
