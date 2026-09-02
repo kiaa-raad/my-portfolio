@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-02T11:28:40.372Z",
+  "generated": "2026-09-02T11:52:00.415Z",
   "lang": "fr",
   "site": {
     "name": "Kiarash Farahmandrad",
@@ -316,6 +316,11 @@
       {
         "name": "THREEPTYCH STUDIO",
         "scope": "DIRECTION CRÉATIVE",
+        "year": "2022"
+      },
+      {
+        "name": "SCISCHOOL",
+        "scope": "MODÉLISATION & RENDU 3D",
         "year": "2022"
       },
       {
@@ -826,6 +831,32 @@
             "Direction créative",
             "Design d'affiche",
             "Design d'identité visuelle"
+          ]
+        },
+        {
+          "slug": "compphysics",
+          "t": "ATELIER DE PHYSIQUE COMPUTATIONNELLE",
+          "c": "SciSchool",
+          "y": "2022",
+          "r": "Artiste 3D & designer",
+          "img": "projects/02-posters/compphysics/cover.webp",
+          "video": null,
+          "gallery": [
+            "projects/02-posters/compphysics/02.webp",
+            "projects/02-posters/compphysics/03.webp",
+            "projects/02-posters/compphysics/04.webp"
+          ],
+          "link": null,
+          "tag": "DESIGN D'AFFICHE / 3D / 2022",
+          "lb": "APERÇU",
+          "la": "APPROCHE",
+          "b": "L'atelier de physique computationnelle présente un domaine dans lequel les ordinateurs sont utilisés pour simuler et résoudre des problèmes complexes de physique. L'atelier explore l'intersection entre physique et informatique, en mettant en avant le rôle de la simulation dans la compréhension des systèmes physiques.",
+          "a": "J'ai développé le concept de l'affiche autour de l'idée de simulation, en utilisant une typographie en 3D et des objets inspirés de la physique pour créer un environnement computationnel complexe. Les lettres empilées verticalement donnent une impression de profondeur et d'exploration, tandis que des éléments comme le pendule de Newton et du matériel informatique en suspension renforcent le lien entre physique et informatique.\nChaque lettre possède un matériau distinct, notamment des surfaces en verre réfléchissant, permettant à la lumière, à la transparence, à la réfraction et à la réflexion de participer au langage visuel. J'ai modélisé et réalisé le rendu de la scène dans Blender, puis importé le rendu final dans Adobe Illustrator afin d'y construire la typographie, la mise en page et les autres éléments graphiques. L'affiche finale a été préparée pour les formats numériques et imprimés.",
+          "credit": null,
+          "roles": [
+            "Modélisation & rendu 3D",
+            "Design d'affiche",
+            "Développement conceptuel"
           ]
         },
         {

@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-02T11:28:40.372Z",
+  "generated": "2026-09-02T11:52:00.415Z",
   "lang": "en",
   "site": {
     "name": "Kiarash Farahmandrad",
@@ -316,6 +316,11 @@
       {
         "name": "THREEPTYCH STUDIO",
         "scope": "CREATIVE DIRECTION",
+        "year": "2022"
+      },
+      {
+        "name": "SCISCHOOL",
+        "scope": "3D MODELING & RENDERING",
         "year": "2022"
       },
       {
@@ -821,6 +826,32 @@
             "Poster Design",
             "Photomanipulation",
             "AI Image Generation",
+            "Visual Concept Development"
+          ]
+        },
+        {
+          "slug": "compphysics",
+          "t": "COMPUTATIONAL PHYSICS WORKSHOP",
+          "c": "SciSchool",
+          "y": "2022",
+          "r": "3D Artist & Designer",
+          "img": "projects/02-posters/compphysics/cover.webp",
+          "video": null,
+          "gallery": [
+            "projects/02-posters/compphysics/02.webp",
+            "projects/02-posters/compphysics/03.webp",
+            "projects/02-posters/compphysics/04.webp"
+          ],
+          "link": null,
+          "tag": "POSTER DESIGN / 3D / 2022",
+          "lb": "OVERVIEW",
+          "la": "CONTRIBUTION",
+          "b": "The Computational Physics Workshop introduces participants to a field where computers are used to simulate and solve complex physics problems. The workshop explores the intersection of physics and computation, highlighting the role of simulation in understanding physical systems.",
+          "a": "I developed the poster concept around the idea of simulation, using 3D typography and physics-inspired objects to create a complex computational environment. The vertically stacked lettering creates a sense of depth and exploration, while elements such as a Newton's cradle and floating computer equipment reinforce the connection between physics and computation.\nEach letter was given a distinct material, including reflective glass surfaces, allowing light, transparency, refraction, and reflection to become part of the visual language. I modeled and rendered the scene in Blender, then brought the final render into Adobe Illustrator to build the typography, layout, and remaining graphic elements. The final poster was prepared for both digital and print formats.",
+          "credit": null,
+          "roles": [
+            "3D Modeling & Rendering",
+            "Poster Design",
             "Visual Concept Development"
           ]
         },
