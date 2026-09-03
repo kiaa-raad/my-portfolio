@@ -4,7 +4,7 @@
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://kiarad.space/</loc>
-    <lastmod>2026-09-02</lastmod>
+    <lastmod>2026-09-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://kiarad.space/"/>
@@ -491,6 +491,14 @@
       <image:title>WILLOW — logos</image:title>
     </image:image>
     <image:image>
+      <image:loc>https://kiarad.space/projects/01-logos/scischool/cover.webp</image:loc>
+      <image:title>SCISCHOOL — logos</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://kiarad.space/projects/01-logos/scischool/02.webp</image:loc>
+      <image:title>SCISCHOOL — logos</image:title>
+    </image:image>
+    <image:image>
       <image:loc>https://kiarad.space/projects/01-logos/threeptych/cover.webp</image:loc>
       <image:title>THREEPTYCH STUDIO — logos</image:title>
     </image:image>
@@ -681,7 +689,7 @@
   </url>
   <url>
     <loc>https://kiarad.space/?lang=fr</loc>
-    <lastmod>2026-09-02</lastmod>
+    <lastmod>2026-09-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://kiarad.space/"/>

@@ -3098,7 +3098,7 @@ function strikeAt(hit){
 
 /* ══ work: loaded from content.json ══════════════════════════════════ */
 /* tools/build-content.mjs scans the repository and writes content.json.
-   Add a project folder, a client logo or a new cv.pdf and it shows up
+   Add a project folder, a client logo or a new CV PDF and it shows up
    here on the next push — nothing in this file needs editing. */
 let FIELDS = [];
 
@@ -4610,7 +4610,7 @@ requestAnimationFrame(frame);
 /* ══ content ══════════════════════════════════════════════════════════════
    Reads content.json, which tools/build-content.mjs regenerates from the
    repository on every push. Adding a project folder, dropping a logo into
-   clients/ or replacing about/cv.pdf is the whole workflow — this file
+   clients/ or replacing the CV PDF in about/ is the whole workflow — this file
    never needs to change. */
 
 /* the one arrow, pointed wherever it is needed: 'r' 'l' 'd' 'ur' */
@@ -4972,6 +4972,7 @@ loadContent();
 <li><img src="projects/01-logos/troid/Cover.webp" alt="TROID — Troid, 2023" loading="lazy" decoding="async" width="240"><span>TROID — Troid, 2023</span></li>
 <li><img src="projects/01-logos/upzone/cover.webp" alt="UPZONE — UpZone, 2023" loading="lazy" decoding="async" width="240"><span>UPZONE — UpZone, 2023</span></li>
 <li><img src="projects/01-logos/willow/cover.webp" alt="WILLOW — Willow Beauty, 2023" loading="lazy" decoding="async" width="240"><span>WILLOW — Willow Beauty, 2023</span></li>
+<li><img src="projects/01-logos/scischool/cover.webp" alt="SCISCHOOL — SciSchool, 2022" loading="lazy" decoding="async" width="240"><span>SCISCHOOL — SciSchool, 2022</span></li>
 <li><img src="projects/01-logos/threeptych/cover.webp" alt="THREEPTYCH STUDIO — Threeptych Studio, 2022" loading="lazy" decoding="async" width="240"><span>THREEPTYCH STUDIO — Threeptych Studio, 2022</span></li>
 <li><img src="projects/01-logos/molko/cover.webp" alt="MOLKO — Molko, 2021" loading="lazy" decoding="async" width="240"><span>MOLKO — Molko, 2021</span></li>
 </ul>
@@ -5001,7 +5002,7 @@ loadContent();
 
 <h2>Contact</h2>
 <ul><li><a href="https://www.linkedin.com/in/kia-rad/" rel="me noopener">LINKEDIN</a></li><li><a href="https://open.spotify.com/user/kiarash.fr" rel="me noopener">SPOTIFY</a></li><li><a href="https://letterboxd.com/kia_rad/" rel="me noopener">LETTERBOXD</a></li></ul>
-<p><a href="about/cv.pdf">Curriculum vitae (PDF)</a></p>
+<p><a href="about/Kiarash-Farahmandrad-CV.pdf">Curriculum vitae (PDF)</a></p>
 <p>Enable JavaScript for the interactive version of this site.</p>
 
 <h2>Languages</h2>
@@ -5110,7 +5111,7 @@ loadContent();
       "@type": "ItemList",
       "@id": "https://kiarad.space/#work",
       "name": "Selected work",
-      "numberOfItems": 23,
+      "numberOfItems": 24,
       "itemListElement": [
         {
           "@type": "ListItem",
@@ -5317,6 +5318,26 @@ loadContent();
           "position": 11,
           "item": {
             "@type": "CreativeWork",
+            "name": "SCISCHOOL",
+            "genre": "logos",
+            "creator": {
+              "@id": "https://kiarad.space/#person"
+            },
+            "url": "https://kiarad.space/",
+            "dateCreated": "2022",
+            "image": "https://kiarad.space/projects/01-logos/scischool/cover.webp",
+            "abstract": "SciSchool is an educational platform offering advanced, specialized courses across a wide range of scientific fields. Its programs are primarily aimed at PhD students, researchers, and advanced-level learners seeking deeper knowledge beyond conventional academic education. As the company prepared fo",
+            "sourceOrganization": {
+              "@type": "Organization",
+              "name": "SciSchool"
+            }
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 12,
+          "item": {
+            "@type": "CreativeWork",
             "name": "THREEPTYCH STUDIO",
             "genre": "logos",
             "creator": {
@@ -5334,7 +5355,7 @@ loadContent();
         },
         {
           "@type": "ListItem",
-          "position": 12,
+          "position": 13,
           "item": {
             "@type": "CreativeWork",
             "name": "MOLKO",
@@ -5354,7 +5375,7 @@ loadContent();
         },
         {
           "@type": "ListItem",
-          "position": 13,
+          "position": 14,
           "item": {
             "@type": "CreativeWork",
             "name": "DIVAR'S HACKATHON 2025",
@@ -5374,7 +5395,7 @@ loadContent();
         },
         {
           "@type": "ListItem",
-          "position": 14,
+          "position": 15,
           "item": {
             "@type": "CreativeWork",
             "name": "DIVAR'S YALDA 2024",
@@ -5394,7 +5415,7 @@ loadContent();
         },
         {
           "@type": "ListItem",
-          "position": 15,
+          "position": 16,
           "item": {
             "@type": "CreativeWork",
             "name": "RUSHIN WORKSHOPS",
@@ -5414,7 +5435,7 @@ loadContent();
         },
         {
           "@type": "ListItem",
-          "position": 16,
+          "position": 17,
           "item": {
             "@type": "CreativeWork",
             "name": "COMPUTATIONAL PHYSICS WORKSHOP",
@@ -5434,7 +5455,7 @@ loadContent();
         },
         {
           "@type": "ListItem",
-          "position": 17,
+          "position": 18,
           "item": {
             "@type": "CreativeWork",
             "name": "NINTH SAMPOL",
@@ -5454,7 +5475,7 @@ loadContent();
         },
         {
           "@type": "ListItem",
-          "position": 18,
+          "position": 19,
           "item": {
             "@type": "CreativeWork",
             "name": "APPEAR",
@@ -5474,7 +5495,7 @@ loadContent();
         },
         {
           "@type": "ListItem",
-          "position": 19,
+          "position": 20,
           "item": {
             "@type": "CreativeWork",
             "name": "MACBOOK PRO WALLPAPER",
@@ -5490,7 +5511,7 @@ loadContent();
         },
         {
           "@type": "ListItem",
-          "position": 20,
+          "position": 21,
           "item": {
             "@type": "CreativeWork",
             "name": "PERIODIC KEYBOARD",
@@ -5506,7 +5527,7 @@ loadContent();
         },
         {
           "@type": "ListItem",
-          "position": 21,
+          "position": 22,
           "item": {
             "@type": "CreativeWork",
             "name": "3D THREADS LOGO",
@@ -5522,7 +5543,7 @@ loadContent();
         },
         {
           "@type": "ListItem",
-          "position": 22,
+          "position": 23,
           "item": {
             "@type": "CreativeWork",
             "name": "GRAVITAS+",
@@ -5541,7 +5562,7 @@ loadContent();
         },
         {
           "@type": "ListItem",
-          "position": 23,
+          "position": 24,
           "item": {
             "@type": "CreativeWork",
             "name": "RUSHIN",

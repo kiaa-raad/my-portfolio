@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-02T11:52:00.415Z",
+  "generated": "2026-09-03T18:28:08.408Z",
   "lang": "en",
   "site": {
     "name": "Kiarash Farahmandrad",
@@ -212,7 +212,7 @@
       }
     },
     "cv": {
-      "src": "about/cv.pdf",
+      "src": "about/Kiarash-Farahmandrad-CV.pdf",
       "hash": "cf4710ac",
       "updated": "2026-09-01",
       "size": "129 KB"
@@ -312,6 +312,11 @@
         "name": "WILLOW BEAUTY",
         "scope": "CREATIVE DIRECTION",
         "year": "2023"
+      },
+      {
+        "name": "SCISCHOOL",
+        "scope": "CREATIVE DIRECTION",
+        "year": "2022"
       },
       {
         "name": "THREEPTYCH STUDIO",
@@ -677,6 +682,30 @@
           "la": "CONTRIBUTION",
           "b": "Willow is a beauty brand dedicated to natural, plant-based skincare. The brand's ethos centers on the idea that true beauty comes from nature, with products crafted using sustainable botanical ingredients to nourish and enhance the skin.\nThe visual identity was developed to reflect Willow's natural, eco-conscious values while creating a sense of elegance, serenity, and refined beauty.",
           "a": "The core concept combines the essence of a flower with the brand's initial “W”, creating a distinctive symbol that connects the identity to its botanical foundation.\nThe design direction focused on creating a balance between organic forms and modern simplicity, resulting in an identity that feels natural, sophisticated, and suitable for a luxury skincare brand.",
+          "credit": null,
+          "roles": [
+            "Creative Direction",
+            "Logo Design",
+            "Visual Identity Design"
+          ]
+        },
+        {
+          "slug": "scischool",
+          "t": "SCISCHOOL",
+          "c": "SciSchool",
+          "y": "2022",
+          "r": "Creative Director & Designer",
+          "img": "projects/01-logos/scischool/cover.webp",
+          "video": null,
+          "gallery": [
+            "projects/01-logos/scischool/02.webp"
+          ],
+          "link": null,
+          "tag": "LOGO & VISUAL IDENTITY / 2022",
+          "lb": "OVERVIEW",
+          "la": "CONTRIBUTION",
+          "b": "SciSchool is an educational platform offering advanced, specialized courses across a wide range of scientific fields. Its programs are primarily aimed at PhD students, researchers, and advanced-level learners seeking deeper knowledge beyond conventional academic education.\nAs the company prepared for registration, it needed a distinctive logo that could retain the character of its existing identity while also functioning as a recognizable and registrable trademark.",
+          "a": "I developed the logo by transforming the Persian letter «د», the initial letter of the Persian word for “science”, into a rotational form inspired by the structure of an atom. The resulting symbol connects the identity directly to science while giving it a distinctive and ownable visual form.\nThe rotational construction also creates a sense of movement and energy, reflecting SciSchool's focus on advanced scientific learning and exploration.",
           "credit": null,
           "roles": [
             "Creative Direction",

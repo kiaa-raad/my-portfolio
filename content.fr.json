@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-02T11:52:00.415Z",
+  "generated": "2026-09-03T18:28:08.408Z",
   "lang": "fr",
   "site": {
     "name": "Kiarash Farahmandrad",
@@ -212,7 +212,7 @@
       }
     },
     "cv": {
-      "src": "about/cv.fr.pdf",
+      "src": "about/Kiarash-Farahmandrad-CV.fr.pdf",
       "hash": "ab88129f",
       "updated": "2026-09-01",
       "size": "129 KB"
@@ -312,6 +312,11 @@
         "name": "WILLOW BEAUTY",
         "scope": "DIRECTION CRÉATIVE",
         "year": "2023"
+      },
+      {
+        "name": "SCISCHOOL",
+        "scope": "DIRECTION ARTISTIQUE",
+        "year": "2022"
       },
       {
         "name": "THREEPTYCH STUDIO",
@@ -686,6 +691,30 @@
             "Direction créative",
             "Design de logo",
             "Design d'identité visuelle"
+          ]
+        },
+        {
+          "slug": "scischool",
+          "t": "SCISCHOOL",
+          "c": "SciSchool",
+          "y": "2022",
+          "r": "Directeur artistique & designer",
+          "img": "projects/01-logos/scischool/cover.webp",
+          "video": null,
+          "gallery": [
+            "projects/01-logos/scischool/02.webp"
+          ],
+          "link": null,
+          "tag": "LOGO & IDENTITÉ VISUELLE / 2022",
+          "lb": "APERÇU",
+          "la": "APPROCHE",
+          "b": "SciSchool est une plateforme éducative proposant des formations spécialisées et de haut niveau dans de nombreux domaines scientifiques. Ses programmes s'adressent principalement aux doctorants, aux chercheurs et aux personnes ayant un niveau avancé, à la recherche de connaissances allant au-delà de l'enseignement académique traditionnel.\nDans le cadre de l'enregistrement de la société, SciSchool avait besoin d'un logo distinctif capable de conserver les caractéristiques de son identité existante tout en pouvant fonctionner comme une marque reconnaissable et enregistrable.",
+          "a": "J'ai développé le logo en transformant la lettre persane « د », initiale du mot persan désignant la science, en une forme obtenue par rotation et inspirée de la structure d'un atome. Le symbole établit ainsi un lien direct avec le monde scientifique tout en créant une forme visuelle distinctive et appropriable.\nLa construction rotative apporte également une sensation de mouvement et d'énergie, en accord avec la volonté de SciSchool de promouvoir l'apprentissage scientifique avancé et l'exploration.",
+          "credit": null,
+          "roles": [
+            "Direction artistique",
+            "Design de logo",
+            "Identité visuelle"
           ]
         },
         {
