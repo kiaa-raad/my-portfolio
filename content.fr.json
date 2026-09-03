@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-03T18:28:08.408Z",
+  "generated": "2026-09-03T19:12:17.942Z",
   "lang": "fr",
   "site": {
     "name": "Kiarash Farahmandrad",
@@ -269,7 +269,7 @@
         "year": "2024"
       },
       {
-        "name": "MOKHTARZADE CONSTRUCTION COMPANY",
+        "name": "MOKHTARZADE, ENTREPRISE DE CONSTRUCTION",
         "scope": "DIRECTION CRÉATIVE",
         "year": "2024"
       },
@@ -314,24 +314,24 @@
         "year": "2023"
       },
       {
-        "name": "SCISCHOOL",
-        "scope": "DIRECTION ARTISTIQUE",
-        "year": "2022"
-      },
-      {
         "name": "THREEPTYCH STUDIO",
         "scope": "DIRECTION CRÉATIVE",
         "year": "2022"
       },
       {
         "name": "SCISCHOOL",
-        "scope": "MODÉLISATION & RENDU 3D",
+        "scope": "DESIGN 3D",
         "year": "2022"
       },
       {
         "name": "MOLKO",
         "scope": "DIRECTION CRÉATIVE",
         "year": "2021"
+      },
+      {
+        "name": "SCISCHOOL",
+        "scope": "DIRECTION CRÉATIVE",
+        "year": "2020"
       },
       {
         "name": "LYCÉE ALLAMEH HELLI 1",
@@ -365,18 +365,18 @@
             "projects/01-logos/gravitas+/07.webp"
           ],
           "link": null,
-          "tag": "LOGO & IDENTITÉ VISUELLE / 2026",
-          "lb": "APERÇU",
-          "la": "APPROCHE",
+          "tag": "LOGO & IDENTITÉ VISUELLE",
+          "lb": null,
+          "la": null,
           "b": "<a href=\"https://gravitasplus.com/\" target=\"_blank\" rel=\"noopener\" data-tag=\"GRAVITAS\">Gravitas+</a> est une chaîne YouTube et un site consacrés à des contenus pédagogiques et analytiques au croisement des compétences computationnelles, de la physique et de la pensée scientifique contemporaine. La plateforme vise à rendre accessibles des concepts complexes sans rien céder sur la profondeur ni sur la rigueur.\nL'identité visuelle a été développée pour traduire clarté, précision et exigence intellectuelle, en équilibrant une esthétique moderne et technologique avec la profondeur et la curiosité propres à la science fondamentale et à l'exploration de l'univers.",
           "a": "J'ai pris en charge le logo, le site, la bannière YouTube et le système d'identité visuelle de l'ensemble de la plateforme. L'identité s'inspire du mot latin « gravitas », la pesanteur, et du concept de gravité — en particulier de la courbure de l'espace-temps sous l'effet gravitationnel.\nL'initiale « G » constitue l'élément visuel central : elle explore le rapport entre la forme de la lettre, la gravité, la courbure et l'espace, pour produire une identité distinctive et portée par son concept.",
           "credit": null,
           "roles": [
             "Direction créative",
             "Design de logo",
+            "Design d'identité visuelle",
             "Design de site web",
-            "Bannière YouTube",
-            "Design d'identité visuelle"
+            "Bannière YouTube"
           ]
         },
         {
@@ -399,9 +399,9 @@
             "projects/01-logos/archa/09.webp"
           ],
           "link": null,
-          "tag": "LOGO & IDENTITÉ VISUELLE / 2025",
-          "lb": "APERÇU",
-          "la": "APPROCHE",
+          "tag": "LOGO & IDENTITÉ VISUELLE",
+          "lb": null,
+          "la": null,
           "b": "Archa est une entreprise de construction qui bâtit et développe des espaces urbains. L'identité a été conçue pour porter des idées de progrès, de fiabilité, de construction et de croissance à long terme.",
           "a": "Le logo réunit plusieurs éléments symboliques en une seule marque : une main pour l'entrepreneur et le geste de bâtir, une ligne ascendante pour le progrès, une silhouette urbaine pour la construction et la ville, et une colonne pour la solidité, l'appui et la confiance.\nLa lettre « آ » constitue l'autre élément fondamental de la marque : elle désigne directement Archa tout en se fondant dans le langage architectural du symbole. Ensemble, ces éléments forment une identité qui relie le nom de l'entreprise à ses valeurs et à son métier.",
           "credit": null,
@@ -430,9 +430,9 @@
             "projects/01-logos/latentspace/09.webp"
           ],
           "link": null,
-          "tag": "LOGO & IDENTITÉ VISUELLE / 2024",
-          "lb": "APERÇU",
-          "la": "APPROCHE",
+          "tag": "LOGO & IDENTITÉ VISUELLE",
+          "lb": null,
+          "la": null,
           "b": "Latent Space est une entreprise technologique spécialisée en solutions d'IA avancées, en visualisation de données et en analyse prédictive. Le projet portait sur une identité visuelle traduisant la démarche de la marque : révéler des signaux cachés, parcourir des jeux de données complexes et ouvrir de nouvelles possibilités par la technologie.",
           "a": "L'identité explore le rapport entre exploration, localisation et donnée, en combinant un « L » cursif et un marqueur de position pour former un symbole distinctif et mémorable.\nLa direction de design tenait à équilibrer l'innovation technologique avec la simplicité, la précision et l'élégance.",
           "credit": null,
@@ -445,7 +445,7 @@
         {
           "slug": "mokhtarzade",
           "t": "MOKHTARZADE",
-          "c": "",
+          "c": "Mokhtarzade, entreprise de construction",
           "y": "2024",
           "r": "Directeur de création & designer",
           "img": "projects/01-logos/mokhtarzade/cover.webp",
@@ -475,16 +475,12 @@
             "projects/01-logos/mokhtarzade/22.webp"
           ],
           "link": null,
-          "tag": "LOGO & IDENTITÉ VISUELLE / 2024",
-          "lb": "APERÇU",
-          "la": "APPROCHE",
+          "tag": "LOGO & IDENTITÉ VISUELLE",
+          "lb": null,
+          "la": null,
           "b": "Mokhtarzade est un projet de branding pour une entreprise de construction, développé comme un système d'identité souple destiné aussi bien au numérique qu'à l'architecture. L'identité a été pensée pour les réseaux sociaux comme pour des applications physiques dans le bâtiment : portes métalliques, surfaces vitrées, pierre et autres éléments architecturaux.",
           "a": "J'ai développé une identité dynamique articulée autour d'un « m » simplifié, capable de s'étirer verticalement ou horizontalement selon le contexte et le support.\nLe langage visuel s'inspire du paysage urbain : formes simplifiées de tours, de villas, et jusqu'aux espaces négatifs que le ciment dessine entre les briques. Ces références architecturales sont traduites en un système graphique souple, qui permet à l'identité de s'adapter naturellement à différentes échelles, matières et surfaces.",
           "credit": null,
-          "clients": [
-            "Mokhtarzade Construction Company",
-            "Mokhtarzade, entreprise de construction"
-          ],
           "roles": [
             "Direction créative",
             "Design de logo",
@@ -510,9 +506,9 @@
             "projects/01-logos/rushin/08.webp"
           ],
           "link": null,
-          "tag": "LOGO & IDENTITÉ VISUELLE / 2024",
-          "lb": "APERÇU",
-          "la": "APPROCHE",
+          "tag": "LOGO & IDENTITÉ VISUELLE",
+          "lb": null,
+          "la": null,
           "b": "Rushin est une plateforme d'événements pédagogiques et scientifiques, conçue pour accompagner le développement intellectuel par des ateliers, des cours, des sorties de terrain, des camps et des expériences d'apprentissage pratiques.\nL'identité visuelle explore le lien entre l'esprit humain, la nature et les systèmes génératifs. Le concept central puise dans le langage visuel du cerveau et de l'arbre, et prend la logique de ramification d'une canopée fractale comme métaphore de l'apprentissage, de la croissance et de l'extension continue du savoir.",
           "a": "Le système de design s'est construit autour de l'idée de « canopée fractale », mêlant des structures ramifiées organiques à la complexité visuelle du cerveau et à des motifs génératifs.\nL'identité traduit ces idées en un langage visuel souple qui représente le savoir comme un système vivant et interconnecté, où chaque idée nouvelle ouvre la possibilité d'une exploration suivante.",
           "credit": null,
@@ -559,9 +555,9 @@
             "projects/01-logos/xense/26.webp"
           ],
           "link": null,
-          "tag": "LOGO & IDENTITÉ VISUELLE / 2024",
-          "lb": "APERÇU",
-          "la": "APPROCHE",
+          "tag": "LOGO & IDENTITÉ VISUELLE",
+          "lb": null,
+          "la": null,
           "b": "Xense est une entreprise canadienne qui développe et produit des biocapteurs pour la détection et la mesure de substances cibles. Ses technologies trouvent des applications en médecine, en agriculture et dans le traitement des eaux usées industrielles, portant la mesure et la détection dans une large variété de contextes scientifiques et pratiques.",
           "a": "L'identité réunit quatre notions liées au nom et au métier de l'entreprise : la lettre « X », initiale de Xense ; la lumière, milieu fondamental qui rend la vue possible ; l'atome, brique élémentaire de la chimie ; et l'œil, organe du regard.\nCes éléments ont été fondus en un langage visuel unifié qui relie la détection, la visibilité et le monde microscopique de la chimie, pour une identité distinctive et ancrée dans la nature scientifique de l'entreprise.",
           "credit": null,
@@ -589,9 +585,9 @@
             "projects/01-logos/aethera/07.webp"
           ],
           "link": null,
-          "tag": "LOGO & IDENTITÉ VISUELLE / 2023",
-          "lb": "APERÇU",
-          "la": "APPROCHE",
+          "tag": "LOGO & IDENTITÉ VISUELLE",
+          "lb": null,
+          "la": null,
           "b": "Aethera Pharmaceuticals est un laboratoire pharmaceutique dont l'objet est d'améliorer la santé humaine par l'innovation, l'intégrité et la transparence. La marque cherche à construire la confiance par des solutions de santé tournées vers l'avenir, tout en maintenant un engagement fort envers les patients et l'éthique professionnelle.",
           "a": "Le concept du logo croise le langage visuel familier de la gélule pharmaceutique avec une approche minimale de l'espace négatif.\nLa forme des comprimés sert à construire un « A » net et affirmé dans le contre-forme, reliant directement le symbole au nom d'Aethera et à son domaine. L'identité obtenue équilibre simplicité et reconnaissance, tout en produisant une marque distinctive enracinée dans le contexte pharmaceutique.",
           "credit": null,
@@ -621,9 +617,9 @@
             "projects/01-logos/troid/09.webp"
           ],
           "link": null,
-          "tag": "LOGO & IDENTITÉ VISUELLE / 2023",
-          "lb": "APERÇU",
-          "la": "APPROCHE",
+          "tag": "LOGO & IDENTITÉ VISUELLE",
+          "lb": null,
+          "la": null,
           "b": "Troid était une plateforme de jeu vidéo spécialisée dans l'achat et la vente de jeux sur console et PC. À côté de sa boutique en ligne, la marque produisait des contenus sur la culture du jeu via YouTube et Instagram : tests, analyses et autres formats vidéo.",
           "a": "Le concept du logo part de la première lettre persane du nom de la marque (ت) et croise sa forme caractéristique avec une référence à l'un des personnages emblématiques de <em>Space Invaders</em>.\nCette combinaison a produit une identité qui relie le nom persan de la marque à un élément reconnaissable de la culture du jeu, et donne une marque à la fois ludique et distinctive, valable pour la plateforme comme pour ses contenus numériques.",
           "credit": null,
@@ -650,9 +646,9 @@
             "projects/01-logos/upzone/06.webp"
           ],
           "link": null,
-          "tag": "LOGO & IDENTITÉ VISUELLE / 2023",
-          "lb": "APERÇU",
-          "la": "APPROCHE",
+          "tag": "LOGO & IDENTITÉ VISUELLE",
+          "lb": null,
+          "la": null,
           "b": "UpZone est une plateforme d'architecture intérieure et de design qui aide ses clients à concevoir, rénover et transformer leur logement. Le service propose des solutions d'aménagement et de rénovation via son site, avec un accompagnement professionnel.",
           "a": "Le logo réunit trois éléments : la lettre « U », une représentation simplifiée de maison, et une flèche ascendante.\nL'ensemble relie le nom de la marque à sa raison d'être : la maison figure l'espace de vie du client, la flèche dit l'amélioration, la transformation, le passage à un autre niveau. L'identité obtenue se veut simple, contemporaine et juste pour le domaine de l'architecture intérieure.",
           "credit": null,
@@ -681,9 +677,9 @@
             "projects/01-logos/willow/08.webp"
           ],
           "link": null,
-          "tag": "LOGO & IDENTITÉ VISUELLE / 2023",
-          "lb": "APERÇU",
-          "la": "APPROCHE",
+          "tag": "LOGO & IDENTITÉ VISUELLE",
+          "lb": null,
+          "la": null,
           "b": "Willow est une marque de beauté dédiée aux soins naturels d'origine végétale. Son éthique tient à l'idée que la vraie beauté vient de la nature : les produits sont formulés à partir d'ingrédients botaniques durables, pour nourrir et révéler la peau.\nL'identité visuelle a été développée pour traduire ces valeurs naturelles et écoresponsables, tout en installant un sentiment d'élégance, de sérénité et de beauté épurée.",
           "a": "Le concept central fond l'essence d'une fleur dans l'initiale « W » de la marque, produisant un symbole distinctif qui rattache l'identité à son socle botanique.\nLa direction de design a cherché l'équilibre entre formes organiques et simplicité moderne : une identité qui se sent naturelle, raffinée, à la hauteur d'une marque de soin haut de gamme.",
           "credit": null,
@@ -691,30 +687,6 @@
             "Direction créative",
             "Design de logo",
             "Design d'identité visuelle"
-          ]
-        },
-        {
-          "slug": "scischool",
-          "t": "SCISCHOOL",
-          "c": "SciSchool",
-          "y": "2022",
-          "r": "Directeur artistique & designer",
-          "img": "projects/01-logos/scischool/cover.webp",
-          "video": null,
-          "gallery": [
-            "projects/01-logos/scischool/02.webp"
-          ],
-          "link": null,
-          "tag": "LOGO & IDENTITÉ VISUELLE / 2022",
-          "lb": "APERÇU",
-          "la": "APPROCHE",
-          "b": "SciSchool est une plateforme éducative proposant des formations spécialisées et de haut niveau dans de nombreux domaines scientifiques. Ses programmes s'adressent principalement aux doctorants, aux chercheurs et aux personnes ayant un niveau avancé, à la recherche de connaissances allant au-delà de l'enseignement académique traditionnel.\nDans le cadre de l'enregistrement de la société, SciSchool avait besoin d'un logo distinctif capable de conserver les caractéristiques de son identité existante tout en pouvant fonctionner comme une marque reconnaissable et enregistrable.",
-          "a": "J'ai développé le logo en transformant la lettre persane « د », initiale du mot persan désignant la science, en une forme obtenue par rotation et inspirée de la structure d'un atome. Le symbole établit ainsi un lien direct avec le monde scientifique tout en créant une forme visuelle distinctive et appropriable.\nLa construction rotative apporte également une sensation de mouvement et d'énergie, en accord avec la volonté de SciSchool de promouvoir l'apprentissage scientifique avancé et l'exploration.",
-          "credit": null,
-          "roles": [
-            "Direction artistique",
-            "Design de logo",
-            "Identité visuelle"
           ]
         },
         {
@@ -732,9 +704,9 @@
             "projects/01-logos/threeptych/05.webp"
           ],
           "link": null,
-          "tag": "LOGO & IDENTITÉ VISUELLE / 2022",
-          "lb": "APERÇU",
-          "la": "APPROCHE",
+          "tag": "LOGO & IDENTITÉ VISUELLE",
+          "lb": null,
+          "la": null,
           "b": "Threeptych Design Studio est un studio de design qui développe des solutions visuelles dans des disciplines variées.",
           "a": "J'ai développé le logo et l'identité autour du chiffre « 3 ». Le chiffre est divisé en trois sections distinctes, suivant les proportions et la logique visuelle des triptyques peints.\nLa marque obtenue relie directement le nom du studio à l'histoire des compositions en trois panneaux, tout en fournissant un système simple et reconnaissable, extensible à l'ensemble de l'identité et de ses applications.",
           "credit": null,
@@ -758,11 +730,35 @@
             "projects/01-logos/molko/03.webp"
           ],
           "link": null,
-          "tag": "LOGO & IDENTITÉ VISUELLE / 2021",
-          "lb": "APERÇU",
-          "la": "APPROCHE",
+          "tag": "LOGO & IDENTITÉ VISUELLE",
+          "lb": null,
+          "la": null,
           "b": "Molko est un site pédagogique consacré à la chimie, créé pour rendre les connaissances et les ressources d'apprentissage plus accessibles par une plateforme numérique.",
           "a": "Le concept du logo associe la lettre persane « م », initiale du nom de la marque, à la structure moléculaire du benzène.\nCette combinaison crée un lien visuel entre le nom et la vocation pédagogique de la marque, en faisant de la géométrie familière du benzène le socle d'une identité distinctive et cohérente avec son sujet.",
+          "credit": null,
+          "roles": [
+            "Direction créative",
+            "Design de logo",
+            "Design d'identité visuelle"
+          ]
+        },
+        {
+          "slug": "scischool",
+          "t": "SCISCHOOL",
+          "c": "SciSchool",
+          "y": "2020",
+          "r": "Directeur de création & designer",
+          "img": "projects/01-logos/scischool/cover.webp",
+          "video": null,
+          "gallery": [
+            "projects/01-logos/scischool/02.webp"
+          ],
+          "link": null,
+          "tag": "LOGO & IDENTITÉ VISUELLE",
+          "lb": null,
+          "la": null,
+          "b": "SciSchool est une plateforme éducative proposant des formations spécialisées et de haut niveau dans de nombreux domaines scientifiques. Ses programmes s'adressent principalement aux doctorants, aux chercheurs et aux personnes ayant un niveau avancé, à la recherche de connaissances allant au-delà de l'enseignement académique traditionnel.\nDans le cadre de l'enregistrement de la société, SciSchool avait besoin d'un logo distinctif capable de conserver les caractéristiques de son identité existante tout en pouvant fonctionner comme une marque reconnaissable et enregistrable.",
+          "a": "J'ai développé le logo en transformant la lettre persane « د », initiale du mot persan désignant la science, en une forme obtenue par rotation et inspirée de la structure d'un atome. Le symbole établit ainsi un lien direct avec le monde scientifique tout en créant une forme visuelle distinctive et appropriable.\nLa construction rotative apporte également une sensation de mouvement et d'énergie, en accord avec la volonté de SciSchool de promouvoir l'apprentissage scientifique avancé et l'exploration.",
           "credit": null,
           "roles": [
             "Direction créative",
@@ -793,9 +789,9 @@
             "projects/02-posters/divar-hackathon2025/04.webp"
           ],
           "link": null,
-          "tag": "IDENTITÉ D'ÉVÉNEMENT / HACKATHON / 2025",
-          "lb": "APERÇU",
-          "la": "APPROCHE",
+          "tag": "IDENTITÉ D'ÉVÉNEMENT / HACKATHON",
+          "lb": null,
+          "la": null,
           "b": "Le Hackathon Divar 2025 réunissait des participants venus collaborer, expérimenter et bâtir des solutions à des problèmes réels. Le thème de cette édition était la sécurité : les équipes ont travaillé de manière intensive tout au long de l'événement pour explorer des pistes et produire des réponses concrètes.",
           "a": "J'ai développé l'identité visuelle de l'événement. Le concept part de la ligne — élément visuel important de l'identité de Divar — réinterprétée en fil emmêlé, figure d'un problème complexe.\nÀ travers le système visuel, le fil se démêle progressivement et se transforme en bouclier : le processus de résolution, et le thème même de la sécurité. Cet élément a été décliné sur toute l'identité de l'événement et a servi à dessiner les sweats des participants comme les autres applications, formant un système cohérent d'un bout à l'autre du hackathon.",
           "credit": null,
@@ -823,9 +819,9 @@
             "projects/02-posters/rushin-workshops/06.webp"
           ],
           "link": null,
-          "tag": "DESIGN D'AFFICHE / PHOTOGRAPHIE GÉNÉRÉE PAR IA / 2024",
-          "lb": "APERÇU",
-          "la": "APPROCHE",
+          "tag": "DESIGN D'AFFICHE / PHOTOGRAPHIE GÉNÉRÉE PAR IA",
+          "lb": null,
+          "la": null,
           "b": "Les ateliers Rushin forment une série d'ateliers pédagogiques et scientifiques destinés aux élèves, couvrant des sujets variés et des mises en pratique. Chaque atelier fait découvrir un domaine scientifique précis par l'activité, l'expérience et l'exploration.",
           "a": "J'ai développé la série d'affiches en m'appuyant sur la photographie générée par IA et le photomontage comme approches visuelles principales. Pour chaque atelier, j'ai extrait les éléments les plus caractéristiques de son activité scientifique et les ai assemblés en compositions inattendues, pour produire des images intrigantes qui donnent aux élèves l'envie d'aller voir.\nEn parallèle du travail visuel, j'ai conçu un flux de production capable de transformer les informations d'un atelier en affiche prête à publier au terme d'un processus structuré. Les affiches passaient ainsi efficacement du brief aux fichiers finaux, prêts pour la diffusion numérique et l'impression.",
           "credit": null,
@@ -838,54 +834,28 @@
           ]
         },
         {
-          "slug": "divar-yalda2025",
+          "slug": "divar-yalda2024",
           "t": "YALDA DIVAR 2024",
           "c": "Divar",
           "y": "2024",
           "r": "Directeur de création & designer",
-          "img": "projects/02-posters/divar-yalda2025/cover.webp",
+          "img": "projects/02-posters/divar-yalda2024/cover.webp",
           "video": null,
           "gallery": [
-            "projects/02-posters/divar-yalda2025/DYP-04.webp",
-            "projects/02-posters/divar-yalda2025/DYP-05.webp"
+            "projects/02-posters/divar-yalda2024/DYP-04.webp",
+            "projects/02-posters/divar-yalda2024/DYP-05.webp"
           ],
           "link": null,
-          "tag": "IDENTITÉ D'ÉVÉNEMENT / YALDA / 2024",
-          "lb": "APERÇU",
-          "la": "APPROCHE",
+          "tag": "IDENTITÉ D'ÉVÉNEMENT / YALDA",
+          "lb": null,
+          "la": null,
           "b": "Yalda Divar est une fête interne organisée pour les salariés de Divar autour de la nuit de Yalda, l'une des traditions culturelles iraniennes les plus importantes. L'événement réunit les équipes pour la célébrer ensemble.",
           "a": "J'ai croisé les éléments traditionnels de Yalda — grenades, fruits secs, poésie de Hafez, musique — avec le langage visuel existant de Divar.\nL'objectif était un visuel nettement rattaché à Yalda mais cohérent avec l'identité de la marque. Ces références culturelles ont été réinterprétées à travers le système visuel de Divar pour produire un graphisme d'événement homogène et contemporain.",
           "credit": null,
           "roles": [
             "Direction créative",
-            "Design d'affiche",
-            "Design d'identité visuelle"
-          ]
-        },
-        {
-          "slug": "compphysics",
-          "t": "ATELIER DE PHYSIQUE COMPUTATIONNELLE",
-          "c": "SciSchool",
-          "y": "2022",
-          "r": "Artiste 3D & designer",
-          "img": "projects/02-posters/compphysics/cover.webp",
-          "video": null,
-          "gallery": [
-            "projects/02-posters/compphysics/02.webp",
-            "projects/02-posters/compphysics/03.webp",
-            "projects/02-posters/compphysics/04.webp"
-          ],
-          "link": null,
-          "tag": "DESIGN D'AFFICHE / 3D / 2022",
-          "lb": "APERÇU",
-          "la": "APPROCHE",
-          "b": "L'atelier de physique computationnelle présente un domaine dans lequel les ordinateurs sont utilisés pour simuler et résoudre des problèmes complexes de physique. L'atelier explore l'intersection entre physique et informatique, en mettant en avant le rôle de la simulation dans la compréhension des systèmes physiques.",
-          "a": "J'ai développé le concept de l'affiche autour de l'idée de simulation, en utilisant une typographie en 3D et des objets inspirés de la physique pour créer un environnement computationnel complexe. Les lettres empilées verticalement donnent une impression de profondeur et d'exploration, tandis que des éléments comme le pendule de Newton et du matériel informatique en suspension renforcent le lien entre physique et informatique.\nChaque lettre possède un matériau distinct, notamment des surfaces en verre réfléchissant, permettant à la lumière, à la transparence, à la réfraction et à la réflexion de participer au langage visuel. J'ai modélisé et réalisé le rendu de la scène dans Blender, puis importé le rendu final dans Adobe Illustrator afin d'y construire la typographie, la mise en page et les autres éléments graphiques. L'affiche finale a été préparée pour les formats numériques et imprimés.",
-          "credit": null,
-          "roles": [
-            "Modélisation & rendu 3D",
-            "Design d'affiche",
-            "Développement conceptuel"
+            "Design d'identité visuelle",
+            "Design d'affiche"
           ]
         },
         {
@@ -901,17 +871,17 @@
             "projects/02-posters/ninthsampol/03.webp"
           ],
           "link": null,
-          "tag": "IDENTITÉ ÉVÉNEMENTIELLE / TYPOGRAPHIE / 2020",
-          "lb": "APERÇU",
-          "la": "APPROCHE",
+          "tag": "IDENTITÉ D'ÉVÉNEMENT / TYPOGRAPHIE",
+          "lb": null,
+          "la": null,
           "b": "Ninth Sampol est la neuvième édition du concours de ponts en spaghetti destiné aux établissements scolaires pour garçons de la Sampad à Téhéran. Le concours invite les élèves à concevoir et construire des ponts en utilisant des spaghettis, en faisant appel à leur créativité, à leur raisonnement structurel et à leurs capacités de résolution de problèmes.",
           "a": "J'ai développé l'identité visuelle de l'événement autour d'une interprétation typographique du mot « Sampol ». Le lettrage est placé entre deux appuis structurels, tandis que des poids y sont suspendus afin d'évoquer la construction d'un pont et les forces physiques auxquelles il est soumis.\nLa composition transforme ainsi la typographie elle-même en une métaphore simple d'un pont mis sous charge, créant un lien direct entre le nom de l'événement et son activité principale.",
           "credit": null,
           "roles": [
             "Direction artistique",
-            "Typographie",
             "Design de logo",
-            "Identité visuelle"
+            "Design d'identité visuelle",
+            "Typographie"
           ]
         }
       ]
@@ -932,9 +902,9 @@
           "video": null,
           "gallery": [],
           "link": "https://www.instagram.com/p/DXoPIy8iJ07/",
-          "tag": "XR / RÉALITÉ AUGMENTÉE / 2025",
-          "lb": "APERÇU",
-          "la": "APPROCHE",
+          "tag": "XR / RÉALITÉ AUGMENTÉE",
+          "lb": null,
+          "la": null,
           "b": "<a href=\"https://apps.apple.com/ar/app/appear-app/id6743809751\" target=\"_blank\" rel=\"noopener\" data-tag=\"APPEAR\">AppeaR</a> est une expérience de réalité augmentée géolocalisée qui fait entrer dans l'espace public la création des enfants et des jeunes de Rotherham, au Royaume-Uni. Dessins, objets, récits et musiques produits pendant deux ans d'ateliers ont été transformés en expériences AR interactives, permettant de parcourir la ville par le regard d'une nouvelle génération.",
           "a": "Comme artiste 3D, j'étais chargé de créer et d'optimiser les assets temps réel de l'expérience. Le travail a consisté à traduire les œuvres des enfants en contenus tridimensionnels vivants, sans perdre la lisibilité visuelle ni les performances qu'exige l'AR mobile.",
           "credit": "Projet développé sous la direction artistique de <a href=\"https://www.linkedin.com/in/seyyedebrahimi/\" target=\"_blank\" rel=\"noopener\" data-tag=\"MOSTAFA SEYYED EBRAHIMI\">Mostafa Seyyed Ebrahimi</a> au sein du studio de design <a href=\"https://deeez.co/\" target=\"_blank\" rel=\"noopener\" data-tag=\"DEEEZ\">DEEEZ</a>, avec l’aide de <a href=\"https://www.linkedin.com/in/meghna-saji-53b0b4180/\" target=\"_blank\" rel=\"noopener\" data-tag=\"MEGHNA SAJI\">Meghna Saji</a>.",
@@ -960,16 +930,16 @@
             "projects/03-spatial/periodic-keyboard/01.webp"
           ],
           "link": null,
-          "tag": "3D / BLENDER / PROJET PERSONNEL / 2024",
-          "lb": "APERÇU",
-          "la": "APPROCHE",
+          "tag": "3D / BLENDER",
+          "lb": null,
+          "la": null,
           "b": "Clavier périodique est une expérimentation 3D personnelle qui croise deux systèmes familiers : le clavier d'ordinateur et le tableau périodique des éléments. Le concept pose une question simple : à quoi ressemblerait un clavier dont chaque touche serait un élément chimique ?",
           "a": "J'ai développé et modélisé le concept entièrement dans Blender, en traduisant la structure et le langage visuel du tableau périodique dans la forme fonctionnelle d'un clavier. Chaque touche représente un élément, ce qui fait du clavier une lecture tridimensionnelle du tableau.\nLe projet m'a permis d'explorer le croisement des interfaces numériques, des objets physiques et des systèmes scientifiques par la modélisation 3D et l'expérimentation visuelle.",
           "credit": null,
           "roles": [
             "Design 3D",
-            "Blender",
-            "Modélisation 3D"
+            "Modélisation 3D",
+            "Blender"
           ],
           "self": true
         },
@@ -994,16 +964,16 @@
             "projects/03-spatial/macbookwallpaper/11.webp"
           ],
           "link": null,
-          "tag": "3D / BLENDER / 2024",
-          "lb": "APERÇU",
-          "la": "APPROCHE",
+          "tag": "3D / BLENDER",
+          "lb": null,
+          "la": null,
           "b": "MacBook Pro Wallpaper est une petite expérimentation 3D née d'une demande d'un ami qui souhaitait avoir différentes options de couleurs pour le fond d'écran du MacBook Pro. Comme le design original n'était disponible qu'en noir, il m'a demandé de créer plusieurs variations colorées.",
           "a": "J'ai recréé le fond d'écran du MacBook Pro dans Blender, en construisant la composition sous forme de scène 3D et en expérimentant différentes variations de couleurs tout en conservant le caractère visuel du design original.\nLe projet m'a permis d'explorer la modélisation 3D, les matériaux, l'éclairage et la couleur, en réinterprétant un visuel existant pour lui donner de nouvelles possibilités.",
           "credit": null,
           "roles": [
             "Design 3D",
-            "Blender",
-            "Modélisation 3D"
+            "Modélisation 3D",
+            "Blender"
           ],
           "self": true
         },
@@ -1019,18 +989,46 @@
             "projects/03-spatial/threads/01.webp"
           ],
           "link": null,
-          "tag": "3D / EXPÉRIMENTAL / 2023",
-          "lb": "APERÇU",
-          "la": "APPROCHE",
+          "tag": "3D / EXPÉRIMENTAL",
+          "lb": null,
+          "la": null,
           "b": "Logo Threads en 3D est une exploration personnelle du logo de Threads par une approche tridimensionnelle. Le projet cherche comment une marque numérique existante peut être réinterprétée en objet d'apparence physique, tout en absorbant des éléments du langage visuel d'Instagram.",
           "a": "J'ai recréé le logo de Threads dans Blender et l'ai fait dériver, transformant la marque plate en une forme tridimensionnelle. Ce traitement 3D m'a permis d'explorer l'ADN de marque d'Instagram par son langage visuel, ses matières, sa lumière et sa palette, pour proposer une lecture du logo au-delà de sa forme d'origine en deux dimensions.",
           "credit": null,
           "roles": [
             "Design 3D",
+            "Modélisation 3D",
             "Blender",
             "Branding expérimental"
           ],
           "self": true
+        },
+        {
+          "slug": "compphysics",
+          "t": "ATELIER DE PHYSIQUE COMPUTATIONNELLE",
+          "c": "SciSchool",
+          "y": "2022",
+          "r": "Artiste 3D & designer",
+          "img": "projects/03-spatial/compphysics/cover.webp",
+          "video": null,
+          "gallery": [
+            "projects/03-spatial/compphysics/02.webp",
+            "projects/03-spatial/compphysics/03.webp",
+            "projects/03-spatial/compphysics/04.webp"
+          ],
+          "link": null,
+          "tag": "3D / DESIGN D'AFFICHE",
+          "lb": null,
+          "la": null,
+          "b": "L'atelier de physique computationnelle présente un domaine dans lequel les ordinateurs sont utilisés pour simuler et résoudre des problèmes complexes de physique. L'atelier explore l'intersection entre physique et informatique, en mettant en avant le rôle de la simulation dans la compréhension des systèmes physiques.",
+          "a": "J'ai développé le concept de l'affiche autour de l'idée de simulation, en utilisant une typographie en 3D et des objets inspirés de la physique pour créer un environnement computationnel complexe. Les lettres empilées verticalement donnent une impression de profondeur et d'exploration, tandis que des éléments comme le pendule de Newton et du matériel informatique en suspension renforcent le lien entre physique et informatique.\nChaque lettre possède un matériau distinct, notamment des surfaces en verre réfléchissant, permettant à la lumière, à la transparence, à la réfraction et à la réflexion de participer au langage visuel. J'ai modélisé et réalisé le rendu de la scène dans Blender, puis importé le rendu final dans Adobe Illustrator afin d'y construire la typographie, la mise en page et les autres éléments graphiques. L'affiche finale a été préparée pour les formats numériques et imprimés.",
+          "credit": null,
+          "roles": [
+            "Design 3D",
+            "Modélisation 3D",
+            "Blender",
+            "Design d'affiche"
+          ]
         }
       ]
     },
@@ -1045,23 +1043,21 @@
           "t": "GRAVITAS+",
           "c": "Gravitas+",
           "y": "2026",
-          "r": "Directeur de création & designer",
+          "r": "Directeur de création & motion designer",
           "img": null,
           "video": "projects/04-motion/gravitas+/motion.mp4",
           "gallery": [],
           "link": null,
-          "tag": "LOGO & IDENTITÉ VISUELLE / 2026",
-          "lb": "APERÇU",
-          "la": "APPROCHE",
+          "tag": "MOTION / ANIMATION DE LOGO",
+          "lb": null,
+          "la": null,
           "b": "Gravitas+ est une chaîne YouTube et un site consacrés à des contenus pédagogiques et analytiques au croisement des compétences computationnelles, de la physique et de la pensée scientifique contemporaine. La plateforme vise à rendre accessibles des concepts complexes sans rien céder sur la profondeur ni sur la rigueur.\nL'identité visuelle a été développée pour traduire clarté, précision et exigence intellectuelle, en équilibrant une esthétique moderne et technologique avec la profondeur et la curiosité propres à la science fondamentale et à l'exploration de l'univers.",
           "a": "J'ai pris en charge le logo, le site, la bannière YouTube et le système d'identité visuelle de l'ensemble de la plateforme. L'identité s'inspire du mot latin « gravitas », la pesanteur, et du concept de gravité — en particulier de la courbure de l'espace-temps sous l'effet gravitationnel.\nL'initiale « G » constitue l'élément visuel central : elle explore le rapport entre la forme de la lettre, la gravité, la courbure et l'espace, pour produire une identité distinctive et portée par son concept.",
           "credit": null,
           "roles": [
             "Direction créative",
-            "Design de logo",
-            "Design de site web",
-            "Bannière YouTube",
-            "Design d'identité visuelle"
+            "Animation de logo",
+            "Motion design"
           ]
         },
         {
@@ -1069,21 +1065,21 @@
           "t": "RUSHIN",
           "c": "Rushin",
           "y": "2024",
-          "r": "Directeur de création & designer",
+          "r": "Directeur de création & motion designer",
           "img": null,
           "video": "projects/04-motion/rushin/motion.mp4",
           "gallery": [],
           "link": null,
-          "tag": "LOGO & IDENTITÉ VISUELLE / 2024",
-          "lb": "APERÇU",
-          "la": "APPROCHE",
+          "tag": "MOTION / ANIMATION DE LOGO",
+          "lb": null,
+          "la": null,
           "b": "Rushin est une plateforme d'événements pédagogiques et scientifiques, conçue pour accompagner le développement intellectuel par des ateliers, des cours, des sorties de terrain, des camps et des expériences d'apprentissage pratiques.\nL'identité visuelle explore le lien entre l'esprit humain, la nature et les systèmes génératifs. Le concept central puise dans le langage visuel du cerveau et de l'arbre, et prend la logique de ramification d'une canopée fractale comme métaphore de l'apprentissage, de la croissance et de l'extension continue du savoir.",
           "a": "Le système de design s'est construit autour de l'idée de « canopée fractale », mêlant des structures ramifiées organiques à la complexité visuelle du cerveau et à des motifs génératifs.\nL'identité traduit ces idées en un langage visuel souple qui représente le savoir comme un système vivant et interconnecté, où chaque idée nouvelle ouvre la possibilité d'une exploration suivante.",
           "credit": null,
           "roles": [
             "Direction créative",
-            "Design de logo",
-            "Design d'identité visuelle"
+            "Animation de logo",
+            "Motion design"
           ]
         }
       ]

@@ -491,14 +491,6 @@
       <image:title>WILLOW — logos</image:title>
     </image:image>
     <image:image>
-      <image:loc>https://kiarad.space/projects/01-logos/scischool/cover.webp</image:loc>
-      <image:title>SCISCHOOL — logos</image:title>
-    </image:image>
-    <image:image>
-      <image:loc>https://kiarad.space/projects/01-logos/scischool/02.webp</image:loc>
-      <image:title>SCISCHOOL — logos</image:title>
-    </image:image>
-    <image:image>
       <image:loc>https://kiarad.space/projects/01-logos/threeptych/cover.webp</image:loc>
       <image:title>THREEPTYCH STUDIO — logos</image:title>
     </image:image>
@@ -535,6 +527,14 @@
       <image:title>MOLKO — logos</image:title>
     </image:image>
     <image:image>
+      <image:loc>https://kiarad.space/projects/01-logos/scischool/cover.webp</image:loc>
+      <image:title>SCISCHOOL — logos</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://kiarad.space/projects/01-logos/scischool/02.webp</image:loc>
+      <image:title>SCISCHOOL — logos</image:title>
+    </image:image>
+    <image:image>
       <image:loc>https://kiarad.space/projects/02-posters/divar-hackathon2025/cover.webp</image:loc>
       <image:title>DIVAR'S HACKATHON 2025 — posters</image:title>
     </image:image>
@@ -555,15 +555,15 @@
       <image:title>DIVAR'S HACKATHON 2025 — posters</image:title>
     </image:image>
     <image:image>
-      <image:loc>https://kiarad.space/projects/02-posters/divar-yalda2025/cover.webp</image:loc>
+      <image:loc>https://kiarad.space/projects/02-posters/divar-yalda2024/cover.webp</image:loc>
       <image:title>DIVAR'S YALDA 2024 — posters</image:title>
     </image:image>
     <image:image>
-      <image:loc>https://kiarad.space/projects/02-posters/divar-yalda2025/DYP-04.webp</image:loc>
+      <image:loc>https://kiarad.space/projects/02-posters/divar-yalda2024/DYP-04.webp</image:loc>
       <image:title>DIVAR'S YALDA 2024 — posters</image:title>
     </image:image>
     <image:image>
-      <image:loc>https://kiarad.space/projects/02-posters/divar-yalda2025/DYP-05.webp</image:loc>
+      <image:loc>https://kiarad.space/projects/02-posters/divar-yalda2024/DYP-05.webp</image:loc>
       <image:title>DIVAR'S YALDA 2024 — posters</image:title>
     </image:image>
     <image:image>
@@ -593,22 +593,6 @@
     <image:image>
       <image:loc>https://kiarad.space/projects/02-posters/rushin-workshops/06.webp</image:loc>
       <image:title>RUSHIN WORKSHOPS — posters</image:title>
-    </image:image>
-    <image:image>
-      <image:loc>https://kiarad.space/projects/02-posters/compphysics/cover.webp</image:loc>
-      <image:title>COMPUTATIONAL PHYSICS WORKSHOP — posters</image:title>
-    </image:image>
-    <image:image>
-      <image:loc>https://kiarad.space/projects/02-posters/compphysics/02.webp</image:loc>
-      <image:title>COMPUTATIONAL PHYSICS WORKSHOP — posters</image:title>
-    </image:image>
-    <image:image>
-      <image:loc>https://kiarad.space/projects/02-posters/compphysics/03.webp</image:loc>
-      <image:title>COMPUTATIONAL PHYSICS WORKSHOP — posters</image:title>
-    </image:image>
-    <image:image>
-      <image:loc>https://kiarad.space/projects/02-posters/compphysics/04.webp</image:loc>
-      <image:title>COMPUTATIONAL PHYSICS WORKSHOP — posters</image:title>
     </image:image>
     <image:image>
       <image:loc>https://kiarad.space/projects/02-posters/ninthsampol/cover.webp</image:loc>
@@ -685,6 +669,22 @@
     <image:image>
       <image:loc>https://kiarad.space/projects/03-spatial/threads/01.webp</image:loc>
       <image:title>3D THREADS LOGO — spatial</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://kiarad.space/projects/03-spatial/compphysics/cover.webp</image:loc>
+      <image:title>COMPPHYSICS WORKSHOP — spatial</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://kiarad.space/projects/03-spatial/compphysics/02.webp</image:loc>
+      <image:title>COMPPHYSICS WORKSHOP — spatial</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://kiarad.space/projects/03-spatial/compphysics/03.webp</image:loc>
+      <image:title>COMPPHYSICS WORKSHOP — spatial</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://kiarad.space/projects/03-spatial/compphysics/04.webp</image:loc>
+      <image:title>COMPPHYSICS WORKSHOP — spatial</image:title>
     </image:image>
   </url>
   <url>
