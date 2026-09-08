@@ -1221,10 +1221,17 @@ const TH = ()=>THEMES[mode];
 
 /* ══ renderer ═════════════════════════════════════════════════════════════ */
 const canvas = document.getElementById('gl');
+/* A `?shot=1` visit is the page being photographed rather than read — the
+   banner studio in tools/ frames it and reads the canvas back as pixels.
+   Without preserveDrawingBuffer the drawing buffer is gone by the time anything
+   can ask for it and toDataURL hands back an empty square, which is exactly how
+   every earlier attempt at a LinkedIn header failed. It costs a copy of the
+   frame buffer per frame, so it stays off for everyone who came here to look. */
+const SHOT = new URLSearchParams(location.search).has('shot');
 // MSAA on a full-screen buffer is a poor trade on a tile-based mobile GPU, and
 // next to the transmission pass below it is a rounding error of quality bought
 // at a third of the frame rate
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: !lowEnd });
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: !lowEnd, preserveDrawingBuffer: SHOT });
 // a phone gains nothing from a 3x buffer, and loses a third of its frame rate
 // to it. At 1 the cheap tier shades a third of the pixels 1.75 would.
 let DPR = Math.min(devicePixelRatio, lowEnd ? 1 : coarse ? 1.75 : 2);
@@ -4852,6 +4859,36 @@ function syncUrl(){
   if(url.href !== location.href || had !== url.searchParams.get('lang')){
     history.replaceState(null, '', url);
   }
+  syncCanonical();
+}
+
+/* The <head> the build writes is one head for every address the page answers
+   to, so `/?lang=fr` shipped a canonical pointing at `/`. That is a page
+   telling a crawler it is a duplicate of another page while the sitemap and
+   the hreflang block beside it insist it is a translation with a URL of its
+   own. Google resolves the contradiction the only way it can — it crawls the
+   French address and files it away without indexing it. Rewriting the tag
+   once the language is known makes the rendered head agree with the two
+   declarations that surround it.
+
+   The origin is read back off the tag the build wrote rather than taken from
+   `location`, because the canonical has to name the live site even when the
+   page is being served from a preview host or a laptop: a canonical that
+   points at localhost is worse than none at all. */
+function syncCanonical(){
+  const link = document.querySelector('link[rel="canonical"]');
+  if(!link) return;
+
+  let home;
+  try{ home = new URL(link.getAttribute('href'), location.href); }
+  catch(err){ return; }
+
+  if(LANG === DEFAULT_LOCALE) home.searchParams.delete('lang');
+  else home.searchParams.set('lang', LANG);
+
+  link.setAttribute('href', home.href);
+  const og = document.querySelector('meta[property="og:url"]');
+  if(og) og.setAttribute('content', home.href);
 }
 
 function setLang(code){
@@ -5226,7 +5263,7 @@ loadContent();
             "url": "https://kiarad.space/",
             "dateCreated": "2024",
             "image": "https://kiarad.space/projects/01-logos/xense/cover.webp",
-            "abstract": "Xense is a Canadian company focused on the development and production of biosensors for the detection and measurement of target substances. Its technologies have applications across fields including medicine, agriculture, and industrial wastewater treatment, bringing sensing and measurement technolo",
+            "abstract": "Xense is focused on the development and production of biosensors for the detection and measurement of target substances. Its technologies have applications across fields including medicine, agriculture, and industrial wastewater treatment, bringing sensing and measurement technologies into a range o",
             "sourceOrganization": {
               "@type": "Organization",
               "name": "Xense"
