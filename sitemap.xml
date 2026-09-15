@@ -4,7 +4,7 @@
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://kiarad.space/</loc>
-    <lastmod>2026-09-08</lastmod>
+    <lastmod>2026-09-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://kiarad.space/"/>
@@ -682,18 +682,10 @@
       <image:loc>https://kiarad.space/projects/03-spatial/compphysics/03.webp</image:loc>
       <image:title>COMPPHYSICS WORKSHOP — spatial</image:title>
     </image:image>
-    <image:image>
-      <image:loc>https://kiarad.space/projects/03-spatial/compphysics/04.webp</image:loc>
-      <image:title>COMPPHYSICS WORKSHOP — spatial</image:title>
-    </image:image>
-    <image:image>
-      <image:loc>https://kiarad.space/projects/03-spatial/compphysics/05.webp</image:loc>
-      <image:title>COMPPHYSICS WORKSHOP — spatial</image:title>
-    </image:image>
   </url>
   <url>
     <loc>https://kiarad.space/?lang=fr</loc>
-    <lastmod>2026-09-08</lastmod>
+    <lastmod>2026-09-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://kiarad.space/"/>
