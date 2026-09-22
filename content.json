@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-15T08:44:00.283Z",
+  "generated": "2026-09-22T23:13:49.545Z",
   "lang": "en",
   "site": {
     "name": "Kiarash Farahmandrad",
@@ -137,6 +137,12 @@
         }
       ],
       "certifications": [
+        {
+          "title": "Brand Design",
+          "org": "Vand Academy",
+          "date": "Sep 2026",
+          "link": null
+        },
         {
           "title": "Packaging Design",
           "org": "Inverse School",
