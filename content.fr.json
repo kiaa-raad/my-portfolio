@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-24T08:46:58.490Z",
+  "generated": "2026-09-24T10:33:03.414Z",
   "lang": "fr",
   "site": {
     "name": "Kiarash Farahmandrad",
@@ -1104,6 +1104,28 @@
           "la": null,
           "b": "Troid était une plateforme de jeu vidéo spécialisée dans l'achat et la vente de jeux sur console et PC. À côté de sa boutique en ligne, la marque produisait des contenus sur la culture du jeu via YouTube et Instagram : tests, analyses et autres formats vidéo.",
           "a": "Le concept du logo part de la première lettre persane du nom de la marque (ت) et croise sa forme caractéristique avec une référence à l'un des personnages emblématiques de <em>Space Invaders</em>.\nCette combinaison a produit une identité qui relie le nom persan de la marque à un élément reconnaissable de la culture du jeu, et donne une marque à la fois ludique et distinctive, valable pour la plateforme comme pour ses contenus numériques.",
+          "credit": null,
+          "roles": [
+            "Direction créative",
+            "Design de logo",
+            "Design d'identité visuelle"
+          ]
+        },
+        {
+          "slug": "molko",
+          "t": "MOLKO",
+          "c": "Molko",
+          "y": "2021",
+          "r": "Directeur de création & designer",
+          "img": null,
+          "video": "projects/04-motion/molko/motion.mp4",
+          "gallery": [],
+          "link": null,
+          "tag": "LOGO & IDENTITÉ VISUELLE",
+          "lb": null,
+          "la": null,
+          "b": "Molko est un site pédagogique consacré à la chimie, créé pour rendre les connaissances et les ressources d'apprentissage plus accessibles par une plateforme numérique.",
+          "a": "Le concept du logo associe la lettre persane « م », initiale du nom de la marque, à la structure moléculaire du benzène.\nCette combinaison crée un lien visuel entre le nom et la vocation pédagogique de la marque, en faisant de la géométrie familière du benzène le socle d'une identité distinctive et cohérente avec son sujet.",
           "credit": null,
           "roles": [
             "Direction créative",
