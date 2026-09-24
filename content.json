@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-22T23:13:49.545Z",
+  "generated": "2026-09-24T08:46:58.490Z",
   "lang": "en",
   "site": {
     "name": "Kiarash Farahmandrad",
@@ -219,9 +219,9 @@
     },
     "cv": {
       "src": "about/Kiarash-Farahmandrad-CV.pdf",
-      "hash": "cf4710ac",
-      "updated": "2026-09-01",
-      "size": "129 KB"
+      "hash": "adb7f4c5",
+      "updated": "2026-09-22",
+      "size": "130 KB"
     }
   },
   "clients": {
@@ -1087,6 +1087,28 @@
             "Creative Direction",
             "Logo Animation",
             "Motion Design"
+          ]
+        },
+        {
+          "slug": "troid",
+          "t": "TROID",
+          "c": "Troid",
+          "y": "2023",
+          "r": "Creative Director & Designer",
+          "img": null,
+          "video": "projects/04-motion/troid/motion.mp4",
+          "gallery": [],
+          "link": null,
+          "tag": "LOGO & VISUAL IDENTITY",
+          "lb": null,
+          "la": null,
+          "b": "Troid was a gaming platform focused on buying and selling video games across console and PC platforms. Alongside its online store, the brand also developed content around gaming culture through YouTube and Instagram, including reviews, analysis, and other video content related to the world of games.",
+          "a": "The logo concept was built around the first Persian letter of the brand name (ت), combining its distinctive form with a reference to one of the iconic characters from <em>Space Invaders</em>.\nThis combination created a visual identity that connects the brand's Persian name with a recognizable element of gaming culture, resulting in a playful and distinctive mark suitable for both the gaming platform and its digital content.",
+          "credit": null,
+          "roles": [
+            "Creative Direction",
+            "Logo Design",
+            "Visual Identity Design"
           ]
         }
       ]

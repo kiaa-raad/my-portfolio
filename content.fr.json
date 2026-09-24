@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-22T23:13:49.545Z",
+  "generated": "2026-09-24T08:46:58.490Z",
   "lang": "fr",
   "site": {
     "name": "Kiarash Farahmandrad",
@@ -219,9 +219,9 @@
     },
     "cv": {
       "src": "about/Kiarash-Farahmandrad-CV.fr.pdf",
-      "hash": "ab88129f",
-      "updated": "2026-09-01",
-      "size": "129 KB"
+      "hash": "cf976008",
+      "updated": "2026-09-22",
+      "size": "130 KB"
     }
   },
   "clients": {
@@ -1087,6 +1087,28 @@
             "Direction créative",
             "Animation de logo",
             "Motion design"
+          ]
+        },
+        {
+          "slug": "troid",
+          "t": "TROID",
+          "c": "Troid",
+          "y": "2023",
+          "r": "Directeur de création & designer",
+          "img": null,
+          "video": "projects/04-motion/troid/motion.mp4",
+          "gallery": [],
+          "link": null,
+          "tag": "LOGO & IDENTITÉ VISUELLE",
+          "lb": null,
+          "la": null,
+          "b": "Troid était une plateforme de jeu vidéo spécialisée dans l'achat et la vente de jeux sur console et PC. À côté de sa boutique en ligne, la marque produisait des contenus sur la culture du jeu via YouTube et Instagram : tests, analyses et autres formats vidéo.",
+          "a": "Le concept du logo part de la première lettre persane du nom de la marque (ت) et croise sa forme caractéristique avec une référence à l'un des personnages emblématiques de <em>Space Invaders</em>.\nCette combinaison a produit une identité qui relie le nom persan de la marque à un élément reconnaissable de la culture du jeu, et donne une marque à la fois ludique et distinctive, valable pour la plateforme comme pour ses contenus numériques.",
+          "credit": null,
+          "roles": [
+            "Direction créative",
+            "Design de logo",
+            "Design d'identité visuelle"
           ]
         }
       ]
