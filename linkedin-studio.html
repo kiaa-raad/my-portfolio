@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>LinkedIn studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Azeret+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<!--
+  tools/linkedin-studio.html — the LinkedIn pictures, composed by hand.
+
+  Two formats, one frame:
+
+    BANNER  1584×396   the profile header
+    POST    1200×627   the landscape image for a post announcing the site
+
+  build-linkedin.mjs shoots the banner without a person present, and on this
+  machine it does not finish: headless Chrome has no GPU, SwiftShader draws
+  every frame of the hero on the CPU, and the first pass ran past ten minutes
+  without writing a file. So this page does the same job with the machine that
+  already has a GPU: the one in front of you. It frames the real site in an
+  iframe at `?shot=1` and lays the picture out around it live.
+
+  The form is posed, not caught. `?shot=1` gives the page a handle,
+  window.__shot, and through it the studio names the shape it wants and keeps
+  it standing — a visitor's hold draws from a shuffled bag and slumps half a
+  second after it cures, which left about a second to take a picture in. With
+  STILL on, the idle sway and the lean toward the pointer are gone too, so a
+  drag on the form (or the TURN / TILT sliders) puts it at an angle and it
+  stays there.
+
+  CAPTURE takes the standing form off the page as a cut-out — one frame
+  drawn with no ground behind it — and lays it on the picture as a piece.
+  Pieces are dragged to place, sized with the wheel, and removed with a
+  double-click or Delete; SCATTER spreads them across the frame. Every
+  capture also goes into the tray under the frame, shared by both formats,
+  so a form posed for the post can be dropped into the banner too.
+
+  It has to be served, not opened from disk: the site is a module graph behind
+  an importmap plus a fetch, and the studio reaches into the frame, which only
+  same-origin allows.
+
+      npm run studio
+      http://localhost:3579/tools/linkedin-studio.html
+
+  EXPORT is a photograph of the preview, not a second drawing of it: every
+  line of type, image and piece is measured off the element that shows it,
+  so the PNG cannot drift from what is on screen.
+-->
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+
+  :root{
+    --ui-bg:#111214; --ui-line:#26282c; --ui-fg:#e8e8e8; --ui-dim:#8b8f94;
+    --mono:'Azeret Mono',ui-monospace,Consolas,monospace;
+    --sans:'Archivo',system-ui,sans-serif;
+  }
+
+  html,body{background:#1b1c1f;color:var(--ui-fg);font-family:var(--mono);font-size:12px}
+  body{min-height:100vh;display:flex;flex-direction:column;align-items:center;gap:18px;padding:26px 18px 340px}
+
+  /* ── the frame ─────────────────────────────────────────────────────────
+     Each format is the size LinkedIn takes for it, so the card is that size
+     literally and the zoom is a transform on the wrapper — the layout never
+     learns about it. */
+  #wrap{position:relative}
+  #scale{transform-origin:top left}
+
+  .card{position:relative;overflow:hidden;background:var(--bg,#070708)}
+
+  /* The grid's and vignette's masks are written by layout(), from the same
+     numbers the exporter draws them with. */
+  .grid{
+    position:absolute;inset:0;
+    background-image:
+      linear-gradient(var(--gridline,rgba(255,255,255,.05)) 1px,transparent 1px),
+      linear-gradient(90deg,var(--gridline,rgba(255,255,255,.05)) 1px,transparent 1px);
+    background-size:60px 60px;
+  }
+
+  /* The site itself, scaled into place. The mask feathers the square the
+     frame would otherwise show; because the card's ground is taken from the
+     site's own, there is nothing to blend away. */
+  #site{
+    position:absolute;top:0;left:0;border:0;display:block;
+    width:1000px;height:1000px;transform-origin:top left;
+    -webkit-mask-image:radial-gradient(closest-side,#000 58%,transparent 96%);
+    mask-image:radial-gradient(closest-side,#000 58%,transparent 96%);
+  }
+
+  /* Captured forms. Above the live one and under the vignette, so the
+     vignette falls on every form alike. */
+  #pieces{position:absolute;inset:0;z-index:2;pointer-events:none}
+  .piece{position:absolute;display:block;pointer-events:auto;cursor:grab;touch-action:none}
+  .piece:active{cursor:grabbing}
+  .piece.sel{outline:1px dashed rgba(61,108,255,.9);outline-offset:4px}
+
+  .vig{position:absolute;inset:0;z-index:3;pointer-events:none}
+  #rules{position:absolute;left:0;top:0;z-index:4;pointer-events:none}
+
+  /* Every line here is measured by the exporter, so line-height is 1 and the
+     width is the text's own: the box a line occupies is the type and nothing
+     else, and a canvas baseline drawn through its middle lands where the
+     browser put it. white-space:pre because the canvas does not collapse
+     spaces, and the double spaces round each slash in the fields line would
+     otherwise be drawn in the PNG and folded to one in the preview. */
+  [data-line]{line-height:1;white-space:pre;width:max-content}
+
+  #text{position:absolute;z-index:4;top:50%;transform:translateY(-50%);pointer-events:none}
+  .l-fields{font-weight:400;font-size:13px;letter-spacing:.22em;text-transform:uppercase;color:var(--dim2,#7e8184)}
+  .l-domain{font-weight:400;font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:var(--dim2,#6d7073);margin-top:22px}
+
+  /* ── the post ──────────────────────────────────────────────────────────
+     Almost nothing: the forms carry it. Who made them in one corner, where to
+     see them move in the other — the site's own header and its address, and
+     no sentence explaining either. */
+  #post{position:absolute;inset:0;z-index:5;pointer-events:none}
+  .p-id{position:absolute;left:48px;bottom:44px;display:flex;align-items:center;gap:14px}
+  .p-glyph{width:36px;height:36px;display:block}
+  .card:not(.light) .p-glyph{filter:invert(1)}
+  .p-name{font-family:var(--sans);font-weight:600;font-size:16px;letter-spacing:.16em;color:var(--fg)}
+  .p-role{font-weight:300;font-size:10px;letter-spacing:.24em;color:var(--dim);margin-top:9px}
+  .p-url{position:absolute;right:48px;bottom:55px;font-size:14px;letter-spacing:.3em;color:var(--fg)}
+
+  /* Guides are for the eye only and never reach the PNG: the avatar's
+     footprint on a desktop profile, and the band a narrow viewport keeps. */
+  .guide{position:absolute;z-index:9;pointer-events:none;border:2px dashed rgba(255,64,64,.85);border-radius:50%}
+  .guide.crop{border-radius:0;border-color:rgba(64,170,255,.9)}
+
+  /* ── the tray ──────────────────────────────────────────────────────────
+     Every capture, for either format. A click lays another copy on the
+     picture in front of you. */
+  #tray{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:1400px}
+  #tray:empty::before{content:'Captures land here — pick a form, pose it, CAPTURE';
+    color:var(--ui-dim);font-size:10px;letter-spacing:.12em;text-transform:uppercase}
+  .tile{position:relative;width:96px;background:#141518;border:1px solid var(--ui-line);cursor:pointer}
+  .tile:hover{border-color:#3d6cff}
+  .tile canvas{display:block;width:96px;height:96px;object-fit:contain}
+  .tile span{display:block;padding:5px 6px;font-size:9px;letter-spacing:.14em;color:var(--ui-dim);border-top:1px solid var(--ui-line)}
+  .tile b{position:absolute;top:2px;right:4px;font-weight:400;color:var(--ui-dim);font-size:13px;line-height:1}
+  .tile b:hover{color:#ff6b6b}
+
+  /* ── controls ──────────────────────────────────────────────────────────
+     Fixed at the foot so the frame above never moves when a row of them
+     wraps — the same reason the site's own .tools row holds its width. */
+  #ui{
+    position:fixed;left:0;right:0;bottom:0;z-index:50;
+    background:rgba(17,18,20,.97);border-top:1px solid var(--ui-line);
+    padding:12px 16px 14px;display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;
+    backdrop-filter:blur(8px);
+  }
+  #ui .grp{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  #ui .sep{width:1px;height:24px;background:var(--ui-line)}
+  #ui .row{flex-basis:100%;height:0}
+  label{color:var(--ui-dim);letter-spacing:.14em;text-transform:uppercase;font-size:10px}
+  button{
+    font:inherit;letter-spacing:.16em;text-transform:uppercase;font-size:10px;
+    color:var(--ui-fg);background:#1d1f22;border:1px solid var(--ui-line);
+    padding:7px 12px;cursor:pointer;
+  }
+  button:hover{background:#26292d}
+  button.on{background:#e8e8e8;color:#111}
+  button.go{background:#3d6cff;border-color:#3d6cff;color:#fff}
+  button.go:hover{background:#5a82ff}
+  .shapes button{padding:6px 9px}
+  input[type=range]{width:110px;accent-color:#3d6cff}
+  .val{color:var(--ui-fg);min-width:34px;font-size:10px}
+  #status{color:var(--ui-dim);letter-spacing:.12em;text-transform:uppercase;font-size:10px}
+  #status b{color:#e8e8e8}
+  .hint{color:var(--ui-dim);letter-spacing:.08em;font-size:10px;max-width:1100px;line-height:1.6;text-align:center}
+</style>
+</head>
+<body>
+
+<div class="hint">
+  Pick a form below and it stays standing. Drag on it to turn it (or use TURN / TILT), then CAPTURE (C).
+  A capture is a piece: drag it, wheel to size it, double-click it or press Delete to remove it. SCATTER spreads them. Then EXPORT PNG.
+</div>
+
+<div id="wrap"><div id="scale"><div class="card" id="card">
+  <div class="grid" id="grid"></div>
+  <iframe id="site" src="/?shot=1" scrolling="no" title="site"></iframe>
+  <div id="pieces"></div>
+  <div class="vig" id="vig"></div>
+  <canvas id="rules"></canvas>
+
+  <div id="text">
+    <div class="l-fields" data-line data-k="fields"></div>
+    <div class="l-domain" data-line data-k="domain"></div>
+  </div>
+
+  <div id="post" hidden>
+    <div class="p-id">
+      <img class="p-glyph" data-img src="/favicon.png" alt="">
+      <div>
+        <div class="p-name" data-line data-k="name"></div>
+        <div class="p-role" data-line data-k="role"></div>
+      </div>
+    </div>
+    <div class="p-url" data-line data-k="domain"></div>
+  </div>
+
+  <i class="guide" id="gAvatar" hidden></i>
+  <i class="guide crop" id="gCrop" hidden></i>
+</div></div></div>
+
+<div id="tray"></div>
+
+<div id="ui"></div>
+
+<script type="module">
+/* ══ the formats ════════════════════════════════════════════════════════ */
+
+/* Everything that differs between the two pictures is here; the painters
+   below read W, H and FMT and never ask which one they are drawing.
+
+   grid / vig are ellipses as fractions of the frame: centre x, centre y,
+   radius x, radius y. piece is how tall a captured form is laid down, as a
+   share of the frame's height. rule is the ruler at each edge — the post is seen in a
+   feed at about half its size, so its ticks are spaced wider and drawn
+   heavier. `own` is what each format remembers for itself: where its live
+   form sits and which layers it shows. */
+const FORMATS = {
+  banner: {
+    w: 1584, h: 396,
+    grid: () => [0.30, 0.50, 0.80, 2.10],
+    vig:  () => [0.50, 0.50, 0.90, 1.90],
+    rule: { inset: 30, len: 300, minor: 8,  major: 40, lmin: 6, lmaj: 14, lw: 1.5, mark: 22 },
+    piece: 0.85,
+    own:  { size: 720, x: 0.66, y: 0.50, live: true, text: true, grid: true, vig: true,
+            rulers: true, guides: false }
+  },
+  post: {
+    w: 1200, h: 627,
+    grid: () => [0.50, 0.50, 0.85, 1.20],
+    vig:  () => [0.50, 0.50, 0.85, 1.25],
+    rule: { inset: 26, len: 360, minor: 10, major: 50, lmin: 7, lmaj: 16, lw: 2, mark: 26 },
+    piece: 0.52,
+    own:  { size: 760, x: 0.50, y: 0.50, live: false, text: true, grid: false, vig: true,
+            rulers: false, guides: false }
+  }
+};
+const OWN = Object.keys(FORMATS.banner.own);
+
+/* The avatar sits on the banner, bottom-left, and hangs below it; on a desktop
+   profile it covers roughly this. Nothing drawn under it survives. */
+const AVATAR = { x: 62, y: 148, size: 300 };
+
+/* The square the site is framed in. Square because the hero composes itself
+   around the viewport's centre — a short frame would crop the form rather
+   than shrink it. */
+const SQ = 1000;
+
+/* A cut-out is kept at most this many pixels on its long side: enough for
+   the largest piece in a @2× post, and small enough that a handful of them
+   still fit in localStorage. */
+const CUT_MAX = 1100;
+
+const card    = document.getElementById('card');
+const site    = document.getElementById('site');
+const textEl  = document.getElementById('text');
+const postEl  = document.getElementById('post');
+const rulesEl = document.getElementById('rules');
+const piecesEl = document.getElementById('pieces');
+const trayEl  = document.getElementById('tray');
+
+const state = Object.assign({
+  fmt: 'banner',
+  ...FORMATS.banner.own,
+  owns: {},          // what each format was last left at
+  pieces: { banner: [], post: [] },
+  still: true,
+  textX: AVATAR.x + AVATAR.size + 56,
+  zoom: 1
+}, JSON.parse(localStorage.getItem('banner-studio') || '{}'));
+// keys left behind by earlier versions of this page
+for (const k of ['brackets', 'specs', 'geos', 'head1', 'head2', 'tail', 'hint']) delete state[k];
+
+if (!FORMATS[state.fmt]) state.fmt = 'banner';
+if (!state.pieces || typeof state.pieces !== 'object') state.pieces = {};
+for (const f in FORMATS) if (!Array.isArray(state.pieces[f])) state.pieces[f] = [];
+let FMT = FORMATS[state.fmt], W = FMT.w, H = FMT.h;
+
+const save = () => {
+  try { localStorage.setItem('banner-studio', JSON.stringify(state)); } catch (e) {}
+};
+
+/* ══ the library ════════════════════════════════════════════════════════
+   Captures by id: the cut-out, the shape it was, and how big the form was
+   against the site's square. Kept in localStorage as WebP so
+   a reload does not lose an afternoon's posing; if the quota runs out the
+   captures still work, they just do not survive the reload. */
+
+const lib = new Map();              // id -> { canvas, key, frac }
+
+function saveLib(){
+  const out = [];
+  for (const [id, e] of lib) out.push({ id, key: e.key, frac: e.frac,
+                                        src: e.canvas.toDataURL('image/webp', 0.9) });
+  try { localStorage.setItem('banner-studio-lib', JSON.stringify(out)); }
+  catch (err) { status('captures too large to keep across a reload'); }
+}
+
+async function loadLib(){
+  let list = [];
+  try { list = JSON.parse(localStorage.getItem('banner-studio-lib') || '[]'); } catch (e) {}
+  await Promise.all(list.map(e => new Promise(res => {
+    const img = new Image();
+    img.onload = () => {
+      const c = document.createElement('canvas');
+      c.width = img.naturalWidth; c.height = img.naturalHeight;
+      c.getContext('2d').drawImage(img, 0, 0);
+      lib.set(e.id, { canvas: c, key: e.key, frac: e.frac });
+      res();
+    };
+    img.onerror = res;
+    img.src = e.src;
+  })));
+  // a piece whose capture did not come back has nothing to show
+  for (const f in state.pieces) state.pieces[f] = state.pieces[f].filter(p => lib.has(p.id));
+}
+
+/* ══ the site in the frame ══════════════════════════════════════════════ */
+
+let D = null, V = null, S = null;   // the frame's document, window and __shot
+let light = false;
+let shapeKeys = [];
+
+site.addEventListener('load', () => {
+  D = site.contentDocument; V = site.contentWindow;
+
+  /* Hidden, not removed: the boot screen and the HUD are load-bearing for the
+     page's own state machine, and a missing #cue or #panel throws somewhere
+     far from here. pointer-events go too, so a press lands on the form and
+     not on a panel nobody can see. */
+  const st = D.createElement('style');
+  st.textContent =
+    '.hud,.ret,.cue,.explore,.fx,.grain,.boot,.panel,#panel,.lens,.tools{' +
+    'opacity:0!important;visibility:hidden!important;pointer-events:none!important}';
+  D.head.appendChild(st);
+
+  syncTheme();
+  setInterval(syncTheme, 400);   // the theme can be changed from here or there
+  setInterval(readForm, 200);
+
+  // the handle arrives with the module, which is some time after load
+  const wait = setInterval(() => {
+    if (!V.__shot) return;
+    clearInterval(wait);
+    S = V.__shot;
+    S.still(state.still);
+    shapeKeys = S.shapes();
+    buildShapes();
+    status();
+  }, 150);
+});
+
+/* The card's ground is the site's own, so the framed square has no edge to
+   find and needs no blend mode to hide one. */
+function syncTheme(){
+  if (!D || !D.body) return;
+  const l = D.body.classList.contains('light');
+  if (l === light && card.style.getPropertyValue('--bg')) return;
+  light = l;
+  card.classList.toggle('light', light);
+  const t = light
+    ? { bg:'#edebe6', fg:'#141518', dim:'#4a4e52', dim2:'#5c6064',
+        grid:'rgba(20,20,24,.07)', vig:'rgba(120,116,108,.42)',
+        tick:'rgba(20,20,24,.34)', tick2:'rgba(20,20,24,.17)' }
+    : { bg:'#070708', fg:'#ffffff', dim:'#9fa2a5', dim2:'#7e8184',
+        grid:'rgba(255,255,255,.05)', vig:'rgba(0,0,0,.8)',
+        tick:'rgba(255,255,255,.30)', tick2:'rgba(255,255,255,.14)' };
+  card.style.setProperty('--bg', t.bg);
+  card.style.setProperty('--fg', t.fg);
+  card.style.setProperty('--dim', t.dim);
+  card.style.setProperty('--dim2', t.dim2);
+  card.style.setProperty('--gridline', t.grid);
+  card.style.setProperty('--vig', t.vig);
+  card.style.setProperty('--tick', t.tick);
+  card.style.setProperty('--tick2', t.tick2);
+  layout();
+}
+
+/* Which shape is on the clay, and whether it is standing yet — asked of the
+   page rather than read off its readout, which speaks in verbs. */
+let cur = { index: -1, standing: false };
+const formKey = () => shapeKeys[cur.index] || '';
+
+function readForm(){
+  if (!S) return;
+  const c = S.current();
+  if (c.index !== cur.index || c.standing !== cur.standing){
+    cur = c;
+    for (const b of document.querySelectorAll('.shapes button'))
+      b.classList.toggle('on', +b.dataset.i === cur.index);
+    status();
+  }
+  syncPose();
+}
+
+function hold(i){
+  if (!S) return;
+  S.hold(i);
+  cur = { index: i, standing: false };
+  status();
+}
+
+// the next shape in the list, for the N key and the button
+function nextForm(){
+  if (!shapeKeys.length) return;
+  hold((Math.max(-1, cur.index) + 1) % shapeKeys.length);
+}
+
+function toggleTheme(){
+  if (!D) return;
+  const b = D.getElementById('theme');
+  if (b) b.click();
+  setTimeout(syncTheme, 60);
+}
+
+/* ══ capture ════════════════════════════════════════════════════════════
+   The page draws one frame with nothing behind the form; this trims it to
+   the form's own extent. The cut-out keeps the theme it was taken in — a
+   form lit for the dark ground stays lit for it. */
+
+function trim(src){
+  const w = src.width, h = src.height;
+  const d = src.getContext('2d').getImageData(0, 0, w, h).data;
+  let x0 = w, y0 = h, x1 = -1, y1 = -1;
+  for (let y = 0; y < h; y += 2){
+    for (let x = 0; x < w; x += 2){
+      if (d[(y * w + x) * 4 + 3] > 6){
+        if (x < x0) x0 = x; if (x > x1) x1 = x;
+        if (y < y0) y0 = y; if (y > y1) y1 = y;
+      }
+    }
+  }
+  if (x1 < 0) return null;
+  const pad = Math.round(Math.max(x1 - x0, y1 - y0) * 0.03) + 2;
+  x0 = Math.max(0, x0 - pad); y0 = Math.max(0, y0 - pad);
+  x1 = Math.min(w - 1, x1 + pad); y1 = Math.min(h - 1, y1 + pad);
+  const cw = x1 - x0 + 1, ch = y1 - y0 + 1;
+  const k = Math.min(1, CUT_MAX / Math.max(cw, ch));
+  const out = document.createElement('canvas');
+  out.width = Math.round(cw * k); out.height = Math.round(ch * k);
+  const g = out.getContext('2d');
+  g.imageSmoothingQuality = 'high';
+  g.drawImage(src, x0, y0, cw, ch, 0, 0, out.width, out.height);
+  return { canvas: out, frac: Math.max(cw, ch) / w };
+}
+
+let capturing = false;
+async function capture(){
+  if (!S || capturing) return;
+  capturing = true;
+  status('capturing…');
+  // a frame's grace, so a drag that only just ended has stopped turning
+  await new Promise(r => setTimeout(r, 120));
+  const cut = trim(S.snap());
+  capturing = false;
+  if (!cut){ status('nothing on the clay to capture'); return; }
+  const id = 'c' + Date.now().toString(36);
+  lib.set(id, { ...cut, key: formKey() });
+  saveLib();
+  renderTray();
+  place(id);
+  status(`captured ${formKey() || 'form'}`);
+}
+
+/* ══ pieces ═════════════════════════════════════════════════════════════
+   A piece is a capture laid on one format's picture: its centre, and its
+   size as the length of its long side. */
+
+let sel = null;                     // the selected piece
+const pieces = () => state.pieces[state.fmt];
+
+function pieceDims(p){
+  const e = lib.get(p.id);
+  const a = e.canvas.width / e.canvas.height;
+  return a >= 1 ? { w: p.size, h: p.size / a } : { w: p.size * a, h: p.size };
+}
+
+/* A piece's size is its long side. New ones come in at a share of the
+   frame's height — piece in FORMATS — varied so that a scatter has a
+   foreground and a background; the post asks for smaller ones, since it is
+   meant to hold several with room between them. */
+const pieceSize = (lo, hi) => Math.round(H * FMT.piece * (lo + Math.random() * (hi - lo)));
+
+function place(id, size){
+  const s = size || pieceSize(0.6, 0.9);
+  const spot = findSpot(s, pieces());
+  pieces().push({ id, x: spot.x, y: spot.y, size: s });
+  sel = pieces()[pieces().length - 1];
+  renderPieces();
+  save();
+}
+
+/* The emptiest place for a form of this size: of a few hundred candidate
+   centres, the one furthest clear of everything already down — other
+   pieces, the live form while it is in the picture, and the type. A form may
+   run off the edge by a little, the way it would in a photograph, but never
+   by more than a third of itself. */
+function obstacles(list){
+  const obs = list.map(p => ({ x: p.x, y: p.y, r: p.size * 0.45 }));
+  if (state.live) obs.push({ x: W * state.x, y: H * state.y, r: state.size * 0.28 });
+  for (const e of card.querySelectorAll('[data-line],img[data-img]')){
+    if (!visible(e) || (e.matches('[data-line]') && !e.textContent.trim())) continue;
+    const b = boxOf(e);
+    obs.push({ rect: [b.x - 16, b.y - 16, b.x + b.w + 16, b.y + b.h + 16] });
+  }
+  return obs;
+}
+function clearance(x, y, r, o){
+  if (o.rect){
+    const [x0, y0, x1, y1] = o.rect;
+    const dx = Math.max(x0 - x, 0, x - x1), dy = Math.max(y0 - y, 0, y - y1);
+    return Math.hypot(dx, dy) - r * 0.9;
+  }
+  return Math.hypot(x - o.x, y - o.y) - (o.r + r * 0.45) * 1.05;
+}
+function findSpot(size, list){
+  const obs = obstacles(list), r = size / 2, m = r * 0.67;
+  const span = (lo, hi) => lo < hi ? lo + Math.random() * (hi - lo) : (lo + hi) / 2;
+  let best = { x: W / 2, y: H / 2 }, bestScore = -Infinity;
+  for (let i = 0; i < 600; i++){
+    const x = span(m, W - m), y = span(m, H - m);
+    let score = Infinity;
+    for (const o of obs) score = Math.min(score, clearance(x, y, r, o));
+    if (!obs.length) score = -Math.hypot(x - W / 2, y - H / 2);
+    if (score > bestScore){ bestScore = score; best = { x, y }; }
+  }
+  return best;
+}
+
+/* Everything re-laid at once, biggest first, each size drawn afresh so the
+   scatter has a foreground and a background. */
+function scatter(){
+  const list = pieces();
+  if (!list.length){ status('capture a form first'); return; }
+  const done = [];
+  const order = list.map(p => ({ p, s: pieceSize(0.45, 1.0) })).sort((a, b) => b.s - a.s);
+  for (const { p, s } of order){
+    const spot = findSpot(s, done);
+    Object.assign(p, { x: spot.x, y: spot.y, size: s });
+    done.push(p);
+  }
+  // smaller ones behind, so the scale reads as depth
+  list.sort((a, b) => a.size - b.size);
+  sel = null;
+  renderPieces();
+  save();
+}
+
+function positionEl(el, p){
+  const { w, h } = pieceDims(p);
+  Object.assign(el.style, { width: w + 'px', height: h + 'px',
+                            left: (p.x - w / 2) + 'px', top: (p.y - h / 2) + 'px' });
+}
+function markSel(){
+  for (const el of piecesEl.children) el.classList.toggle('sel', pieceOf.get(el) === sel);
+}
+const pieceOf = new WeakMap();
+
+function renderPieces(){
+  piecesEl.textContent = '';
+  for (const p of pieces()){
+    const e = lib.get(p.id);
+    if (!e) continue;
+    const c = document.createElement('canvas');
+    c.width = e.canvas.width; c.height = e.canvas.height;
+    c.getContext('2d').drawImage(e.canvas, 0, 0);
+    c.className = 'piece';
+    pieceOf.set(c, p);
+    positionEl(c, p);
+    wirePiece(c, p);
+    piecesEl.append(c);
+  }
+  markSel();
+  status();
+}
+
+// a second press on the same piece inside this long is a double-click
+const TAP2_MS = 350;
+let lastTap = { p: null, t: 0 };
+
+function wirePiece(el, p){
+  el.addEventListener('pointerdown', e => {
+    e.preventDefault();
+    const now = performance.now();
+    if (lastTap.p === p && now - lastTap.t < TAP2_MS){ removePiece(p); return; }
+    lastTap = { p, t: now };
+    // picking a piece up brings it to the front
+    const list = pieces();
+    list.splice(list.indexOf(p), 1);
+    list.push(p);
+    piecesEl.append(el);
+    sel = p;
+    markSel();
+    el.setPointerCapture(e.pointerId);
+    let lx = e.clientX, ly = e.clientY;
+    const move = ev => {
+      p.x += (ev.clientX - lx) / state.zoom; p.y += (ev.clientY - ly) / state.zoom;
+      lx = ev.clientX; ly = ev.clientY;
+      positionEl(el, p);
+    };
+    const up = () => {
+      el.removeEventListener('pointermove', move);
+      el.removeEventListener('pointerup', up);
+      save();
+    };
+    el.addEventListener('pointermove', move);
+    el.addEventListener('pointerup', up);
+  });
+  el.addEventListener('wheel', e => {
+    e.preventDefault();
+    p.size = Math.max(30, Math.min(2400, p.size * (e.deltaY < 0 ? 1.06 : 1 / 1.06)));
+    sel = p;
+    positionEl(el, p);
+    markSel();
+    save();
+  }, { passive: false });
+}
+
+function removePiece(p){
+  const list = pieces(), i = list.indexOf(p);
+  if (i >= 0) list.splice(i, 1);
+  sel = null;
+  renderPieces();
+  save();
+}
+
+function renderTray(){
+  trayEl.textContent = '';
+  for (const [id, e] of lib){
+    const t = document.createElement('div');
+    t.className = 'tile';
+    t.title = 'Add to the picture';
+    const c = document.createElement('canvas');
+    const n = 192, k = n / Math.max(e.canvas.width, e.canvas.height);
+    c.width = c.height = n;
+    const w = e.canvas.width * k, h = e.canvas.height * k;
+    c.getContext('2d').drawImage(e.canvas, (n - w) / 2, (n - h) / 2, w, h);
+    const lab = document.createElement('span');
+    lab.textContent = e.key || 'FORM';
+    const x = document.createElement('b');
+    x.textContent = '×';
+    x.title = 'Delete this capture everywhere';
+    x.onclick = ev => {
+      ev.stopPropagation();
+      lib.delete(id);
+      for (const f in state.pieces) state.pieces[f] = state.pieces[f].filter(p => p.id !== id);
+      sel = null;
+      saveLib(); renderTray(); renderPieces(); save();
+    };
+    t.onclick = () => place(id);
+    t.append(c, lab, x);
+    trayEl.append(t);
+  }
+}
+
+/* ══ layout ═════════════════════════════════════════════════════════════ */
+
+const pct = n => (n * 100).toFixed(2) + '%';
+const ellipseCss = ([cx, cy, rx, ry], stops) =>
+  `radial-gradient(${pct(rx)} ${pct(ry)} at ${pct(cx)} ${pct(cy)},${stops})`;
+
+function layout(){
+  card.style.width = W + 'px';
+  card.style.height = H + 'px';
+
+  const s = state.size / SQ;
+  site.style.transform = `scale(${s})`;
+  site.style.left = (W * state.x - state.size / 2) + 'px';
+  site.style.top  = (H * state.y - state.size / 2) + 'px';
+  /* Out of the picture, the live form stays on screen as a ghost: it is still
+     what is being posed, and a pose cannot be set on something invisible. The
+     exporter leaves it out. */
+  site.style.opacity = state.live ? '' : '0.28';
+
+  const grid = document.getElementById('grid'), vig = document.getElementById('vig');
+  grid.hidden = !state.grid;
+  vig.hidden  = !state.vig;
+  const gm = ellipseCss(FMT.grid(state), '#000 22%,transparent 74%');
+  grid.style.webkitMaskImage = grid.style.maskImage = gm;
+  vig.style.background = ellipseCss(FMT.vig(state), 'transparent 36%,var(--vig,rgba(0,0,0,.8)) 100%');
+
+  const isPost = state.fmt === 'post';
+  textEl.hidden = isPost || !state.text;
+  textEl.style.left = state.textX + 'px';
+  postEl.hidden = !isPost || !state.text;
+
+  /* the preview's rulers are the exporter's rulers, drawn at the screen's
+     density — one painter, so the two cannot disagree about a tick */
+  const dpr = Math.max(1, devicePixelRatio || 1) * state.zoom;
+  rulesEl.width = Math.round(W * dpr); rulesEl.height = Math.round(H * dpr);
+  rulesEl.style.width = W + 'px'; rulesEl.style.height = H + 'px';
+  const rc = rulesEl.getContext('2d');
+  rc.clearRect(0, 0, rulesEl.width, rulesEl.height);
+  if (state.rulers) rc.drawImage(drawRulers(dpr), 0, 0);
+
+  const ga = document.getElementById('gAvatar'), gc = document.getElementById('gCrop');
+  ga.hidden = gc.hidden = isPost || !state.guides;
+  Object.assign(ga.style, { left:AVATAR.x+'px', top:AVATAR.y+'px',
+                            width:AVATAR.size+'px', height:AVATAR.size+'px' });
+  Object.assign(gc.style, { left:Math.round(W*0.12)+'px', top:'0px',
+                            width:Math.round(W*0.76)+'px', height:H+'px' });
+
+  for (const g of document.querySelectorAll('[data-for]'))
+    g.style.display = g.dataset.for === state.fmt ? '' : 'none';
+
+  document.getElementById('scale').style.transform = `scale(${state.zoom})`;
+  document.getElementById('wrap').style.width  = (W * state.zoom) + 'px';
+  document.getElementById('wrap').style.height = (H * state.zoom) + 'px';
+  save();
+}
+
+function fitZoom(){
+  const fit = Math.min(1, (innerWidth - 40) / W, (innerHeight - 420) / H);
+  state.zoom = Math.max(0.25, Math.floor(fit * 20) / 20);
+}
+
+function setFormat(fmt){
+  if (fmt === state.fmt) return;
+  state.owns[state.fmt] = Object.fromEntries(OWN.map(k => [k, state[k]]));
+  state.fmt = fmt;
+  FMT = FORMATS[fmt]; W = FMT.w; H = FMT.h;
+  Object.assign(state, FMT.own, state.owns[fmt] || {});
+  sel = null;
+  fitZoom();
+  for (const s of syncs) s();
+  renderPieces();
+  layout();
+  status();
+}
+
+/* ══ export ═════════════════════════════════════════════════════════════
+   A photograph of the preview. Each line of type, image and piece is drawn
+   from the box the browser gave the element that shows it, so there is no
+   second layout to keep in step with the first. */
+
+function layerCtx(s){
+  const c = document.createElement('canvas');
+  c.width = Math.round(W * s); c.height = Math.round(H * s);
+  const g = c.getContext('2d');
+  g.scale(s, s);
+  return g;
+}
+
+/* An elliptical radial gradient, which canvas has no primitive for: draw a
+   circular one through a squash. */
+function ellipse(g, cx, cy, rx, ry, stops, paint){
+  g.save();
+  g.translate(cx, cy); g.scale(1, ry / rx); g.translate(-cx, -cy);
+  const grad = g.createRadialGradient(cx, cy, 0, cx, cy, rx);
+  for (const [at, col] of stops) grad.addColorStop(at, col);
+  paint(grad);
+  g.restore();
+}
+
+const css = n => getComputedStyle(card).getPropertyValue(n).trim();
+const visible = e => e.getClientRects().length > 0;
+
+function drawGrid(s){
+  const g = layerCtx(s);
+  g.strokeStyle = css('--gridline') || 'rgba(255,255,255,.05)';
+  g.lineWidth = 1;
+  for (let x = 0.5; x < W; x += 60){ g.beginPath(); g.moveTo(x, 0); g.lineTo(x, H); g.stroke(); }
+  for (let y = 0.5; y < H; y += 60){ g.beginPath(); g.moveTo(0, y); g.lineTo(W, y); g.stroke(); }
+  g.globalCompositeOperation = 'destination-in';
+  const [cx, cy, rx, ry] = FMT.grid(state);
+  ellipse(g, W*cx, H*cy, W*rx, H*ry,
+    [[0,'#000'],[0.22,'#000'],[0.74,'rgba(0,0,0,0)']],
+    grad => { g.fillStyle = grad; g.fillRect(-W, -H*3, W*3, H*7); });
+  return g.canvas;
+}
+
+function drawForm(s){
+  const gl = D && D.getElementById('gl');
+  if (!gl) return null;
+  const g = layerCtx(s);
+  const x = W * state.x - state.size / 2, y = H * state.y - state.size / 2;
+  g.drawImage(gl, x, y, state.size, state.size);
+  g.globalCompositeOperation = 'destination-in';
+  const cx = x + state.size / 2, cy = y + state.size / 2, r = state.size / 2;
+  const grad = g.createRadialGradient(cx, cy, 0, cx, cy, r);
+  grad.addColorStop(0, '#000'); grad.addColorStop(0.58, '#000'); grad.addColorStop(0.96, 'rgba(0,0,0,0)');
+  g.fillStyle = grad; g.fillRect(x, y, state.size, state.size);
+  return g.canvas;
+}
+
+function drawVig(g){
+  const [cx, cy, rx, ry] = FMT.vig(state);
+  ellipse(g, W*cx, H*cy, W*rx, H*ry,
+    [[0.36,'rgba(0,0,0,0)'],[1, css('--vig') || 'rgba(0,0,0,.8)']],
+    grad => { g.fillStyle = grad; g.fillRect(-W, -H*3, W*3, H*7); });
+}
+
+/* ── the rulers ─────────────────────────────────────────────────────────
+   The site's own frame, at this picture's scale: a scale at each edge,
+   centred on the frame's height, with a mark level with the live form's
+   centre — the line the site draws through the reticle, held still. */
+function ruleGeo(){
+  const R = FMT.rule, pad = 24;
+  const len = Math.min(R.len, H - pad * 2);
+  const top = H / 2 - len / 2;
+  const mark = Math.min(top + len * 0.9, Math.max(top + len * 0.1, H * state.y));
+  return { len, top, mark };
+}
+
+function drawRulers(s){
+  const R = FMT.rule, { len, top, mark } = ruleGeo();
+  const g = layerCtx(s);
+  const major = css('--tick') || 'rgba(255,255,255,.3)';
+  const minor = css('--tick2') || 'rgba(255,255,255,.14)';
+  g.lineWidth = R.lw;
+  const every = R.major / R.minor;
+  for (let i = 0, y = top; y <= top + len; i++, y += R.minor){
+    const big = i % every === 0, l = big ? R.lmaj : R.lmin;
+    g.strokeStyle = big ? major : minor;
+    g.beginPath();
+    g.moveTo(R.inset, y); g.lineTo(R.inset + l, y);
+    g.moveTo(W - R.inset, y); g.lineTo(W - R.inset - l, y);
+    g.stroke();
+  }
+  // the ends run out into the field rather than stopping on a tick
+  g.globalCompositeOperation = 'destination-in';
+  const fade = g.createLinearGradient(0, top, 0, top + len);
+  fade.addColorStop(0, 'rgba(0,0,0,0)'); fade.addColorStop(0.22, '#000');
+  fade.addColorStop(0.78, '#000');       fade.addColorStop(1, 'rgba(0,0,0,0)');
+  g.fillStyle = fade; g.fillRect(0, 0, W, H);
+
+  g.globalCompositeOperation = 'source-over';
+  g.strokeStyle = css('--fg') || '#fff';
+  g.globalAlpha = 0.9;
+  g.beginPath();
+  g.moveTo(R.inset, mark); g.lineTo(R.inset + R.mark, mark);
+  g.moveTo(W - R.inset, mark); g.lineTo(W - R.inset - R.mark, mark);
+  g.stroke();
+  return g.canvas;
+}
+
+/* Anything the preview shows as an element is drawn at the box that element
+   was given. */
+function boxOf(e){
+  const base = card.getBoundingClientRect(), r = e.getBoundingClientRect();
+  return { x: (r.left - base.left) / state.zoom, y: (r.top - base.top) / state.zoom,
+           w: r.width / state.zoom, h: r.height / state.zoom };
+}
+
+/* Pieces are drawn from their full-size capture, not from the canvas on
+   screen, so a @2× export gets every pixel the capture has. The outline a
+   selected piece wears is CSS and never reaches this. */
+function drawPieces(g){
+  for (const p of pieces()){
+    const e = lib.get(p.id);
+    if (!e) continue;
+    const { w, h } = pieceDims(p);
+    g.save();
+    g.imageSmoothingQuality = 'high';
+    g.drawImage(e.canvas, p.x - w / 2, p.y - h / 2, w, h);
+    g.restore();
+  }
+}
+
+function drawImages(g){
+  for (const img of card.querySelectorAll('img[data-img]')){
+    if (!visible(img) || !img.complete) continue;
+    const b = boxOf(img);
+    g.save();
+    g.filter = getComputedStyle(img).filter || 'none';
+    g.drawImage(img, b.x, b.y, b.w, b.h);
+    g.restore();
+  }
+}
+
+function drawText(g){
+  for (const e of card.querySelectorAll('[data-line]')){
+    if (!visible(e) || !e.textContent.trim()) continue;
+    const b = boxOf(e);
+    const cs = getComputedStyle(e);
+    g.font = `${cs.fontWeight} ${parseFloat(cs.fontSize)}px ${cs.fontFamily}`;
+    if ('letterSpacing' in g) g.letterSpacing = cs.letterSpacing;
+    g.fillStyle = cs.color;
+    g.textBaseline = 'middle';
+    g.textAlign = 'left';
+    /* line-height is 1 on these, so the element's box is the em box and its
+       middle is where the browser centred the glyphs. */
+    g.fillText(e.textContent.toUpperCase(), b.x, b.y + b.h / 2);
+  }
+}
+
+async function paint(s){
+  await document.fonts.ready;
+  const g = layerCtx(s);
+  g.fillStyle = css('--bg') || '#070708';
+  g.fillRect(0, 0, W, H);
+
+  const put = c => { if (c) g.drawImage(c, 0, 0, W, H); };
+  if (state.grid) put(drawGrid(s));
+  const form = state.live ? drawForm(s) : null;
+  put(form);
+  drawPieces(g);
+  if (state.vig)    drawVig(g);
+  if (state.rulers) put(drawRulers(s));
+  drawImages(g);
+  drawText(g);
+  return { canvas: g.canvas, form };
+}
+
+/* Nothing downstream reads the file back, so a blank export would ship in
+   silence. If the live form is meant to be in the picture and its layer came
+   back flat — which is what a canvas without a preserved drawing buffer hands
+   over — say so rather than write it. */
+function looksFlat(canvas){
+  const n = 96, t = document.createElement('canvas');
+  t.width = t.height = n;
+  const g = t.getContext('2d');
+  g.drawImage(canvas, 0, 0, n, n);
+  const d = g.getImageData(0, 0, n, n).data;
+  let min = 255, max = 0, lit = 0;
+  for (let i = 0; i < d.length; i += 4){
+    if (d[i+3] < 8) continue;                       // masked away, not drawn
+    lit++;
+    const v = (d[i] + d[i+1] + d[i+2]) / 3;
+    if (v < min) min = v;
+    if (v > max) max = v;
+  }
+  return lit < 40 || max - min < 6;
+}
+
+async function exportPng(scale){
+  status('rendering…');
+  const { canvas, form } = await paint(scale);
+  if (state.live && (!form || looksFlat(form))){
+    status('the form read back empty — reload with the frame at /?shot=1');
+    return;
+  }
+  if (!state.live && !pieces().length){ status('nothing on the picture'); return; }
+  const blob = await new Promise(r => canvas.toBlob(r, 'image/png'));
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `linkedin-${state.fmt}-${W*scale}x${H*scale}.png`;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  status(`wrote ${W*scale}×${H*scale}`);
+}
+
+/* ══ controls ═══════════════════════════════════════════════════════════
+   Each control owns one key of `state`. A preset writes several at once, so
+   every control also registers how to read its key back — otherwise a slider
+   would keep showing the number it was dragged to after a preset moved it.
+   A group marked for one format is hidden while the other is on screen. */
+
+const ui = document.getElementById('ui');
+const syncs = [];
+
+function group(...kids){
+  const d = document.createElement('div');
+  d.className = 'grp';
+  d.append(...kids.flat());
+  ui.append(d);
+  return d;
+}
+const only = (fmt, el) => { el.dataset.for = fmt; return el; };
+function sep(){
+  const i = document.createElement('div');
+  i.className = 'sep';
+  ui.append(i);
+}
+function row(){
+  const i = document.createElement('div');
+  i.className = 'row';
+  ui.append(i);
+}
+function lab(t){
+  const l = document.createElement('label');
+  l.textContent = t;
+  return l;
+}
+function btn(text, onclick, cls){
+  const b = document.createElement('button');
+  b.textContent = text;
+  b.onclick = onclick;
+  if (cls) b.className = cls;
+  return b;
+}
+
+function toggle(text, key, after){
+  const b = btn(text, () => { state[key] = !state[key]; sync(); layout(); if (after) after(); });
+  const sync = () => b.classList.toggle('on', !!state[key]);
+  syncs.push(sync); sync();
+  return b;
+}
+
+function choice(text, key, value, apply){
+  const b = btn(text, () => apply(value));
+  const sync = () => b.classList.toggle('on', state[key] === value);
+  syncs.push(sync); sync();
+  return b;
+}
+
+function slider(text, key, min, max, step, fmt){
+  const r = document.createElement('input');
+  const v = document.createElement('span');
+  v.className = 'val';
+  Object.assign(r, { type:'range', min, max, step });
+  const sync = () => {
+    r.value = state[key];
+    v.textContent = (fmt || (n => n))(state[key]);
+  };
+  r.oninput = () => { state[key] = parseFloat(r.value); sync(); layout(); };
+  syncs.push(sync); sync();
+  return [lab(text), r, v];
+}
+
+/* TURN and TILT are the page's own pose, not state here: they are read back
+   from the frame a few times a second, so a drag on the form moves them, and
+   written straight through when they are the thing being dragged. */
+const pose = { turn: 0, tilt: 0 };
+const poseCtl = {};
+function poseSlider(text, key, min, max){
+  const r = document.createElement('input');
+  const v = document.createElement('span');
+  v.className = 'val';
+  Object.assign(r, { type:'range', min, max, step: 0.005 });
+  r.oninput = () => {
+    pose[key] = parseFloat(r.value);
+    if (S) S.setPose(key === 'turn' ? pose.turn : undefined, key === 'tilt' ? pose.tilt : undefined);
+    v.textContent = Math.round(pose[key] * 180 / Math.PI) + '°';
+  };
+  poseCtl[key] = { r, v };
+  return [lab(text), r, v];
+}
+function syncPose(){
+  if (!S) return;
+  const p = S.pose();
+  // the turn is unbounded on the page; the slider shows it within one revolution
+  const turn = Math.atan2(Math.sin(p.spin), Math.cos(p.spin));
+  for (const [k, val] of [['turn', turn], ['tilt', p.tilt]]){
+    const c = poseCtl[k];
+    if (!c || document.activeElement === c.r) continue;
+    pose[k] = val;
+    c.r.value = val;
+    c.v.textContent = Math.round(val * 180 / Math.PI) + '°';
+  }
+}
+
+function preset(values){
+  Object.assign(state, values);
+  for (const s of syncs) s();
+  layout();
+}
+
+// the shape buttons are filled in once the page has said what it has
+const shapesGrp = group(lab('Form'));
+shapesGrp.classList.add('shapes');
+function buildShapes(){
+  shapesGrp.textContent = '';
+  shapesGrp.append(lab('Form'));
+  shapeKeys.forEach((k, i) => {
+    const b = btn(k, () => hold(i));
+    b.dataset.i = i;
+    shapesGrp.append(b);
+  });
+  shapesGrp.append(btn('Release', () => S && S.release()));
+}
+row();
+
+group(choice('Banner', 'fmt', 'banner', setFormat), choice('Post', 'fmt', 'post', setFormat));
+sep();
+group(toggle('Still', 'still', () => S && S.still(state.still)), btn('Theme', toggleTheme));
+group(poseSlider('Turn', 'turn', -Math.PI, Math.PI), poseSlider('Tilt', 'tilt', -0.9, 0.9));
+sep();
+group(btn('Capture', capture, 'go'), btn('Scatter', scatter),
+      btn('Clear', () => { pieces().length = 0; sel = null; renderPieces(); save(); }));
+row();
+group(lab('Live form'), slider('Size', 'size', 240, 1800, 4, n => n + 'px'));
+group(slider('X', 'x', 0, 1, 0.005, n => Math.round(n * 100) + '%'));
+group(slider('Y', 'y', 0, 1, 0.005, n => Math.round(n * 100) + '%'));
+sep();
+group(toggle('Live', 'live'), toggle('Text', 'text'), toggle('Grid', 'grid'),
+      toggle('Vignette', 'vig'), toggle('Rulers', 'rulers'));
+only('banner', group(toggle('Guides', 'guides')));
+only('banner', group(slider('Text x', 'textX', 40, 1200, 2, n => n + 'px')));
+sep();
+group(slider('Zoom', 'zoom', 0.25, 1, 0.05, n => Math.round(n * 100) + '%'));
+sep();
+group(btn('Reset', () => preset({ ...FORMATS[state.fmt].own,
+                                  ...(state.fmt === 'banner' ? { textX: AVATAR.x + AVATAR.size + 56 } : {}) })));
+sep();
+group(btn('Export PNG', () => exportPng(1), 'go'), btn('@2×', () => exportPng(2)));
+sep();
+const st = document.createElement('div');
+st.id = 'status';
+ui.append(st);
+
+function status(msg){
+  const k = formKey();
+  const form = k ? `${k}${cur.standing ? '' : ' …'}` : '—';
+  st.innerHTML = `<b>FORM</b> ${form} &nbsp;·&nbsp; <b>FRAME</b> ${W}×${H}` +
+    ` &nbsp;·&nbsp; <b>PIECES</b> ${pieces().length}` +
+    (msg ? ` &nbsp;·&nbsp; ${msg}` : '');
+}
+
+/* N steps to the next shape, C captures, E exports, Delete removes the
+   selected piece. */
+addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT') return;
+  const k = e.key.toLowerCase();
+  if (k === 'n') nextForm();
+  if (k === 'c') capture();
+  if (k === 'e') exportPng(1);
+  if ((e.key === 'Delete' || e.key === 'Backspace') && sel) removePiece(sel);
+});
+
+// a click on empty frame puts the selection down
+card.addEventListener('pointerdown', e => {
+  if (!e.target.classList.contains('piece') && sel){ sel = null; markSel(); }
+});
+
+/* The painter, the state and the gestures, reachable from outside: a headless
+   run — or a console — can frame the picture and ask for the pixels without
+   anyone pressing a button. It is also how this page is checked.  */
+window.__banner = { paint, state, layout, hold, nextForm, toggleTheme, exportPng,
+                    capture, scatter, setFormat, lib };
+
+/* ══ the words ══════════════════════════════════════════════════════════
+   Taken from the same files the site reads, so the picture cannot advertise
+   a name or a discipline that is no longer there. */
+
+try {
+  const [config, content] = await Promise.all([
+    fetch('/site.config.json').then(r => r.json()),
+    fetch('/content.json').then(r => r.json()).catch(() => ({}))
+  ]);
+  const words = {
+    fields: (content.fields || []).map(f => f.key).join('  /  '),
+    domain: String(config.url || '').replace(/^https?:\/\//,'').replace(/^www\./,'').replace(/\/$/,''),
+    name:   String(config.name || ''),
+    role:   String(config.role || '')
+  };
+  for (const e of card.querySelectorAll('[data-k]')) e.textContent = words[e.dataset.k].toUpperCase();
+} catch (e) {
+  card.querySelector('.l-fields').textContent = 'SITE.CONFIG.JSON NOT REACHED — SERVE THE PROJECT';
+}
+
+await loadLib();
+renderTray();
+renderPieces();
+layout();
+status();
+</script>
+</body>
+</html>

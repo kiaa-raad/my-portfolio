@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-29T14:49:54.496Z",
+  "generated": "2026-09-29T15:46:22.649Z",
   "lang": "fr",
   "site": {
     "name": "Kiarash Farahmandrad",
@@ -1098,6 +1098,28 @@
           ]
         },
         {
+          "slug": "mokhtarzade",
+          "t": "MOKHTARZADE",
+          "c": "Mokhtarzade, entreprise de construction",
+          "y": "2024",
+          "r": "Directeur de création & designer",
+          "img": null,
+          "video": "projects/04-motion/mokhtarzade/motion.mp4",
+          "gallery": [],
+          "link": null,
+          "tag": "LOGO & IDENTITÉ VISUELLE",
+          "lb": null,
+          "la": null,
+          "b": "Mokhtarzade est un projet de branding pour une entreprise de construction, développé comme un système d'identité souple destiné aussi bien au numérique qu'à l'architecture. L'identité a été pensée pour les réseaux sociaux comme pour des applications physiques dans le bâtiment : portes métalliques, surfaces vitrées, pierre et autres éléments architecturaux.",
+          "a": "J'ai développé une identité dynamique articulée autour d'un « m » simplifié, capable de s'étirer verticalement ou horizontalement selon le contexte et le support.\nLe langage visuel s'inspire du paysage urbain : formes simplifiées de tours, de villas, et jusqu'aux espaces négatifs que le ciment dessine entre les briques. Ces références architecturales sont traduites en un système graphique souple, qui permet à l'identité de s'adapter naturellement à différentes échelles, matières et surfaces.",
+          "credit": null,
+          "roles": [
+            "Direction créative",
+            "Design de logo",
+            "Design d'identité visuelle"
+          ]
+        },
+        {
           "slug": "rushin",
           "t": "RUSHIN",
           "c": "Rushin",
@@ -1184,23 +1206,6 @@
             "Design de logo",
             "Design d'identité visuelle"
           ]
-        },
-        {
-          "slug": "mokhtarzade",
-          "t": "MOKHTARZADE",
-          "c": "",
-          "y": "",
-          "r": "",
-          "img": null,
-          "video": "projects/04-motion/mokhtarzade/mokhtarzade_showreel.mp4",
-          "gallery": [],
-          "link": null,
-          "tag": null,
-          "lb": null,
-          "la": null,
-          "b": "",
-          "a": "",
-          "credit": null
         }
       ]
     }
