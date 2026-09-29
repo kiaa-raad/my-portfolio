@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-27T10:09:06.683Z",
+  "generated": "2026-09-29T14:49:54.496Z",
   "lang": "fr",
   "site": {
     "name": "Kiarash Farahmandrad",
@@ -52,10 +52,18 @@
         ]
       },
       {
+        "label": "OUTILS IA",
+        "items": [
+          "Google Gemini (Nano Banana)",
+          "ChatGPT (GPT Image)",
+          "Krea",
+          "ComfyUI",
+          "Claude"
+        ]
+      },
+      {
         "label": "AUSSI",
         "items": [
-          "Creative coding",
-          "Visualisation par IA",
           "Photographie",
           "Enseignement"
         ]
@@ -129,7 +137,7 @@
         {
           "degree": "Master en communication visuelle",
           "school": "Université Tarbiat Modares",
-          "dates": "2020 – 2023 · Mention 4,00/4,00",
+          "dates": "2020 – 2024 · Mention 4,00/4,00",
           "link": "https://en.modares.ac.ir/",
           "bullets": [
             "Mémoire : « Étude des caractéristiques de la typographie en environnement AR/VR (à partir d'une sélection de caractères en écriture arabe) », accompagné d'un projet pratique, « Douze affiches en typographie 3D »."
@@ -219,9 +227,9 @@
     },
     "cv": {
       "src": "about/Kiarash-Farahmandrad-CV.fr.pdf",
-      "hash": "cf976008",
-      "updated": "2026-09-22",
-      "size": "130 KB"
+      "hash": "aee3001a",
+      "updated": "2026-09-29",
+      "size": "115 KB"
     }
   },
   "clients": {
@@ -326,7 +334,7 @@
       },
       {
         "name": "SCISCHOOL",
-        "scope": "DESIGN 3D",
+        "scope": "DESIGN D'AFFICHE",
         "year": "2022"
       },
       {
@@ -865,6 +873,32 @@
           ]
         },
         {
+          "slug": "compphysics",
+          "t": "ATELIER DE PHYSIQUE COMPUTATIONNELLE",
+          "c": "SciSchool",
+          "y": "2022",
+          "r": "Artiste 3D & designer",
+          "img": "projects/02-posters/compphysics/cover.webp",
+          "video": null,
+          "gallery": [
+            "projects/02-posters/compphysics/02.webp",
+            "projects/02-posters/compphysics/03.webp"
+          ],
+          "link": null,
+          "tag": "DESIGN D'AFFICHE / TYPOGRAPHIE 3D",
+          "lb": null,
+          "la": null,
+          "b": "L'atelier de physique computationnelle présente un domaine dans lequel les ordinateurs sont utilisés pour simuler et résoudre des problèmes complexes de physique. L'atelier explore l'intersection entre physique et informatique, en mettant en avant le rôle de la simulation dans la compréhension des systèmes physiques.",
+          "a": "J'ai développé le concept de l'affiche autour de l'idée de simulation, en utilisant une typographie en 3D et des objets inspirés de la physique pour créer un environnement computationnel complexe. Les lettres empilées verticalement donnent une impression de profondeur et d'exploration, tandis que des éléments comme le pendule de Newton et du matériel informatique en suspension renforcent le lien entre physique et informatique.\nChaque lettre possède un matériau distinct, notamment des surfaces en verre réfléchissant, permettant à la lumière, à la transparence, à la réfraction et à la réflexion de participer au langage visuel. J'ai modélisé et réalisé le rendu de la scène dans Blender, puis importé le rendu final dans Adobe Illustrator afin d'y construire la typographie, la mise en page et les autres éléments graphiques. L'affiche finale a été préparée pour les formats numériques et imprimés.",
+          "credit": null,
+          "roles": [
+            "Design d'affiche",
+            "Design 3D",
+            "Modélisation 3D",
+            "Blender"
+          ]
+        },
+        {
           "slug": "ninthsampol",
           "t": "NEUVIÈME SAMPOL",
           "c": "Nodet",
@@ -1008,32 +1042,6 @@
             "Branding expérimental"
           ],
           "self": true
-        },
-        {
-          "slug": "compphysics",
-          "t": "ATELIER DE PHYSIQUE COMPUTATIONNELLE",
-          "c": "SciSchool",
-          "y": "2022",
-          "r": "Artiste 3D & designer",
-          "img": "projects/03-spatial/compphysics/cover.webp",
-          "video": null,
-          "gallery": [
-            "projects/03-spatial/compphysics/02.webp",
-            "projects/03-spatial/compphysics/03.webp"
-          ],
-          "link": null,
-          "tag": "3D / DESIGN D'AFFICHE",
-          "lb": null,
-          "la": null,
-          "b": "L'atelier de physique computationnelle présente un domaine dans lequel les ordinateurs sont utilisés pour simuler et résoudre des problèmes complexes de physique. L'atelier explore l'intersection entre physique et informatique, en mettant en avant le rôle de la simulation dans la compréhension des systèmes physiques.",
-          "a": "J'ai développé le concept de l'affiche autour de l'idée de simulation, en utilisant une typographie en 3D et des objets inspirés de la physique pour créer un environnement computationnel complexe. Les lettres empilées verticalement donnent une impression de profondeur et d'exploration, tandis que des éléments comme le pendule de Newton et du matériel informatique en suspension renforcent le lien entre physique et informatique.\nChaque lettre possède un matériau distinct, notamment des surfaces en verre réfléchissant, permettant à la lumière, à la transparence, à la réfraction et à la réflexion de participer au langage visuel. J'ai modélisé et réalisé le rendu de la scène dans Blender, puis importé le rendu final dans Adobe Illustrator afin d'y construire la typographie, la mise en page et les autres éléments graphiques. L'affiche finale a été préparée pour les formats numériques et imprimés.",
-          "credit": null,
-          "roles": [
-            "Design 3D",
-            "Modélisation 3D",
-            "Blender",
-            "Design d'affiche"
-          ]
         }
       ]
     },
@@ -1176,6 +1184,23 @@
             "Design de logo",
             "Design d'identité visuelle"
           ]
+        },
+        {
+          "slug": "mokhtarzade",
+          "t": "MOKHTARZADE",
+          "c": "",
+          "y": "",
+          "r": "",
+          "img": null,
+          "video": "projects/04-motion/mokhtarzade/mokhtarzade_showreel.mp4",
+          "gallery": [],
+          "link": null,
+          "tag": null,
+          "lb": null,
+          "la": null,
+          "b": "",
+          "a": "",
+          "credit": null
         }
       ]
     }

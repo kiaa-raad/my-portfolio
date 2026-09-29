@@ -10,7 +10,7 @@
      `npm run build`; anything typed in between the markers by hand is
      overwritten on the next run. -->
 <!-- SEO:HEAD:START -->
-<title>Kiarash Farahmandrad — Multi-disciplinary designer</title>
+<title>Kiarash Farahmandrad — Multi-disciplinary Designer</title>
 <meta name="description" content="Kiarash Farahmandrad is a multi-disciplinary designer in Tehran working across logo and identity design, posters, 3D, XR and motion. Selected work, clients and CV.">
 <link rel="canonical" href="https://kiarad.space/">
 <meta name="author" content="Kiarash Farahmandrad">
@@ -29,20 +29,20 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
 <meta property="og:url" content="https://kiarad.space/">
-<meta property="og:title" content="Kiarash Farahmandrad — Multi-disciplinary designer">
+<meta property="og:title" content="Kiarash Farahmandrad — Multi-disciplinary Designer">
 <meta property="og:description" content="Kiarash Farahmandrad is a multi-disciplinary designer in Tehran working across logo and identity design, posters, 3D, XR and motion. Selected work, clients and CV.">
 <meta property="og:image" content="https://kiarad.space/og.png">
 <meta property="og:image:secure_url" content="https://kiarad.space/og.png">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Kiarash Farahmandrad, Multi-disciplinary designer">
+<meta property="og:image:alt" content="Kiarash Farahmandrad, Multi-disciplinary Designer">
 
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Kiarash Farahmandrad — Multi-disciplinary designer">
+<meta name="twitter:title" content="Kiarash Farahmandrad — Multi-disciplinary Designer">
 <meta name="twitter:description" content="Kiarash Farahmandrad is a multi-disciplinary designer in Tehran working across logo and identity design, posters, 3D, XR and motion. Selected work, clients and CV.">
 <meta name="twitter:image" content="https://kiarad.space/og.png">
-<meta name="twitter:image:alt" content="Kiarash Farahmandrad, Multi-disciplinary designer">
+<meta name="twitter:image:alt" content="Kiarash Farahmandrad, Multi-disciplinary Designer">
 <!-- SEO:HEAD:END -->
 
 <link rel="icon" href="favicon.png" type="image/png" sizes="270x270">
@@ -228,12 +228,38 @@
   /* ── hud shell ────────────────────────────────────── */
   .hud{position:relative;z-index:3;height:100vh;height:100dvh;display:flex;flex-direction:column;
     justify-content:space-between;padding:clamp(20px,3vw,36px);pointer-events:none}
-  .brackets{position:absolute;inset:0;pointer-events:none}
-  .brackets i{position:absolute;width:24px;height:24px;border:1px solid var(--line)}
-  .brackets .tl{left:clamp(12px,1.8vw,20px);top:clamp(12px,1.8vw,20px);border-right:0;border-bottom:0}
-  .brackets .tr{right:clamp(12px,1.8vw,20px);top:clamp(12px,1.8vw,20px);border-left:0;border-bottom:0}
-  .brackets .bl{left:clamp(12px,1.8vw,20px);bottom:clamp(12px,1.8vw,20px);border-right:0;border-top:0}
-  .brackets .br{right:clamp(12px,1.8vw,20px);bottom:clamp(12px,1.8vw,20px);border-left:0;border-top:0}
+  /* ── the rulers ─────────────────────────────────────
+     The screen used to be framed by four corner brackets. They framed nothing
+     in particular: a viewfinder mark borrowed from every sci-fi interface, and
+     the same four Ls that every generated layout puts in its corners, which is
+     exactly how they read. What stands at the edges now is the thing that
+     stands at the edges of a designer's own workspace: a ruler, one on each
+     side, level with the form.
+
+     They are not ornament, either. Each carries a mark that rides at the
+     pointer's height, so the two edges and the reticle always sit on one
+     horizontal line — the page measures where you are pointing, the way a
+     drawing tool does, instead of posing as a camera.
+
+     The ticks are two background layers, no elements: a minor every 6px and a
+     major on every fifth, both drawn as 1px lines at the top of their tile.
+     The ends are masked out so the scale begins and ends in the field rather
+     than on a hard stop, and the rulers stay clear of the header and footer by
+     keeping to the middle of the height. */
+  .rule{position:absolute;top:50%;height:min(361px,44vh);width:12px;pointer-events:none;
+    transform:translateY(-50%);background-repeat:repeat-y;
+    background-image:linear-gradient(to bottom,var(--line) 1px,transparent 1px),
+                     linear-gradient(to bottom,var(--hair) 1px,transparent 1px);
+    background-size:9px 30px,4px 6px;
+    -webkit-mask-image:linear-gradient(to bottom,transparent,#000 22%,#000 78%,transparent);
+    mask-image:linear-gradient(to bottom,transparent,#000 22%,#000 78%,transparent)}
+  .rule-l{left:clamp(12px,1.8vw,20px);background-position:left top,left top}
+  .rule-r{right:clamp(12px,1.8vw,20px);background-position:right top,right top}
+  .rule i{position:absolute;top:0;width:12px;height:1px;background:var(--ice);opacity:0;
+    transition:opacity .3s}
+  .rule-l i{left:0}
+  .rule-r i{right:0}
+  .rule.on i{opacity:.9}
 
   .hud a,.hud button{pointer-events:auto;text-decoration:none;color:inherit;
     font:inherit;background:none;border:0;-webkit-tap-highlight-color:transparent}
@@ -724,7 +750,7 @@
   /* ── small screens ────────────────────────────────── */
   @media (max-width:720px){
     .hud{padding:14px 14px max(14px,env(safe-area-inset-bottom))}
-    .brackets{display:none}
+    .rule{display:none}
     .top{gap:12px}
     .mark{gap:9px;--markh:calc(10.5px*1.5 + 2px + 7.5px*1.35)}
     .mark-name{font-size:10.5px;letter-spacing:.13em}
@@ -895,7 +921,8 @@
 </div>
 
 <div class="hud">
-  <div class="brackets" aria-hidden="true"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i></div>
+  <div class="rule rule-l" aria-hidden="true"><i></i></div>
+  <div class="rule rule-r" aria-hidden="true"><i></i></div>
 
   <header class="top">
     <div class="mark">
@@ -1228,10 +1255,17 @@ const canvas = document.getElementById('gl');
    every earlier attempt at a LinkedIn header failed. It costs a copy of the
    frame buffer per frame, so it stays off for everyone who came here to look. */
 const SHOT = new URLSearchParams(location.search).has('shot');
+/* The studio also poses the form rather than only watching it, and a pose has
+   to hold still long enough to be taken: while this is on, the idle sway, the
+   lean toward the pointer, the drift of the tip back to level and the lens
+   under the hand are all left out, so the form stands exactly where it was
+   put. Only __shot turns it on. */
+let shotStill = false;
 // MSAA on a full-screen buffer is a poor trade on a tile-based mobile GPU, and
 // next to the transmission pass below it is a rounding error of quality bought
-// at a third of the frame rate
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: !lowEnd, preserveDrawingBuffer: SHOT });
+// at a third of the frame rate. alpha only for the studio, whose snap() clears
+// to nothing so the form comes away as a cut-out.
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: !lowEnd, preserveDrawingBuffer: SHOT, alpha: SHOT });
 // a phone gains nothing from a 3x buffer, and loses a third of its frame rate
 // to it. At 1 the cheap tier shades a third of the pixels 1.75 would.
 let DPR = Math.min(devicePixelRatio, lowEnd ? 1 : coarse ? 1.75 : 2);
@@ -4048,6 +4082,26 @@ function syncTag(){
   retTag.textContent = v ? v[0] : WORDS.cue.hold;
 }
 
+/* The ruler marks follow the pointer's height. Both rulers share one box, so
+   one measurement serves the pair; it is taken lazily and dropped on resize
+   rather than read on every move, which would ask for layout mid-frame. Off
+   the scale the mark is put away, not pinned to the end — a mark resting at
+   the rim would be claiming a position the pointer is not at. */
+const rules = [...document.querySelectorAll('.rule')];
+let ruleBox = null;
+addEventListener('resize', ()=>{ ruleBox = null; });
+
+function trackRules(y){
+  if(!rules.length) return;
+  if(!ruleBox) ruleBox = rules[0].getBoundingClientRect();
+  const t = y - ruleBox.top;
+  const inside = ruleBox.height > 0 && t >= 0 && t <= ruleBox.height;
+  for(const r of rules){
+    r.classList.toggle('on', inside);
+    if(inside) r.firstElementChild.style.transform = `translateY(${Math.round(t)}px)`;
+  }
+}
+
 function toWorld(cx, cy){
   ndc.set(((cx - VX)/VW)*2-1, -((cy - VY)/VH)*2+1, 0.5).unproject(camera);
   ndc.sub(camera.position).normalize();
@@ -4073,6 +4127,7 @@ addEventListener('pointermove', e=>{
   if(fsOn()) return;      // the real cursor has the room; nothing to stand in for
 
   ret.classList.add('on');
+  trackRules(e.clientY);
 
   const ui = e.target.closest ? e.target.closest('[data-tag]') : null;
   const inPanel = e.target.closest ? e.target.closest('.panel,.lens') : null;
@@ -4102,6 +4157,7 @@ addEventListener('pointermove', e=>{
 addEventListener('pointerleave', ()=>{
   rGoal = 0; mx = 0; my = 0;
   ret.classList.remove('on');
+  for(const r of rules) r.classList.remove('on');
   hoverForm = false; refreshExplore();
 });
 
@@ -4162,7 +4218,7 @@ addEventListener('pointerdown', e=>{
     grab.onForm = true;
     hoverForm = true;
     dismissCue();
-    strikeAt(hit);
+    if(!shotStill) strikeAt(hit);   // a ripple would spoil the pose being set
     startForm(true);
     syncTag();
     refreshExplore();
@@ -4205,6 +4261,71 @@ function letGo(e){
 }
 addEventListener('pointerup', letGo);
 addEventListener('pointercancel', letGo);
+
+/* ── the studio's handle ───────────────────────────────────────────────────
+   tools/linkedin-studio.html frames this page at ?shot=1 and composes the
+   LinkedIn pictures out of it. A visitor's gesture is the wrong tool for that:
+   the shape a hold lands on is drawn from the bag, and a cured shape stands
+   for SET_DWELL and slumps, so a pose had about a second to be taken in. This
+   lets the studio name the shape and keep it standing — pinned, the way a
+   discipline's mark is held behind its panel, so a drag still turns it and a
+   press cannot knock it down — and take it off the page as a cut-out.
+   Nothing here exists for anyone who came to look. */
+if(SHOT) window.__shot = {
+  shapes: () => SHAPES.map(s => s.key),
+  current: () => ({ index: pending >= 0 ? pending : shapeIx,
+                    standing: formed && setV > 0.86 }),
+
+  hold(i){
+    if(!ready || !SHAPES[i]) return false;
+    clearTimeout(scriptTimer);
+    lastDrawn = i;
+    // asked for the shape already standing: bank it where it is rather than
+    // dropping it to goo only to raise the same thing again
+    if(i === shapeIx && pending < 0 && setV > 0.5){
+      holding = true; formed = true; holdT = FORM_HOLD; pinned = true;
+      return true;
+    }
+    pinned = false;
+    cured = false; holding = true; pressed = true; landed = false;
+    formed = false; holdT = 0; dwell = 0;
+    if(i === shapeIx && pending < 0){ /* rising already; let it go on */ }
+    else if(setV < 0.15 && applyShape(i)) pending = -1;
+    else pending = i;
+    scriptedMorph = true;       // no cure flash and no sentence: nobody's hold
+    pinned = true;
+    return true;
+  },
+  release(){ unpinForm(); },
+
+  still(on){ shotStill = !!on; },
+  pose: () => ({ spin, tilt }),
+  setPose(s, t){
+    spinV = 0; tiltV = 0;
+    if(Number.isFinite(s)) spin = s;
+    if(Number.isFinite(t)) tilt = THREE.MathUtils.clamp(t, -0.9, 0.9);
+  },
+
+  /* One frame drawn with nothing behind the form — no ground, no backdrop
+     grid, no dot field — into a fresh canvas the studio can keep. The next
+     frame puts everything back. */
+  snap(){
+    const bg = scene.background;
+    scene.background = null;
+    poster.visible = false;
+    if(field) field.visible = false;
+    renderer.setClearColor(0x000000, 0);
+    renderer.render(scene, camera);
+    const c = document.createElement('canvas');
+    c.width = canvas.width; c.height = canvas.height;
+    c.getContext('2d').drawImage(canvas, 0, 0);
+    scene.background = bg;
+    poster.visible = true;
+    if(field) field.visible = true;
+    renderer.render(scene, camera);
+    return c;
+  }
+};
 
 // interface feedback
 document.querySelectorAll('.hud a, .hud button').forEach(a=>{
@@ -4475,6 +4596,7 @@ function frame(now){
       target.set(Math.sin(clock*1.1)*0.9, Math.cos(clock*0.72)*1.0, 0);
       rGoal = reduce ? 1 : 0.9;
     }
+    if(shotStill) rGoal = 0;
 
     radius += (rGoal - radius) * (rGoal < radius ? 0.14 : 0.055);   // quick to let go
     uC.value.lerp(target, touched ? 0.16 : 0.05);
@@ -4511,19 +4633,20 @@ function frame(now){
     tilt += tiltV;
     tiltV *= reduce ? 0.7 : 0.9;
     if(Math.abs(tiltV) < 0.00002) tiltV = 0;
-    if(!grab) tilt *= 0.992;
+    if(!grab && !shotStill) tilt *= 0.992;
     tilt = THREE.MathUtils.clamp(tilt, -0.9, 0.9);
 
     // the form steps aside when the archive is open
     const gx = (panelOpen && VW > 900) ? -1.55 : 0;
     groupX += (gx - groupX) * 0.055;
 
-    px += (mx - px)*0.04; py += (my - py)*0.04;
-    group.rotation.y = spin + px*0.42 + Math.sin(clock*0.75)*0.13 + (1-ease)*0.8;
-    group.rotation.x = -py*0.26 + Math.sin(clock*0.53)*0.08 + tilt;
-    group.rotation.z = Math.sin(clock*0.41)*0.045;
+    px += ((shotStill ? 0 : mx) - px)*0.04; py += ((shotStill ? 0 : my) - py)*0.04;
+    const sway = shotStill ? 0 : 1;
+    group.rotation.y = spin + px*0.42 + sway*Math.sin(clock*0.75)*0.13 + (1-ease)*0.8;
+    group.rotation.x = -py*0.26 + sway*Math.sin(clock*0.53)*0.08 + tilt;
+    group.rotation.z = sway*Math.sin(clock*0.41)*0.045;
     group.position.x = groupX;
-    group.position.y = centreY + Math.sin(clock*1.15)*0.1;
+    group.position.y = centreY + sway*Math.sin(clock*1.15)*0.1;
     // the target size a swap asks for is reached gradually rather than in
     // one jump, so a much bigger or smaller form eases into place
     formScale += (formScaleGoal - formScale) * (reduce ? 0.18 : 0.09);
@@ -4984,7 +5107,7 @@ loadContent();
 <div class="seo">
 <p class="seo-name">Kiarash Farahmandrad</p>
 <p class="seo-alt"><span lang="fa" dir="rtl">کیارش فرهمندراد</span> · <span>Kiarash Farahmand Rad</span></p>
-<p class="seo-role">Multi-disciplinary designer · Tehran, Iran</p>
+<p class="seo-role">Multi-disciplinary Designer · Tehran, Iran</p>
 
 <p>I work across identity, typography, 3D, motion, and digital experiences, moving between mediums to find the right form for an idea. I'm interested in the space where disciplines overlap, where a graphic can become an object, a typeface can become an environment, and a visual identity can become something you can interact with. I like to start while an idea is still rough, and shape it with you rather than hand it back finished. Most things start as an experiment, and usually end somewhere no one expects.</p>
 
@@ -4993,8 +5116,10 @@ loadContent();
 <p>Logo Design, Poster Design, 3D Design, UI/UX Design, XR Experience Design</p>
 <h3>SOFTWARE</h3>
 <p>Adobe Photoshop, Adobe Illustrator, Adobe InDesign, Adobe Premiere Pro, Adobe After Effects, Figma, Blender 3D, Cinema 4D</p>
+<h3>AI TOOLS</h3>
+<p>Google Gemini (Nano Banana), ChatGPT (GPT Image), Krea, ComfyUI, Claude</p>
 <h3>ALSO</h3>
-<p>Creative Coding, AI Visualization, Photography, Teaching</p>
+<p>Photography, Teaching</p>
 
 <h2>Selected work</h2>
 <h3>LOGOS — MARKS &amp; IDENTITY</h3>
@@ -5018,6 +5143,7 @@ loadContent();
 <li><img src="projects/02-posters/divar-hackathon2025/cover.webp" alt="DIVAR'S HACKATHON 2025 — Divar, 2025" loading="lazy" decoding="async" width="240"><span>DIVAR'S HACKATHON 2025 — Divar, 2025</span></li>
 <li><img src="projects/02-posters/divar-yalda2024/cover.webp" alt="DIVAR'S YALDA 2024 — Divar, 2024" loading="lazy" decoding="async" width="240"><span>DIVAR'S YALDA 2024 — Divar, 2024</span></li>
 <li><img src="projects/02-posters/rushin-workshops/cover.webp" alt="RUSHIN WORKSHOPS — Rushin, 2024" loading="lazy" decoding="async" width="240"><span>RUSHIN WORKSHOPS — Rushin, 2024</span></li>
+<li><img src="projects/02-posters/compphysics/cover.webp" alt="COMPPHYSICS WORKSHOP — SciSchool, 2022" loading="lazy" decoding="async" width="240"><span>COMPPHYSICS WORKSHOP — SciSchool, 2022</span></li>
 <li><img src="projects/02-posters/ninthsampol/cover.webp" alt="NINTH SAMPOL — Nodet, 2020" loading="lazy" decoding="async" width="240"><span>NINTH SAMPOL — Nodet, 2020</span></li>
 </ul>
 <h3>SPATIAL — 3D &amp; XR</h3>
@@ -5026,7 +5152,6 @@ loadContent();
 <li><img src="projects/03-spatial/macbookwallpaper/cover.webp" alt="MACBOOK PRO WALLPAPER — Self-initiated, 2024" loading="lazy" decoding="async" width="240"><span>MACBOOK PRO WALLPAPER — Self-initiated, 2024</span></li>
 <li><img src="projects/03-spatial/periodic-keyboard/cover.webp" alt="PERIODIC KEYBOARD — Self-initiated, 2024" loading="lazy" decoding="async" width="240"><span>PERIODIC KEYBOARD — Self-initiated, 2024</span></li>
 <li><img src="projects/03-spatial/threads/cover.webp" alt="3D THREADS LOGO — Self-initiated, 2023" loading="lazy" decoding="async" width="240"><span>3D THREADS LOGO — Self-initiated, 2023</span></li>
-<li><img src="projects/03-spatial/compphysics/cover.webp" alt="COMPPHYSICS WORKSHOP — SciSchool, 2022" loading="lazy" decoding="async" width="240"><span>COMPPHYSICS WORKSHOP — SciSchool, 2022</span></li>
 </ul>
 <h3>MOTION — TIME &amp; SEQUENCE</h3>
 <ul class="seo-work">
@@ -5036,6 +5161,7 @@ loadContent();
 <li><span>XENSE — Xense, 2024</span></li>
 <li><span>TROID — Troid, 2023</span></li>
 <li><span>MOLKO — Molko, 2021</span></li>
+<li><span>MOKHTARZADE</span></li>
 </ul>
 
 <h2>Clients</h2>
@@ -5071,7 +5197,7 @@ loadContent();
       "@type": "ProfilePage",
       "@id": "https://kiarad.space/#webpage",
       "url": "https://kiarad.space/",
-      "name": "Kiarash Farahmandrad — Multi-disciplinary designer",
+      "name": "Kiarash Farahmandrad — Multi-disciplinary Designer",
       "description": "Kiarash Farahmandrad is a multi-disciplinary designer in Tehran working across logo and identity design, posters, 3D, XR and motion. Selected work, clients and CV.",
       "inLanguage": "en",
       "isPartOf": {
@@ -5095,7 +5221,7 @@ loadContent();
         "Kiarash Farahmand Rad"
       ],
       "url": "https://kiarad.space/",
-      "jobTitle": "Multi-disciplinary designer",
+      "jobTitle": "Multi-disciplinary Designer",
       "description": "I work across identity, typography, 3D, motion, and digital experiences, moving between mediums to find the right form for an idea. I'm interested in the space where disciplines overlap, where a graphic can become an object, a typeface can become an environment, and a visual identity can become something you can interact with. I like to start while an idea is still rough, and shape it with you rather than hand it back finished. Most things start as an experiment, and usually end somewhere no one expects.",
       "knowsAbout": [
         "Logo Design",
@@ -5111,8 +5237,11 @@ loadContent();
         "Figma",
         "Blender 3D",
         "Cinema 4D",
-        "Creative Coding",
-        "AI Visualization",
+        "Google Gemini (Nano Banana)",
+        "ChatGPT (GPT Image)",
+        "Krea",
+        "ComfyUI",
+        "Claude",
         "Photography",
         "Teaching",
         "logos",
@@ -5152,7 +5281,7 @@ loadContent();
       "@type": "ItemList",
       "@id": "https://kiarad.space/#work",
       "name": "Selected work",
-      "numberOfItems": 28,
+      "numberOfItems": 29,
       "itemListElement": [
         {
           "@type": "ListItem",
@@ -5479,6 +5608,26 @@ loadContent();
           "position": 17,
           "item": {
             "@type": "CreativeWork",
+            "name": "COMPPHYSICS WORKSHOP",
+            "genre": "posters",
+            "creator": {
+              "@id": "https://kiarad.space/#person"
+            },
+            "url": "https://kiarad.space/",
+            "dateCreated": "2022",
+            "image": "https://kiarad.space/projects/02-posters/compphysics/cover.webp",
+            "abstract": "The CompPhysics Workshop introduces participants to a field where computers are used to simulate and solve complex physics problems. The workshop explores the intersection of physics and computation, highlighting the role of simulation in understanding physical systems.",
+            "sourceOrganization": {
+              "@type": "Organization",
+              "name": "SciSchool"
+            }
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 18,
+          "item": {
+            "@type": "CreativeWork",
             "name": "NINTH SAMPOL",
             "genre": "posters",
             "creator": {
@@ -5496,7 +5645,7 @@ loadContent();
         },
         {
           "@type": "ListItem",
-          "position": 18,
+          "position": 19,
           "item": {
             "@type": "CreativeWork",
             "name": "APPEAR",
@@ -5516,7 +5665,7 @@ loadContent();
         },
         {
           "@type": "ListItem",
-          "position": 19,
+          "position": 20,
           "item": {
             "@type": "CreativeWork",
             "name": "MACBOOK PRO WALLPAPER",
@@ -5532,7 +5681,7 @@ loadContent();
         },
         {
           "@type": "ListItem",
-          "position": 20,
+          "position": 21,
           "item": {
             "@type": "CreativeWork",
             "name": "PERIODIC KEYBOARD",
@@ -5548,7 +5697,7 @@ loadContent();
         },
         {
           "@type": "ListItem",
-          "position": 21,
+          "position": 22,
           "item": {
             "@type": "CreativeWork",
             "name": "3D THREADS LOGO",
@@ -5560,26 +5709,6 @@ loadContent();
             "dateCreated": "2023",
             "image": "https://kiarad.space/projects/03-spatial/threads/cover.webp",
             "abstract": "3D Threads Logo is a self-initiated exploration of the Threads logo through a three-dimensional approach. The project investigates how an existing digital brand mark can be reinterpreted as a physical-looking 3D object while incorporating elements of Instagram's visual language."
-          }
-        },
-        {
-          "@type": "ListItem",
-          "position": 22,
-          "item": {
-            "@type": "CreativeWork",
-            "name": "COMPPHYSICS WORKSHOP",
-            "genre": "spatial",
-            "creator": {
-              "@id": "https://kiarad.space/#person"
-            },
-            "url": "https://kiarad.space/",
-            "dateCreated": "2022",
-            "image": "https://kiarad.space/projects/03-spatial/compphysics/cover.webp",
-            "abstract": "The CompPhysics Workshop introduces participants to a field where computers are used to simulate and solve complex physics problems. The workshop explores the intersection of physics and computation, highlighting the role of simulation in understanding physical systems.",
-            "sourceOrganization": {
-              "@type": "Organization",
-              "name": "SciSchool"
-            }
           }
         },
         {
@@ -5694,6 +5823,19 @@ loadContent();
               "@type": "Organization",
               "name": "Molko"
             }
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 29,
+          "item": {
+            "@type": "CreativeWork",
+            "name": "MOKHTARZADE",
+            "genre": "motion",
+            "creator": {
+              "@id": "https://kiarad.space/#person"
+            },
+            "url": "https://kiarad.space/"
           }
         }
       ]

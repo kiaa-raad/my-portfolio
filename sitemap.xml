@@ -4,7 +4,7 @@
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://kiarad.space/</loc>
-    <lastmod>2026-09-27</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://kiarad.space/"/>
@@ -595,6 +595,18 @@
       <image:title>RUSHIN WORKSHOPS — posters</image:title>
     </image:image>
     <image:image>
+      <image:loc>https://kiarad.space/projects/02-posters/compphysics/cover.webp</image:loc>
+      <image:title>COMPPHYSICS WORKSHOP — posters</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://kiarad.space/projects/02-posters/compphysics/02.webp</image:loc>
+      <image:title>COMPPHYSICS WORKSHOP — posters</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://kiarad.space/projects/02-posters/compphysics/03.webp</image:loc>
+      <image:title>COMPPHYSICS WORKSHOP — posters</image:title>
+    </image:image>
+    <image:image>
       <image:loc>https://kiarad.space/projects/02-posters/ninthsampol/cover.webp</image:loc>
       <image:title>NINTH SAMPOL — posters</image:title>
     </image:image>
@@ -670,22 +682,10 @@
       <image:loc>https://kiarad.space/projects/03-spatial/threads/01.webp</image:loc>
       <image:title>3D THREADS LOGO — spatial</image:title>
     </image:image>
-    <image:image>
-      <image:loc>https://kiarad.space/projects/03-spatial/compphysics/cover.webp</image:loc>
-      <image:title>COMPPHYSICS WORKSHOP — spatial</image:title>
-    </image:image>
-    <image:image>
-      <image:loc>https://kiarad.space/projects/03-spatial/compphysics/02.webp</image:loc>
-      <image:title>COMPPHYSICS WORKSHOP — spatial</image:title>
-    </image:image>
-    <image:image>
-      <image:loc>https://kiarad.space/projects/03-spatial/compphysics/03.webp</image:loc>
-      <image:title>COMPPHYSICS WORKSHOP — spatial</image:title>
-    </image:image>
   </url>
   <url>
     <loc>https://kiarad.space/?lang=fr</loc>
-    <lastmod>2026-09-27</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://kiarad.space/"/>

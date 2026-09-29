@@ -1,9 +1,9 @@
 {
-  "generated": "2026-09-27T10:09:06.683Z",
+  "generated": "2026-09-29T14:49:54.496Z",
   "lang": "en",
   "site": {
     "name": "Kiarash Farahmandrad",
-    "role": "Multi-disciplinary designer",
+    "role": "Multi-disciplinary Designer",
     "email": {
       "user": "kiarad.space",
       "domain": "gmail",
@@ -52,10 +52,18 @@
         ]
       },
       {
+        "label": "AI TOOLS",
+        "items": [
+          "Google Gemini (Nano Banana)",
+          "ChatGPT (GPT Image)",
+          "Krea",
+          "ComfyUI",
+          "Claude"
+        ]
+      },
+      {
         "label": "ALSO",
         "items": [
-          "Creative Coding",
-          "AI Visualization",
           "Photography",
           "Teaching"
         ]
@@ -129,7 +137,7 @@
         {
           "degree": "Master of Arts, Visual Communication",
           "school": "Tarbiat Modares University",
-          "dates": "2020 – 2023 · GPA 4.00/4.00",
+          "dates": "2020 – 2024 · GPA 4.00/4.00",
           "link": "https://en.modares.ac.ir/",
           "bullets": [
             "MA Thesis: \"Investigating Typography Features in AR/VR Environments (A Case Study of Selected Arabic-Script Typefaces)\", accompanied by a practical project, \"Designing Twelve Posters Using 3D Typography.\""
@@ -219,9 +227,9 @@
     },
     "cv": {
       "src": "about/Kiarash-Farahmandrad-CV.pdf",
-      "hash": "adb7f4c5",
-      "updated": "2026-09-22",
-      "size": "130 KB"
+      "hash": "73976084",
+      "updated": "2026-09-29",
+      "size": "114 KB"
     }
   },
   "clients": {
@@ -326,7 +334,7 @@
       },
       {
         "name": "SCISCHOOL",
-        "scope": "3D DESIGN",
+        "scope": "POSTER DESIGN",
         "year": "2022"
       },
       {
@@ -865,6 +873,32 @@
           ]
         },
         {
+          "slug": "compphysics",
+          "t": "COMPPHYSICS WORKSHOP",
+          "c": "SciSchool",
+          "y": "2022",
+          "r": "3D Artist & Designer",
+          "img": "projects/02-posters/compphysics/cover.webp",
+          "video": null,
+          "gallery": [
+            "projects/02-posters/compphysics/02.webp",
+            "projects/02-posters/compphysics/03.webp"
+          ],
+          "link": null,
+          "tag": "POSTER DESIGN / 3D TYPOGRAPHY",
+          "lb": null,
+          "la": null,
+          "b": "The CompPhysics Workshop introduces participants to a field where computers are used to simulate and solve complex physics problems. The workshop explores the intersection of physics and computation, highlighting the role of simulation in understanding physical systems.",
+          "a": "I developed the poster concept around the idea of simulation, using 3D typography and physics-inspired objects to create a complex computational environment. The vertically stacked lettering creates a sense of depth and exploration, while elements such as a Newton's cradle and floating computer equipment reinforce the connection between physics and computation.\nEach letter was given a distinct material, including reflective glass surfaces, allowing light, transparency, refraction, and reflection to become part of the visual language. I modeled and rendered the scene in Blender, then brought the final render into Adobe Illustrator to build the typography, layout, and remaining graphic elements. The final poster was prepared for both digital and print formats.",
+          "credit": null,
+          "roles": [
+            "Poster Design",
+            "3D Design",
+            "3D Modeling",
+            "Blender"
+          ]
+        },
+        {
           "slug": "ninthsampol",
           "t": "NINTH SAMPOL",
           "c": "Nodet",
@@ -1008,32 +1042,6 @@
             "Experimental Branding"
           ],
           "self": true
-        },
-        {
-          "slug": "compphysics",
-          "t": "COMPPHYSICS WORKSHOP",
-          "c": "SciSchool",
-          "y": "2022",
-          "r": "3D Artist & Designer",
-          "img": "projects/03-spatial/compphysics/cover.webp",
-          "video": null,
-          "gallery": [
-            "projects/03-spatial/compphysics/02.webp",
-            "projects/03-spatial/compphysics/03.webp"
-          ],
-          "link": null,
-          "tag": "3D / POSTER DESIGN",
-          "lb": null,
-          "la": null,
-          "b": "The CompPhysics Workshop introduces participants to a field where computers are used to simulate and solve complex physics problems. The workshop explores the intersection of physics and computation, highlighting the role of simulation in understanding physical systems.",
-          "a": "I developed the poster concept around the idea of simulation, using 3D typography and physics-inspired objects to create a complex computational environment. The vertically stacked lettering creates a sense of depth and exploration, while elements such as a Newton's cradle and floating computer equipment reinforce the connection between physics and computation.\nEach letter was given a distinct material, including reflective glass surfaces, allowing light, transparency, refraction, and reflection to become part of the visual language. I modeled and rendered the scene in Blender, then brought the final render into Adobe Illustrator to build the typography, layout, and remaining graphic elements. The final poster was prepared for both digital and print formats.",
-          "credit": null,
-          "roles": [
-            "3D Design",
-            "3D Modeling",
-            "Blender",
-            "Poster Design"
-          ]
         }
       ]
     },
@@ -1176,6 +1184,23 @@
             "Logo Design",
             "Visual Identity Design"
           ]
+        },
+        {
+          "slug": "mokhtarzade",
+          "t": "MOKHTARZADE",
+          "c": "",
+          "y": "",
+          "r": "",
+          "img": null,
+          "video": "projects/04-motion/mokhtarzade/mokhtarzade_showreel.mp4",
+          "gallery": [],
+          "link": null,
+          "tag": null,
+          "lb": null,
+          "la": null,
+          "b": "",
+          "a": "",
+          "credit": null
         }
       ]
     }
