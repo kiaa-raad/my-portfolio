@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-29T15:51:09.983Z",
+  "generated": "2026-09-29T15:53:02.202Z",
   "lang": "en",
   "site": {
     "name": "Kiarash Farahmandrad",
@@ -54,8 +54,8 @@
       {
         "label": "AI TOOLS",
         "items": [
-          "Google Gemini (Nano Banana)",
-          "ChatGPT (GPT Image)",
+          "Nano Banana",
+          "GPT Image",
           "Krea",
           "ComfyUI",
           "Claude"
@@ -227,7 +227,7 @@
     },
     "cv": {
       "src": "about/Kiarash-Farahmandrad-CV.pdf",
-      "hash": "73976084",
+      "hash": "af6ed226",
       "updated": "2026-09-29",
       "size": "114 KB"
     }
