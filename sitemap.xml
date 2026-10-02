@@ -4,7 +4,7 @@
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://kiarad.space/</loc>
-    <lastmod>2026-09-29</lastmod>
+    <lastmod>2026-10-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://kiarad.space/"/>
@@ -117,98 +117,6 @@
     <image:image>
       <image:loc>https://kiarad.space/projects/01-logos/latentspace/09.webp</image:loc>
       <image:title>LATENT SPACE — logos</image:title>
-    </image:image>
-    <image:image>
-      <image:loc>https://kiarad.space/projects/01-logos/mokhtarzade/cover.webp</image:loc>
-      <image:title>MOKHTARZADE — logos</image:title>
-    </image:image>
-    <image:image>
-      <image:loc>https://kiarad.space/projects/01-logos/mokhtarzade/01.webp</image:loc>
-      <image:title>MOKHTARZADE — logos</image:title>
-    </image:image>
-    <image:image>
-      <image:loc>https://kiarad.space/projects/01-logos/mokhtarzade/02.webp</image:loc>
-      <image:title>MOKHTARZADE — logos</image:title>
-    </image:image>
-    <image:image>
-      <image:loc>https://kiarad.space/projects/01-logos/mokhtarzade/03.webp</image:loc>
-      <image:title>MOKHTARZADE — logos</image:title>
-    </image:image>
-    <image:image>
-      <image:loc>https://kiarad.space/projects/01-logos/mokhtarzade/04.webp</image:loc>
-      <image:title>MOKHTARZADE — logos</image:title>
-    </image:image>
-    <image:image>
-      <image:loc>https://kiarad.space/projects/01-logos/mokhtarzade/05.webp</image:loc>
-      <image:title>MOKHTARZADE — logos</image:title>
-    </image:image>
-    <image:image>
-      <image:loc>https://kiarad.space/projects/01-logos/mokhtarzade/06.webp</image:loc>
-      <image:title>MOKHTARZADE — logos</image:title>
-    </image:image>
-    <image:image>
-      <image:loc>https://kiarad.space/projects/01-logos/mokhtarzade/07.webp</image:loc>
-      <image:title>MOKHTARZADE — logos</image:title>
-    </image:image>
-    <image:image>
-      <image:loc>https://kiarad.space/projects/01-logos/mokhtarzade/08.webp</image:loc>
-      <image:title>MOKHTARZADE — logos</image:title>
-    </image:image>
-    <image:image>
-      <image:loc>https://kiarad.space/projects/01-logos/mokhtarzade/09.webp</image:loc>
-      <image:title>MOKHTARZADE — logos</image:title>
-    </image:image>
-    <image:image>
-      <image:loc>https://kiarad.space/projects/01-logos/mokhtarzade/10.webp</image:loc>
-      <image:title>MOKHTARZADE — logos</image:title>
-    </image:image>
-    <image:image>
-      <image:loc>https://kiarad.space/projects/01-logos/mokhtarzade/11.webp</image:loc>
-      <image:title>MOKHTARZADE — logos</image:title>
-    </image:image>
-    <image:image>
-      <image:loc>https://kiarad.space/projects/01-logos/mokhtarzade/12.webp</image:loc>
-      <image:title>MOKHTARZADE — logos</image:title>
-    </image:image>
-    <image:image>
-      <image:loc>https://kiarad.space/projects/01-logos/mokhtarzade/13.webp</image:loc>
-      <image:title>MOKHTARZADE — logos</image:title>
-    </image:image>
-    <image:image>
-      <image:loc>https://kiarad.space/projects/01-logos/mokhtarzade/14.webp</image:loc>
-      <image:title>MOKHTARZADE — logos</image:title>
-    </image:image>
-    <image:image>
-      <image:loc>https://kiarad.space/projects/01-logos/mokhtarzade/15.webp</image:loc>
-      <image:title>MOKHTARZADE — logos</image:title>
-    </image:image>
-    <image:image>
-      <image:loc>https://kiarad.space/projects/01-logos/mokhtarzade/16.webp</image:loc>
-      <image:title>MOKHTARZADE — logos</image:title>
-    </image:image>
-    <image:image>
-      <image:loc>https://kiarad.space/projects/01-logos/mokhtarzade/17.webp</image:loc>
-      <image:title>MOKHTARZADE — logos</image:title>
-    </image:image>
-    <image:image>
-      <image:loc>https://kiarad.space/projects/01-logos/mokhtarzade/18.webp</image:loc>
-      <image:title>MOKHTARZADE — logos</image:title>
-    </image:image>
-    <image:image>
-      <image:loc>https://kiarad.space/projects/01-logos/mokhtarzade/19.webp</image:loc>
-      <image:title>MOKHTARZADE — logos</image:title>
-    </image:image>
-    <image:image>
-      <image:loc>https://kiarad.space/projects/01-logos/mokhtarzade/20.webp</image:loc>
-      <image:title>MOKHTARZADE — logos</image:title>
-    </image:image>
-    <image:image>
-      <image:loc>https://kiarad.space/projects/01-logos/mokhtarzade/21.webp</image:loc>
-      <image:title>MOKHTARZADE — logos</image:title>
-    </image:image>
-    <image:image>
-      <image:loc>https://kiarad.space/projects/01-logos/mokhtarzade/22.webp</image:loc>
-      <image:title>MOKHTARZADE — logos</image:title>
     </image:image>
     <image:image>
       <image:loc>https://kiarad.space/projects/01-logos/rushin/cover.webp</image:loc>
@@ -595,6 +503,42 @@
       <image:title>RUSHIN WORKSHOPS — posters</image:title>
     </image:image>
     <image:image>
+      <image:loc>https://kiarad.space/projects/02-posters/mathematica/cover.webp</image:loc>
+      <image:title>AN ADVANCED INTRODUCTION TO MATHEMATICA — posters</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://kiarad.space/projects/02-posters/mathematica/02.webp</image:loc>
+      <image:title>AN ADVANCED INTRODUCTION TO MATHEMATICA — posters</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://kiarad.space/projects/02-posters/mathematica/03.webp</image:loc>
+      <image:title>AN ADVANCED INTRODUCTION TO MATHEMATICA — posters</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://kiarad.space/projects/02-posters/blockchain-iot/cover.webp</image:loc>
+      <image:title>BLOCKCHAIN &amp; IOT WORKSHOP — posters</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://kiarad.space/projects/02-posters/blockchain-iot/02.webp</image:loc>
+      <image:title>BLOCKCHAIN &amp; IOT WORKSHOP — posters</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://kiarad.space/projects/02-posters/blockchain-iot/03.webp</image:loc>
+      <image:title>BLOCKCHAIN &amp; IOT WORKSHOP — posters</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://kiarad.space/projects/02-posters/julia/cover.webp</image:loc>
+      <image:title>JULIA WORKSHOP — posters</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://kiarad.space/projects/02-posters/julia/02.webp</image:loc>
+      <image:title>JULIA WORKSHOP — posters</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://kiarad.space/projects/02-posters/julia/03.webp</image:loc>
+      <image:title>JULIA WORKSHOP — posters</image:title>
+    </image:image>
+    <image:image>
       <image:loc>https://kiarad.space/projects/02-posters/compphysics/cover.webp</image:loc>
       <image:title>COMPPHYSICS WORKSHOP — posters</image:title>
     </image:image>
@@ -685,7 +629,7 @@
   </url>
   <url>
     <loc>https://kiarad.space/?lang=fr</loc>
-    <lastmod>2026-09-29</lastmod>
+    <lastmod>2026-10-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://kiarad.space/"/>

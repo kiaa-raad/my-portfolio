@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-29T15:53:02.202Z",
+  "generated": "2026-10-02T20:30:14.073Z",
   "lang": "en",
   "site": {
     "name": "Kiarash Farahmandrad",
@@ -227,9 +227,9 @@
     },
     "cv": {
       "src": "about/Kiarash-Farahmandrad-CV.pdf",
-      "hash": "af6ed226",
-      "updated": "2026-09-29",
-      "size": "114 KB"
+      "hash": "9d6fb3c2",
+      "updated": "2026-10-02",
+      "size": "108 KB"
     }
   },
   "clients": {
@@ -283,11 +283,6 @@
         "year": "2024"
       },
       {
-        "name": "MOKHTARZADE CONSTRUCTION COMPANY",
-        "scope": "CREATIVE DIRECTION",
-        "year": "2024"
-      },
-      {
         "name": "RUSHIN",
         "scope": "CREATIVE DIRECTION",
         "year": "2024"
@@ -324,6 +319,11 @@
       },
       {
         "name": "WILLOW BEAUTY",
+        "scope": "CREATIVE DIRECTION",
+        "year": "2023"
+      },
+      {
+        "name": "SCISCHOOL",
         "scope": "CREATIVE DIRECTION",
         "year": "2023"
       },
@@ -449,51 +449,6 @@
           "la": null,
           "b": "Latent Space is a technology-driven company specializing in advanced AI solutions, data visualization, and predictive analytics. The project focused on developing a visual identity that reflects the brand's approach to uncovering hidden insights, navigating complex datasets, and enabling new possibilities through technology.",
           "a": "The identity explores the relationship between exploration, location, and data, combining a cursive “L” with a location marker to create a distinctive and memorable visual symbol.\nThe design direction focused on balancing technological innovation with simplicity, precision, and elegance.",
-          "credit": null,
-          "roles": [
-            "Creative Direction",
-            "Logo Design",
-            "Visual Identity Design"
-          ]
-        },
-        {
-          "slug": "mokhtarzade",
-          "t": "MOKHTARZADE",
-          "c": "Mokhtarzade Construction Company",
-          "y": "2024",
-          "r": "Creative Director & Designer",
-          "img": "projects/01-logos/mokhtarzade/cover.webp",
-          "video": null,
-          "gallery": [
-            "projects/01-logos/mokhtarzade/01.webp",
-            "projects/01-logos/mokhtarzade/02.webp",
-            "projects/01-logos/mokhtarzade/03.webp",
-            "projects/01-logos/mokhtarzade/04.webp",
-            "projects/01-logos/mokhtarzade/05.webp",
-            "projects/01-logos/mokhtarzade/06.webp",
-            "projects/01-logos/mokhtarzade/07.webp",
-            "projects/01-logos/mokhtarzade/08.webp",
-            "projects/01-logos/mokhtarzade/09.webp",
-            "projects/01-logos/mokhtarzade/10.webp",
-            "projects/01-logos/mokhtarzade/11.webp",
-            "projects/01-logos/mokhtarzade/12.webp",
-            "projects/01-logos/mokhtarzade/13.webp",
-            "projects/01-logos/mokhtarzade/14.webp",
-            "projects/01-logos/mokhtarzade/15.webp",
-            "projects/01-logos/mokhtarzade/16.webp",
-            "projects/01-logos/mokhtarzade/17.webp",
-            "projects/01-logos/mokhtarzade/18.webp",
-            "projects/01-logos/mokhtarzade/19.webp",
-            "projects/01-logos/mokhtarzade/20.webp",
-            "projects/01-logos/mokhtarzade/21.webp",
-            "projects/01-logos/mokhtarzade/22.webp"
-          ],
-          "link": null,
-          "tag": "LOGO & VISUAL IDENTITY",
-          "lb": null,
-          "la": null,
-          "b": "Mokhtarzade is a construction company branding project, developed as a flexible identity system for use across both digital and architectural applications. The identity was designed for social media as well as physical applications throughout buildings, including metal doors, glass surfaces, stone, and other architectural elements.",
-          "a": "I developed a dynamic identity centered around a simplified “m” that can stretch vertically or horizontally depending on its context and application.\nThe visual language draws inspiration from the urban landscape, incorporating simplified forms of towers, villas, and even the negative spaces created by cement between bricks. These architectural references are translated into a flexible graphic system that allows the identity to adapt naturally across different scales, materials, and surfaces.",
           "credit": null,
           "roles": [
             "Creative Direction",
@@ -870,6 +825,84 @@
             "Photomanipulation",
             "AI Image Generation",
             "Visual Concept Development"
+          ]
+        },
+        {
+          "slug": "mathematica",
+          "t": "AN ADVANCED INTRODUCTION TO MATHEMATICA",
+          "c": "SciSchool",
+          "y": "2023",
+          "r": "Creative Director & Designer",
+          "img": "projects/02-posters/mathematica/cover.webp",
+          "video": null,
+          "gallery": [
+            "projects/02-posters/mathematica/02.webp",
+            "projects/02-posters/mathematica/03.webp"
+          ],
+          "link": null,
+          "tag": "POSTER DESIGN / 3D RENDERING",
+          "lb": null,
+          "la": null,
+          "b": "An Advanced Introduction to Mathematica is a workshop on Wolfram Mathematica, the computational environment used across mathematics, physics, and engineering for symbolic computation, numerical analysis, and visualization.",
+          "a": "I rebuilt Mathematica's logo, the faceted star known as Spikey, as a 3D object in Blender and mapped mathematical formulas across its surfaces, so that the mark itself carries the kind of work the software is made for.\nI rendered the scene in Blender, then brought the render into Adobe Illustrator to set the typography and layout of the poster.",
+          "credit": null,
+          "roles": [
+            "Creative Direction",
+            "Poster Design",
+            "3D Design",
+            "Blender"
+          ]
+        },
+        {
+          "slug": "blockchain-iot",
+          "t": "BLOCKCHAIN & IOT WORKSHOP",
+          "c": "SciSchool",
+          "y": "2023",
+          "r": "Creative Director & Designer",
+          "img": "projects/02-posters/blockchain-iot/cover.webp",
+          "video": null,
+          "gallery": [
+            "projects/02-posters/blockchain-iot/02.webp",
+            "projects/02-posters/blockchain-iot/03.webp"
+          ],
+          "link": null,
+          "tag": "POSTER DESIGN / 3D TYPOGRAPHY",
+          "lb": null,
+          "la": null,
+          "b": "The Blockchain &amp; IoT Workshop explores two technologies shaping the future of digital systems. The poster had to present blockchain's technical architecture in a futuristic way, while positioning the Internet of Things as an innovative, complementary technology.",
+          "a": "I built the concept around the structural nature of blockchain, which is often represented as a chain of interconnected blocks or nodes. For the word “Blockchain”, I chose Bannai script, a geometric script whose boxy, modular letterforms visually echo the block at the foundation of the technology, and brought it into a 3D scene to give the typography depth and a high-tech presence.\nI modeled and rendered the scene in Blender, then brought the final render into Adobe Illustrator to build the typography, layout, and remaining graphic elements. The final poster was prepared for both digital and print formats.",
+          "credit": null,
+          "roles": [
+            "Creative Direction",
+            "Poster Design",
+            "3D Design",
+            "Blender"
+          ]
+        },
+        {
+          "slug": "julia",
+          "t": "JULIA WORKSHOP",
+          "c": "SciSchool",
+          "y": "2023",
+          "r": "Creative Director & Designer",
+          "img": "projects/02-posters/julia/cover.webp",
+          "video": null,
+          "gallery": [
+            "projects/02-posters/julia/02.webp",
+            "projects/02-posters/julia/03.webp"
+          ],
+          "link": null,
+          "tag": "POSTER DESIGN / 3D RENDERING",
+          "lb": null,
+          "la": null,
+          "b": "The Julia Workshop introduces participants to the Julia programming language, known for its performance and ease of use and widely adopted in data science, machine learning, and scientific computing. The poster had to communicate both the technical and the creative side of the language while keeping the workshop approachable for learners of all levels.",
+          "a": "I built the concept around Julia's logo and its distinct red, blue, green, and purple circles. Rather than reproducing the mark as it is, I turned those colors into 3D spheres interacting with a retro computer, presenting the language in an unexpected and playful way while keeping the sense of creative coding at the centre of the image.\nI built and rendered the scene in Blender (the computer is a downloaded model, not my own, and I no longer know its source), then brought the final render into Adobe Illustrator to build the typography, layout, and remaining graphic elements. The final poster was prepared for both digital and print formats, blending nostalgia with innovation, much like the language itself.",
+          "credit": null,
+          "roles": [
+            "Creative Direction",
+            "Poster Design",
+            "3D Design",
+            "Blender"
           ]
         },
         {

@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-29T15:53:02.202Z",
+  "generated": "2026-10-02T20:30:14.073Z",
   "lang": "fr",
   "site": {
     "name": "Kiarash Farahmandrad",
@@ -227,9 +227,9 @@
     },
     "cv": {
       "src": "about/Kiarash-Farahmandrad-CV.fr.pdf",
-      "hash": "847e53bc",
-      "updated": "2026-09-29",
-      "size": "115 KB"
+      "hash": "d4a221b3",
+      "updated": "2026-10-02",
+      "size": "108 KB"
     }
   },
   "clients": {
@@ -283,11 +283,6 @@
         "year": "2024"
       },
       {
-        "name": "MOKHTARZADE, ENTREPRISE DE CONSTRUCTION",
-        "scope": "DIRECTION CRÉATIVE",
-        "year": "2024"
-      },
-      {
         "name": "RUSHIN",
         "scope": "DIRECTION CRÉATIVE",
         "year": "2024"
@@ -325,6 +320,11 @@
       {
         "name": "WILLOW BEAUTY",
         "scope": "DIRECTION CRÉATIVE",
+        "year": "2023"
+      },
+      {
+        "name": "SCISCHOOL",
+        "scope": "DIRECTION DE CRÉATION",
         "year": "2023"
       },
       {
@@ -449,51 +449,6 @@
           "la": null,
           "b": "Latent Space est une entreprise technologique spécialisée en solutions d'IA avancées, en visualisation de données et en analyse prédictive. Le projet portait sur une identité visuelle traduisant la démarche de la marque : révéler des signaux cachés, parcourir des jeux de données complexes et ouvrir de nouvelles possibilités par la technologie.",
           "a": "L'identité explore le rapport entre exploration, localisation et donnée, en combinant un « L » cursif et un marqueur de position pour former un symbole distinctif et mémorable.\nLa direction de design tenait à équilibrer l'innovation technologique avec la simplicité, la précision et l'élégance.",
-          "credit": null,
-          "roles": [
-            "Direction créative",
-            "Design de logo",
-            "Design d'identité visuelle"
-          ]
-        },
-        {
-          "slug": "mokhtarzade",
-          "t": "MOKHTARZADE",
-          "c": "Mokhtarzade, entreprise de construction",
-          "y": "2024",
-          "r": "Directeur de création & designer",
-          "img": "projects/01-logos/mokhtarzade/cover.webp",
-          "video": null,
-          "gallery": [
-            "projects/01-logos/mokhtarzade/01.webp",
-            "projects/01-logos/mokhtarzade/02.webp",
-            "projects/01-logos/mokhtarzade/03.webp",
-            "projects/01-logos/mokhtarzade/04.webp",
-            "projects/01-logos/mokhtarzade/05.webp",
-            "projects/01-logos/mokhtarzade/06.webp",
-            "projects/01-logos/mokhtarzade/07.webp",
-            "projects/01-logos/mokhtarzade/08.webp",
-            "projects/01-logos/mokhtarzade/09.webp",
-            "projects/01-logos/mokhtarzade/10.webp",
-            "projects/01-logos/mokhtarzade/11.webp",
-            "projects/01-logos/mokhtarzade/12.webp",
-            "projects/01-logos/mokhtarzade/13.webp",
-            "projects/01-logos/mokhtarzade/14.webp",
-            "projects/01-logos/mokhtarzade/15.webp",
-            "projects/01-logos/mokhtarzade/16.webp",
-            "projects/01-logos/mokhtarzade/17.webp",
-            "projects/01-logos/mokhtarzade/18.webp",
-            "projects/01-logos/mokhtarzade/19.webp",
-            "projects/01-logos/mokhtarzade/20.webp",
-            "projects/01-logos/mokhtarzade/21.webp",
-            "projects/01-logos/mokhtarzade/22.webp"
-          ],
-          "link": null,
-          "tag": "LOGO & IDENTITÉ VISUELLE",
-          "lb": null,
-          "la": null,
-          "b": "Mokhtarzade est un projet de branding pour une entreprise de construction, développé comme un système d'identité souple destiné aussi bien au numérique qu'à l'architecture. L'identité a été pensée pour les réseaux sociaux comme pour des applications physiques dans le bâtiment : portes métalliques, surfaces vitrées, pierre et autres éléments architecturaux.",
-          "a": "J'ai développé une identité dynamique articulée autour d'un « m » simplifié, capable de s'étirer verticalement ou horizontalement selon le contexte et le support.\nLe langage visuel s'inspire du paysage urbain : formes simplifiées de tours, de villas, et jusqu'aux espaces négatifs que le ciment dessine entre les briques. Ces références architecturales sont traduites en un système graphique souple, qui permet à l'identité de s'adapter naturellement à différentes échelles, matières et surfaces.",
           "credit": null,
           "roles": [
             "Direction créative",
@@ -870,6 +825,84 @@
             "Direction créative",
             "Design d'identité visuelle",
             "Design d'affiche"
+          ]
+        },
+        {
+          "slug": "blockchain-iot",
+          "t": "ATELIER BLOCKCHAIN & IOT",
+          "c": "SciSchool",
+          "y": "2023",
+          "r": "Directeur de création & designer",
+          "img": "projects/02-posters/blockchain-iot/cover.webp",
+          "video": null,
+          "gallery": [
+            "projects/02-posters/blockchain-iot/02.webp",
+            "projects/02-posters/blockchain-iot/03.webp"
+          ],
+          "link": null,
+          "tag": "DESIGN D'AFFICHE / TYPOGRAPHIE 3D",
+          "lb": null,
+          "la": null,
+          "b": "L'atelier Blockchain &amp; IoT explore deux technologies qui façonnent l'avenir des systèmes numériques. L'affiche devait présenter l'architecture technique de la blockchain de manière futuriste, tout en positionnant l'Internet des objets comme une technologie innovante et complémentaire.",
+          "a": "J'ai construit le concept autour de la nature structurelle de la blockchain, souvent représentée comme une chaîne de blocs ou de nœuds interconnectés. Pour le mot « Blockchain », j'ai choisi l'écriture bannaï, une écriture géométrique dont les formes carrées et modulaires font écho au bloc qui fonde cette technologie, puis je l'ai intégrée à une scène 3D pour donner à la typographie de la profondeur et une présence high-tech.\nJ'ai modélisé et réalisé le rendu de la scène dans Blender, puis importé le rendu final dans Adobe Illustrator afin d'y construire la typographie, la mise en page et les autres éléments graphiques. L'affiche finale a été préparée pour les formats numériques et imprimés.",
+          "credit": null,
+          "roles": [
+            "Direction de création",
+            "Design d'affiche",
+            "Design 3D",
+            "Blender"
+          ]
+        },
+        {
+          "slug": "julia",
+          "t": "ATELIER JULIA",
+          "c": "SciSchool",
+          "y": "2023",
+          "r": "Directeur de création & designer",
+          "img": "projects/02-posters/julia/cover.webp",
+          "video": null,
+          "gallery": [
+            "projects/02-posters/julia/02.webp",
+            "projects/02-posters/julia/03.webp"
+          ],
+          "link": null,
+          "tag": "DESIGN D'AFFICHE / RENDU 3D",
+          "lb": null,
+          "la": null,
+          "b": "L'atelier Julia présente aux participants le langage de programmation Julia, reconnu pour ses performances et sa facilité d'utilisation, et largement adopté en science des données, en apprentissage automatique et en calcul scientifique. L'affiche devait transmettre à la fois la dimension technique et la dimension créative du langage, tout en rendant l'atelier accessible aux apprenants de tous niveaux.",
+          "a": "J'ai construit le concept autour du logo de Julia et de ses cercles rouge, bleu, vert et violet. Plutôt que de reproduire le symbole tel quel, j'ai transformé ces couleurs en sphères 3D interagissant avec un ordinateur rétro, afin de présenter le langage de manière inattendue et ludique, tout en plaçant l'idée de programmation créative au cœur de l'image.\nJ'ai composé et réalisé le rendu de la scène dans Blender (l'ordinateur est un modèle téléchargé, pas le mien, dont je ne connais plus la source), puis importé le rendu final dans Adobe Illustrator afin d'y construire la typographie, la mise en page et les autres éléments graphiques. L'affiche finale a été préparée pour les formats numériques et imprimés, mêlant nostalgie et innovation, à l'image du langage lui-même.",
+          "credit": null,
+          "roles": [
+            "Direction de création",
+            "Design d'affiche",
+            "Design 3D",
+            "Blender"
+          ]
+        },
+        {
+          "slug": "mathematica",
+          "t": "UNE INTRODUCTION AVANCÉE À MATHEMATICA",
+          "c": "SciSchool",
+          "y": "2023",
+          "r": "Directeur de création & designer",
+          "img": "projects/02-posters/mathematica/cover.webp",
+          "video": null,
+          "gallery": [
+            "projects/02-posters/mathematica/02.webp",
+            "projects/02-posters/mathematica/03.webp"
+          ],
+          "link": null,
+          "tag": "DESIGN D'AFFICHE / RENDU 3D",
+          "lb": null,
+          "la": null,
+          "b": "Une introduction avancée à Mathematica est un atelier consacré à Wolfram Mathematica, l'environnement de calcul utilisé en mathématiques, en physique et en ingénierie pour le calcul symbolique, l'analyse numérique et la visualisation.",
+          "a": "J'ai reconstruit le logo de Mathematica, l'étoile à facettes surnommée Spikey, en objet 3D dans Blender, et j'ai appliqué des formules mathématiques sur ses surfaces, afin que le symbole lui-même porte le type de travail pour lequel le logiciel est conçu.\nJ'ai réalisé le rendu de la scène dans Blender, puis importé le rendu dans Adobe Illustrator afin d'y composer la typographie et la mise en page de l'affiche.",
+          "credit": null,
+          "roles": [
+            "Direction de création",
+            "Design d'affiche",
+            "Design 3D",
+            "Blender"
           ]
         },
         {

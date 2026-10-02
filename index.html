@@ -1043,7 +1043,13 @@ const STRINGS = {
     verbs: EN_VERBS,
     shapes: {},                       // the English keys are already the words
     cue: { hold: 'PRESS & HOLD',
-           creed: 'ROUGH FIRST, THEN SET.\nLIKE EVERY PROJECT HERE.' },
+           creed: 'ROUGH FIRST, THEN SET.\nLIKE EVERY PROJECT HERE.',
+           // what the clay says to a hand that will not stop — see ECHOES
+           echoes: [ 'MOST STOP AFTER ONE.\nYOU DID NOT.',
+                     'ENJOYING FORMING IDEAS?\nTHEY ENJOY BEING FORMED.',
+                     'THE CLAY IS STARTING\nTO REMEMBER YOUR HAND.',
+                     'EVERY FORM HAS STOOD.\nNONE OF THEM WAS FINAL.',
+                     'ENOUGH CLAY.\nGO SEE WHAT IT BECAME.' ] },
     boot: { init: 'INITIALIZING', ready: 'READY' },
     tools: { light: 'LIGHT', dark: 'DARK',
              toDark: 'Switch to dark theme', toLight: 'Switch to light theme',
@@ -1092,9 +1098,17 @@ const STRINGS = {
     ],
     shapes: { LOBE:'LOBE', STELLA:'STELLA', FACET:'FACETTE', FLUTE:'CANNELURE',
               SPINE:'ARÊTE', STUD:'PLOT', CROSS:'CROIX', COIL:'SPIRE',
-              DISC:'DISQUE', TWIST:'TORSION', SHARD:'ÉCLAT', DIMPLE:'FOSSETTE' },
+              GEM:'GEMME', HELIX:'HÉLICE', SHARD:'ÉCLAT', DIMPLE:'FOSSETTE',
+              CUBE:'CUBE', TETRA:'TÉTRA', PRISM:'PRISME', ATOM:'ATOME',
+              JACK:'TÉTRAPODE', KEPLER:'KEPLER', ORBIT:'ORBITE', CROWN:'COURONNE',
+              GEAR:'ROUAGE', RHOMB:'RHOMBE', SPOOL:'BOBINE', STEP:'GRADIN' },
     cue: { hold: 'APPUYEZ & MAINTENEZ',
-           creed: "D'ABORD BRUT, PUIS FIGÉ.\nCOMME CHAQUE PROJET ICI." },
+           creed: "D'ABORD BRUT, PUIS FIGÉ.\nCOMME CHAQUE PROJET ICI.",
+           echoes: [ "LA PLUPART S'ARRÊTENT À UNE.\nPAS VOUS.",
+                     'VOUS AIMEZ FORMER DES IDÉES ?\nELLES AIMENT ÊTRE FORMÉES.',
+                     "L'ARGILE COMMENCE\nÀ RECONNAÎTRE VOTRE MAIN.",
+                     "CHAQUE FORME S'EST DRESSÉE.\nAUCUNE N'ÉTAIT DÉFINITIVE.",
+                     "ASSEZ D'ARGILE.\nVOYEZ CE QU'ELLE EST DEVENUE." ] },
     boot: { init: 'INITIALISATION', ready: 'PRÊT' },
     tools: { light: 'CLAIR', dark: 'SOMBRE',
              toDark: 'Passer au thème sombre', toLight: 'Passer au thème clair',
@@ -1936,6 +1950,46 @@ const D_DIMPLE = DETAIL >= 5
    against. */
 const DIMPLE_A = DETAIL >= 5 ? 0.32 : 0.52;
 
+/* A convex solid named by its face planes — each a normal and how far out
+   along it the face sits. The radius along a ray is where it first leaves
+   the solid, which is the plane it is heading into fastest, and taking that
+   over a soft max instead of a hard one is the same bevel the faceted solid
+   has: edges with a radius the mesh can draw. FACET is this with twenty
+   equal faces; the cube, the tetrahedron and the prism are it with fewer and
+   unequal ones. */
+function softPoly(P, k){
+  const N = P.map(p=>{
+    const l = Math.hypot(p[0], p[1], p[2]) * p[3];
+    return [p[0]/l, p[1]/l, p[2]/l];
+  });
+  return d=>{
+    let m = -1;
+    for(let i=0;i<N.length;i++){
+      const v = d[0]*N[i][0] + d[1]*N[i][1] + d[2]*N[i][2];
+      m = i === 0 ? v : smax(m, v, k);
+    }
+    return 1 / Math.max(0.05, m);
+  };
+}
+
+/* Balls pushed into a core, which is LOBE written out once so other counts
+   and spacings can use it. The one condition is the one LOBE met by luck:
+   where a ray grazes a ball, the core has to already be further out than the
+   graze, or the radius jumps there from core to ball in a single step and
+   the mesh tears along the ring. sqrt(L² − RS²) < RC is that condition. */
+function lobes(T, RC, L, RS, K){
+  return d=>{
+    let r = RC;
+    for(let i=0;i<T.length;i++){
+      const dc = (d[0]*T[i][0] + d[1]*T[i][1] + d[2]*T[i][2]) * L;
+      const disc = dc*dc - L*L + RS*RS;
+      if(disc <= 0) continue;
+      r = smax(r, dc + Math.sqrt(disc), K);
+    }
+    return r;
+  };
+}
+
 /* ── the shapes ───────────────────────────────────────────────────────────
    Each one is a radius as a function of direction, which is the whole trick:
    a sphere-topology target the same vertices can be pulled onto, no matter
@@ -2105,36 +2159,55 @@ const SHAPES = [
       };
     })() },
 
-  /* A coin with a hub on it. Everything above stands out from a body that is
-     roughly a ball, so the one thing the set had no answer for was a form
-     that is simply flat — and a flat one is read by its profile rather than
-     by its relief, which is a different way of being told apart. Two
-     profiles spun around the vertical: a wide shallow plate with a squarer,
-     taller boss set
-     in the middle of both faces, met with a soft max so the boss rolls
-     into the plate instead of standing on a step. */
-  { key:'DISC', nsmooth:NSM(1), rf:(function(){
-      const plate = srev(1.20, 0.34, 4);
-      const hub   = srev(0.44, 0.66, 6);
-      const K = VSPACE*3.2*KSCALE;
-      return d => smax(plate(d), hub(d), K);
+  /* A cut stone: a flat table on top, a ring of crown facets falling to the
+     girdle, and a deeper pavilion closing to a point underneath — the
+     brilliant, simplified to eight facets a side. It took the place of a
+     coin with a hub, which read as a ball with a ring next to ORBIT and as
+     something else entirely on its own. Every face is a plane through the
+     girdle, so the crown and the pavilion meet there exactly and the narrow
+     upright band between them is all that is added; the crown is turned
+     half a facet against the pavilion, the way a stone is cut, so their
+     edges never line up into one seam. */
+  { key:'GEM', nsmooth:NSM(0), rf:(function(){
+      const P = [[0,1,0,0.44]];                     // the table
+      const EC = 38*Math.PI/180, EP = 46*Math.PI/180;
+      for(let i=0;i<8;i++){
+        const a = i*Math.PI/4, b = a + Math.PI/8;
+        P.push([Math.cos(b)*Math.cos(EC),  Math.sin(EC), Math.sin(b)*Math.cos(EC), Math.cos(EC)]);
+        P.push([Math.cos(a)*Math.cos(EP), -Math.sin(EP), Math.sin(a)*Math.cos(EP), Math.cos(EP)]);
+        P.push([Math.cos(b), 0, Math.sin(b), 1.03]);  // the girdle
+      }
+      return softPoly(P, 0.065);
     })() },
 
-  /* A square column with a half-turn wound into it. The twist has to be
-     driven by the direction rather than by the height, because the height of
-     a point on a radial surface is not known until the radius is — so the
-     angle is taken from the latitude, which is fixed along a ray. It reads
-     as the same twist either way, and it is the only form here whose two
-     ends are the same shape rotated rather than mirrored. */
-  { key:'TWIST', nsmooth:NSM(2), rf:(function(){
-      const H = 1.12, W = 0.70, TW = 2.1, P = 4;
-      const KR = VSPACE*3.0*KSCALE;   // the rim, where the cap meets the wall
+  /* A three-sided column with a twist wound into it. It used to be a square
+     one, and a square that turns still reads as a column; a triangle reads
+     as a thread, a drill, a helix, because its corners are a third of the
+     way round from each other and the eye follows each one up as a line.
+
+     The twist has to be driven by the direction rather than by the height,
+     because the height of a point on a radial surface is not known until
+     the radius is — so the angle is taken from the latitude, which is fixed
+     along a ray. It reads as the same twist either way, and it is the only
+     form here whose two ends are the same shape rotated rather than
+     mirrored.
+
+     The corners are a soft max of the three sides, and fat ones: a sharp
+     corner swept round a twist is pulled along the mesh rather than across
+     it, and stretches. A coarse mesh gets less of the turn and a wider
+     section, which is what it takes to keep it from doing so there. */
+  { key:'HELIX', nsmooth:NSM(2), rf:(function(){
+      const H = 1.14, W = DETAIL >= 5 ? 0.50 : 0.54;
+      const TW = DETAIL >= 5 ? 1.9 : 1.3, KC = DETAIL >= 5 ? 0.35 : 0.45;
+      const KR = VSPACE*4.0*KSCALE;   // the rim, where the cap meets the wall
+      const A = [0, Math.PI*2/3, Math.PI*4/3];
       return d=>{
         const s = Math.max(1e-4, Math.hypot(d[0], d[2]));
         const lon = Math.atan2(d[2], d[0]) - TW*d[1];
-        const w = W / Math.pow(Math.pow(Math.abs(Math.cos(lon)), P) +
-                               Math.pow(Math.abs(Math.sin(lon)), P), 1/P);
-        return smin(H / Math.max(1e-4, Math.abs(d[1])), w/s, KR);
+        let m = Math.cos(lon - A[0]);
+        m = smax(m, Math.cos(lon - A[1]), KC);
+        m = smax(m, Math.cos(lon - A[2]), KC);
+        return smin(H / Math.max(1e-4, Math.abs(d[1])), (W/m)/s, KR);
       };
     })() },
 
@@ -2178,6 +2251,173 @@ const SHAPES = [
         }
         return 1 - D*g;
       };
+    })() },
+
+  /* ── the second dozen ─────────────────────────────────────────────────
+     Twelve more, held to the same rule as the first: none of them may be
+     mistaken for one already in the bag. So they are mostly what the first
+     set had only one of — solids with flat faces, forms that are flat
+     outright, forms with a waist — and each is made from the same few
+     tools rather than from new ones. */
+
+  // the plainest solid there is, which is exactly why the set did not have
+  // one: next to all that relief, six flat faces read as a decision
+  { key:'CUBE', nsmooth:NSM(0), rf: softPoly([
+      [1,0,0,1],[-1,0,0,1],[0,1,0,1],[0,-1,0,1],[0,0,1,1],[0,0,-1,1]
+    ], 0.085) },
+
+  /* Four faces, the fewest a solid can have. Its corners stand three times
+     as far out as its faces, so once it is fitted to the frame it reads as
+     points first and planes second — the opposite of the cube above it. */
+  { key:'TETRA', nsmooth:NSM(0), rf: softPoly([
+      [-1,-1,-1,1],[-1,1,1,1],[1,-1,1,1],[1,1,-1,1]
+    ], 0.10) },
+
+  // three sides and two ends, stood upright: the only column in the set
+  // whose section has a corner pointing straight at the viewer
+  { key:'PRISM', nsmooth:NSM(0), rf:(function(){
+      const P = [[0,1,0,1.05],[0,-1,0,1.05]];
+      for(let i=0;i<3;i++){
+        const a = Math.PI/2 + i*Math.PI*2/3;
+        P.push([Math.cos(a), 0, Math.sin(a), 0.56]);
+      }
+      return softPoly(P, 0.12);
+    })() },
+
+  /* LOBE again, with six balls on the axes instead of four on a tetrahedron,
+     and smaller — far enough apart that each one is a ball and not a swell.
+     Each ball subtends 33° from the centre against the 45° that would bring
+     it into its neighbour, so the necks between them stay open. */
+  { key:'ATOM', nsmooth:2, rf: lobes(
+      [[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]],
+      0.88, 0.92, 0.50, VSPACE*4.5) },
+
+  /* Four round arms out of a small core, along the corners of a tetrahedron
+     — a caltrop, the jack from the game. CROSS is six square bars on the
+     axes; this is the fewest arms that still stand on any three, and it is
+     built the way STUD is, a cylinder met with its cap by a soft min and
+     set into the core by a soft max. 109° between arms leaves every one of
+     them clear of the others at any width the mesh would care about. */
+  { key:'JACK', nsmooth:NSM(2), rf:(function(){
+      const S = [[1,1,1],[1,-1,-1],[-1,1,-1],[-1,-1,1]].map(v=>{
+        const l = Math.sqrt(3); return [v[0]/l, v[1]/l, v[2]/l];
+      });
+      const core = 0.58, H = 1.34, RHO = DETAIL >= 5 ? 0.27 : 0.34;
+      const KR = VSPACE*3.0*KSCALE, KF = VSPACE*4.2*KSCALE;
+      return d=>{
+        let r = core;
+        for(let i=0;i<4;i++){
+          const c = d[0]*S[i][0] + d[1]*S[i][1] + d[2]*S[i][2];
+          if(c <= 0.3) continue;
+          const sn = Math.sqrt(Math.max(1e-6, 1 - c*c));
+          r = smax(r, smin(H/c, RHO/sn, KR), KF);
+        }
+        return r;
+      };
+    })() },
+
+  /* Two tetrahedra pushed through each other, one the other turned inside
+     out — Kepler's stella octangula, eight points where STELLA has twelve.
+     STELLA's arms fall off by angle, so it reads as a soft star; this one
+     is nothing but planes, and reads as a cut one. Each tetrahedron holds
+     the centre, so their union is still one radius, and the soft max puts
+     a fillet in the six valleys where their faces cross. */
+  { key:'KEPLER', nsmooth:NSM(0), rf:(function(){
+      const N = [[-1,-1,-1],[-1,1,1],[1,-1,1],[1,1,-1]];
+      const a = softPoly(N.map(n => [n[0], n[1], n[2], 1]), 0.07);
+      const b = softPoly(N.map(n => [-n[0], -n[1], -n[2], 1]), 0.07);
+      const K = VSPACE*2.6;
+      return d => smax(a(d), b(d), K);
+    })() },
+
+  /* A ball with a flat ring around it, tipped off the horizontal. The ring is
+     the thinnest thing in the set, so it is kept to a squarish section rather
+     than a lens — a lens thins to nothing at its rim, and an edge thinner
+     than two vertex spacings breaks up into points. The tilt is applied to
+     the direction before anything else is asked of it. */
+  { key:'ORBIT', nsmooth:NSM(2), rf:(function(){
+      const ball = 0.80, ring = srev(1.46, DETAIL >= 5 ? 0.13 : 0.20, 3), K = VSPACE*3.0;
+      const ct = Math.cos(0.38), st = Math.sin(0.38), q = [0,0,0];
+      return d=>{
+        q[0] = d[0]*ct - d[1]*st; q[1] = d[0]*st + d[1]*ct; q[2] = d[2];
+        return smax(ball, ring(q), K);
+      };
+    })() },
+
+  /* HELIX's construction — a wall in plan, met with two caps — with a round
+     wall and points in the upper cap: a crown. The cap's height is read off
+     the longitude, which means nothing at the pole itself, where every
+     longitude meets; so the points only rise towards the rim and the middle
+     of the top is left flat, which is where a crown is hollow anyway. */
+  { key:'CROWN', nsmooth:NSM(2), rf:(function(){
+      const W = 0.96, HB = 0.62, HT = 0.40, P = 0.78, N = 7;
+      const KR = VSPACE*3.0*KSCALE;
+      return d=>{
+        const s = Math.max(1e-4, Math.hypot(d[0], d[2]));
+        let h = HB;
+        if(d[1] > 0){
+          const lon = Math.atan2(d[2], d[0]);
+          const pt = Math.pow(0.5 + 0.5*Math.cos(N*lon), 2.4);
+          h = HT + P*pt*sstep((s - 0.35)/0.45);
+        }
+        return smin(h / Math.max(1e-4, Math.abs(d[1])), W/s, KR);
+      };
+    })() },
+
+  /* DISC with teeth. The teeth are a squared-off wave round the rim — a
+     cosine pushed through tanh, which flattens its crests into lands and
+     keeps the flanks smooth enough to shade — and twelve of them leave each
+     tooth several vertices wide at the rim. */
+  { key:'GEAR', nsmooth:NSM(2), rf:(function(){
+      const H = 0.30, KR = VSPACE*2.6*KSCALE, N = 12, SQ = 3, TN = Math.tanh(SQ);
+      const hub = srev(0.42, 0.56, 6), K = VSPACE*3.0*KSCALE;
+      return d=>{
+        const s = Math.max(1e-4, Math.hypot(d[0], d[2]));
+        const lon = Math.atan2(d[2], d[0]);
+        const w = 1.02 + 0.17*Math.tanh(SQ*Math.cos(N*lon))/TN;
+        return smax(smin(H / Math.max(1e-4, Math.abs(d[1])), w/s, KR), hub(d), K);
+      };
+    })() },
+
+  /* Twelve rhombic faces, one across every edge of a cube: the solid that
+     packs space with no gaps, the shape of a garnet. Between the cube and
+     FACET in how round it reads, and unlike either in how its faces meet —
+     three at some corners and four at others. */
+  { key:'RHOMB', nsmooth:NSM(0), rf:(function(){
+      const P = [];
+      for(const a of [1,-1]) for(const b of [1,-1]){
+        P.push([a,b,0,1], [a,0,b,1], [0,a,b,1]);
+      }
+      return softPoly(P, 0.075);
+    })() },
+
+  /* Two flanges and a waist — an hourglass, a spool, a bone end-on. The
+     wall's width is set by latitude rather than by height, for the same
+     reason HELIX's turn is: the height of a point is not known until its
+     radius is, and the latitude is fixed along the ray. */
+  { key:'SPOOL', nsmooth:NSM(2), rf:(function(){
+      const H = 0.95, KR = VSPACE*3.0*KSCALE;
+      return d=>{
+        const y = Math.abs(d[1]);
+        const s = Math.max(1e-4, Math.hypot(d[0], d[2]));
+        const w = 0.42 + 0.78*sstep(y/0.70);
+        return smin(H / Math.max(1e-4, y), w/s, KR);
+      };
+    })() },
+
+  /* Three slabs stacked through each other, each narrower and taller than
+     the one before — a ziggurat, mirrored top and bottom because every slab
+     is centred on the core. CROSS is boxes added along the axes; these are
+     boxes added inside one another, so the form is read by its steps. The
+     soft max between tiers is what puts a cove in each inside corner
+     instead of a crease the mesh cannot draw. */
+  { key:'STEP', nsmooth:NSM(1), rf:(function(){
+      const box = (a, b, c) => softPoly([
+        [1,0,0,a],[-1,0,0,a],[0,1,0,b],[0,-1,0,b],[0,0,1,c],[0,0,-1,c]
+      ], 0.06);
+      const T = [box(1.18, 0.30, 1.18), box(0.84, 0.62, 0.84), box(0.50, 0.94, 0.50)];
+      const K = VSPACE*2.4*KSCALE;
+      return d => smax(smax(T[0](d), T[1](d), K), T[2](d), K);
     })() }
 ];
 
@@ -2642,7 +2882,9 @@ function stepMorph(dt){
       /* and the same test decides whether the sentence has been earned. It
          cannot be asked for at the landing below, because this line is where
          the flag is cleared — by then every cure looks like somebody's. */
-      if(!creedState && !panelOpen) creedArmed = true;
+      cureCount++;
+      cureSeen.add(shapeIx);
+      if(cueLine === null && cueArmed === null && !panelOpen) cueArmed = nextLine();
     }
     scriptedMorph = false;
   }
@@ -2683,7 +2925,7 @@ function stepMorph(dt){
        Armed at the cure, said here — the cure is the moment it was earned,
        this is the moment the form is actually standing. Said once, then
        never again. */
-    if(creedArmed){ creedArmed = false; showCreed(); }
+    if(cueArmed !== null){ const l = cueArmed; cueArmed = null; showCreed(l); }
   }
   if(landed && setV < 0.35) landed = false;
 
@@ -3305,30 +3547,58 @@ let cueDone = !coarse, cueLive = false, bootDone = false;
 const CREED_HOLD = 5400;         // long enough to read it through twice at a
                                  // glance, short enough that it is gone before
                                  // it starts being furniture
-let creedState = 0;              // 0 not yet, 1 saying it, 2 said
-let creedArmed = false;          // a hand cured it, and the form is still rising
-let creedTimer = null;
+/* And then it keeps quiet — unless the hand keeps going. Nothing on the page
+   says there is more to hear, and that is the point of them: they are not
+   instructions, they are the clay noticing. Each is owed at a count of
+   forms made by hand, except one, which waits for the whole bag to have
+   stood at least once — the closest thing the clay has to being finished,
+   and the line says it is not. The last one sends the hand to the work.
 
-function showCreed(){
-  if(creedState || panelOpen || lensOpen()) return;
-  creedState = 1;
-  cue.textContent = WORDS.cue.creed;
+   A line that comes due while the slot is busy is not lost; it is said at
+   the next cure instead, since every test below is "at least". None is ever
+   said twice. The words are in the language table, under cue.echoes, by
+   the same index as here. */
+const ECHOES = [ { at: 4 }, { at: 9 }, { at: 16 }, { all: true }, { at: 36 } ];
+
+let cueLine = null;              // what the slot is saying: -1 the creed, else an echo
+let cueArmed = null;             // what it will say once the cured form is standing
+let creedTimer = null;
+let cureCount = 0;               // forms cured by a hand, never by a panel
+const cureSeen = new Set();      // which of them
+const cueSaid = new Set();
+
+function nextLine(){
+  if(!cueSaid.has(-1)) return -1;
+  for(let i=0;i<ECHOES.length;i++){
+    if(cueSaid.has(i)) continue;
+    const e = ECHOES[i];
+    if(e.all ? cureSeen.size >= SHAPES.length : cureCount >= e.at) return i;
+  }
+  return null;
+}
+const lineText = l => l < 0 ? WORDS.cue.creed : (WORDS.cue.echoes || [])[l] || '';
+
+function showCreed(l){
+  if(cueLine !== null || cueSaid.has(l) || panelOpen || lensOpen()) return;
+  cueSaid.add(l);
+  cueLine = l;
+  cue.textContent = lineText(l);
   cue.classList.add('creed');
   syncCue();
   creedTimer = setTimeout(retireCreed, CREED_HOLD);
 }
 
 // it has been read, or the visitor has gone to the work, which is better than
-// reading it — either way it does not come back
+// reading it — either way that line does not come back
 function retireCreed(){
-  if(creedState !== 1) return;
-  creedState = 2;
+  if(cueLine === null) return;
+  cueLine = null;
   clearTimeout(creedTimer);
   cue.classList.remove('on');
 }
 
 function syncCue(){
-  if(cueDone && creedState !== 1) return;
+  if(cueDone && cueLine === null) return;
   if(!cueDone && !cueLive){
     // The sentence belongs to the page, not to the loading screen. `ready` is
     // only the moment the form finished building, and the overlay stays up and
@@ -4907,7 +5177,7 @@ function paintChrome(){
 
   /* The cue is the one label with two lives — the instruction, then the
      sentence. Whichever it is holding now is the one that gets rewritten. */
-  cue.textContent = creedState === 1 ? WORDS.cue.creed : WORDS.cue.hold;
+  cue.textContent = cueLine !== null ? lineText(cueLine) : WORDS.cue.hold;
   syncTag();
 
   pBack.textContent = fieldIx < 0 ? WORDS.panel.top : WORDS.panel.index;
@@ -5127,7 +5397,6 @@ loadContent();
 <li><img src="projects/01-logos/gravitas+/cover.webp" alt="GRAVITAS+ — Gravitas+, 2026" loading="lazy" decoding="async" width="240"><span>GRAVITAS+ — Gravitas+, 2026</span></li>
 <li><img src="projects/01-logos/archa/cover.webp" alt="ARCHA — Archa, 2025" loading="lazy" decoding="async" width="240"><span>ARCHA — Archa, 2025</span></li>
 <li><img src="projects/01-logos/latentspace/cover.webp" alt="LATENT SPACE — Latent Space, 2024" loading="lazy" decoding="async" width="240"><span>LATENT SPACE — Latent Space, 2024</span></li>
-<li><img src="projects/01-logos/mokhtarzade/cover.webp" alt="MOKHTARZADE — Mokhtarzade Construction Company, 2024" loading="lazy" decoding="async" width="240"><span>MOKHTARZADE — Mokhtarzade Construction Company, 2024</span></li>
 <li><img src="projects/01-logos/rushin/cover.webp" alt="RUSHIN — Rushin, 2024" loading="lazy" decoding="async" width="240"><span>RUSHIN — Rushin, 2024</span></li>
 <li><img src="projects/01-logos/xense/cover.webp" alt="XENSE — Xense, 2024" loading="lazy" decoding="async" width="240"><span>XENSE — Xense, 2024</span></li>
 <li><img src="projects/01-logos/aethera/cover.webp" alt="AETHERA — Aethera, 2023" loading="lazy" decoding="async" width="240"><span>AETHERA — Aethera, 2023</span></li>
@@ -5143,6 +5412,9 @@ loadContent();
 <li><img src="projects/02-posters/divar-hackathon2025/cover.webp" alt="DIVAR'S HACKATHON 2025 — Divar, 2025" loading="lazy" decoding="async" width="240"><span>DIVAR'S HACKATHON 2025 — Divar, 2025</span></li>
 <li><img src="projects/02-posters/divar-yalda2024/cover.webp" alt="DIVAR'S YALDA 2024 — Divar, 2024" loading="lazy" decoding="async" width="240"><span>DIVAR'S YALDA 2024 — Divar, 2024</span></li>
 <li><img src="projects/02-posters/rushin-workshops/cover.webp" alt="RUSHIN WORKSHOPS — Rushin, 2024" loading="lazy" decoding="async" width="240"><span>RUSHIN WORKSHOPS — Rushin, 2024</span></li>
+<li><img src="projects/02-posters/mathematica/cover.webp" alt="AN ADVANCED INTRODUCTION TO MATHEMATICA — SciSchool, 2023" loading="lazy" decoding="async" width="240"><span>AN ADVANCED INTRODUCTION TO MATHEMATICA — SciSchool, 2023</span></li>
+<li><img src="projects/02-posters/blockchain-iot/cover.webp" alt="BLOCKCHAIN &amp; IOT WORKSHOP — SciSchool, 2023" loading="lazy" decoding="async" width="240"><span>BLOCKCHAIN &amp; IOT WORKSHOP — SciSchool, 2023</span></li>
+<li><img src="projects/02-posters/julia/cover.webp" alt="JULIA WORKSHOP — SciSchool, 2023" loading="lazy" decoding="async" width="240"><span>JULIA WORKSHOP — SciSchool, 2023</span></li>
 <li><img src="projects/02-posters/compphysics/cover.webp" alt="COMPPHYSICS WORKSHOP — SciSchool, 2022" loading="lazy" decoding="async" width="240"><span>COMPPHYSICS WORKSHOP — SciSchool, 2022</span></li>
 <li><img src="projects/02-posters/ninthsampol/cover.webp" alt="NINTH SAMPOL — Nodet, 2020" loading="lazy" decoding="async" width="240"><span>NINTH SAMPOL — Nodet, 2020</span></li>
 </ul>
@@ -5280,7 +5552,7 @@ loadContent();
       "@type": "ItemList",
       "@id": "https://kiarad.space/#work",
       "name": "Selected work",
-      "numberOfItems": 28,
+      "numberOfItems": 30,
       "itemListElement": [
         {
           "@type": "ListItem",
@@ -5347,26 +5619,6 @@ loadContent();
           "position": 4,
           "item": {
             "@type": "CreativeWork",
-            "name": "MOKHTARZADE",
-            "genre": "logos",
-            "creator": {
-              "@id": "https://kiarad.space/#person"
-            },
-            "url": "https://kiarad.space/",
-            "dateCreated": "2024",
-            "image": "https://kiarad.space/projects/01-logos/mokhtarzade/cover.webp",
-            "abstract": "Mokhtarzade is a construction company branding project, developed as a flexible identity system for use across both digital and architectural applications. The identity was designed for social media as well as physical applications throughout buildings, including metal doors, glass surfaces, stone, ",
-            "sourceOrganization": {
-              "@type": "Organization",
-              "name": "Mokhtarzade Construction Company"
-            }
-          }
-        },
-        {
-          "@type": "ListItem",
-          "position": 5,
-          "item": {
-            "@type": "CreativeWork",
             "name": "RUSHIN",
             "genre": "logos",
             "creator": {
@@ -5384,7 +5636,7 @@ loadContent();
         },
         {
           "@type": "ListItem",
-          "position": 6,
+          "position": 5,
           "item": {
             "@type": "CreativeWork",
             "name": "XENSE",
@@ -5404,7 +5656,7 @@ loadContent();
         },
         {
           "@type": "ListItem",
-          "position": 7,
+          "position": 6,
           "item": {
             "@type": "CreativeWork",
             "name": "AETHERA",
@@ -5424,7 +5676,7 @@ loadContent();
         },
         {
           "@type": "ListItem",
-          "position": 8,
+          "position": 7,
           "item": {
             "@type": "CreativeWork",
             "name": "TROID",
@@ -5444,7 +5696,7 @@ loadContent();
         },
         {
           "@type": "ListItem",
-          "position": 9,
+          "position": 8,
           "item": {
             "@type": "CreativeWork",
             "name": "UPZONE",
@@ -5464,7 +5716,7 @@ loadContent();
         },
         {
           "@type": "ListItem",
-          "position": 10,
+          "position": 9,
           "item": {
             "@type": "CreativeWork",
             "name": "WILLOW",
@@ -5484,7 +5736,7 @@ loadContent();
         },
         {
           "@type": "ListItem",
-          "position": 11,
+          "position": 10,
           "item": {
             "@type": "CreativeWork",
             "name": "THREEPTYCH STUDIO",
@@ -5504,7 +5756,7 @@ loadContent();
         },
         {
           "@type": "ListItem",
-          "position": 12,
+          "position": 11,
           "item": {
             "@type": "CreativeWork",
             "name": "MOLKO",
@@ -5524,7 +5776,7 @@ loadContent();
         },
         {
           "@type": "ListItem",
-          "position": 13,
+          "position": 12,
           "item": {
             "@type": "CreativeWork",
             "name": "SCISCHOOL",
@@ -5544,7 +5796,7 @@ loadContent();
         },
         {
           "@type": "ListItem",
-          "position": 14,
+          "position": 13,
           "item": {
             "@type": "CreativeWork",
             "name": "DIVAR'S HACKATHON 2025",
@@ -5564,7 +5816,7 @@ loadContent();
         },
         {
           "@type": "ListItem",
-          "position": 15,
+          "position": 14,
           "item": {
             "@type": "CreativeWork",
             "name": "DIVAR'S YALDA 2024",
@@ -5584,7 +5836,7 @@ loadContent();
         },
         {
           "@type": "ListItem",
-          "position": 16,
+          "position": 15,
           "item": {
             "@type": "CreativeWork",
             "name": "RUSHIN WORKSHOPS",
@@ -5604,7 +5856,67 @@ loadContent();
         },
         {
           "@type": "ListItem",
+          "position": 16,
+          "item": {
+            "@type": "CreativeWork",
+            "name": "AN ADVANCED INTRODUCTION TO MATHEMATICA",
+            "genre": "posters",
+            "creator": {
+              "@id": "https://kiarad.space/#person"
+            },
+            "url": "https://kiarad.space/",
+            "dateCreated": "2023",
+            "image": "https://kiarad.space/projects/02-posters/mathematica/cover.webp",
+            "abstract": "An Advanced Introduction to Mathematica is a workshop on Wolfram Mathematica, the computational environment used across mathematics, physics, and engineering for symbolic computation, numerical analysis, and visualization.",
+            "sourceOrganization": {
+              "@type": "Organization",
+              "name": "SciSchool"
+            }
+          }
+        },
+        {
+          "@type": "ListItem",
           "position": 17,
+          "item": {
+            "@type": "CreativeWork",
+            "name": "BLOCKCHAIN & IOT WORKSHOP",
+            "genre": "posters",
+            "creator": {
+              "@id": "https://kiarad.space/#person"
+            },
+            "url": "https://kiarad.space/",
+            "dateCreated": "2023",
+            "image": "https://kiarad.space/projects/02-posters/blockchain-iot/cover.webp",
+            "abstract": "The Blockchain & IoT Workshop explores two technologies shaping the future of digital systems. The poster had to present blockchain's technical architecture in a futuristic way, while positioning the Internet of Things as an innovative, complementary technology.",
+            "sourceOrganization": {
+              "@type": "Organization",
+              "name": "SciSchool"
+            }
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 18,
+          "item": {
+            "@type": "CreativeWork",
+            "name": "JULIA WORKSHOP",
+            "genre": "posters",
+            "creator": {
+              "@id": "https://kiarad.space/#person"
+            },
+            "url": "https://kiarad.space/",
+            "dateCreated": "2023",
+            "image": "https://kiarad.space/projects/02-posters/julia/cover.webp",
+            "abstract": "The Julia Workshop introduces participants to the Julia programming language, known for its performance and ease of use and widely adopted in data science, machine learning, and scientific computing. The poster had to communicate both the technical and the creative side of the language while keeping",
+            "sourceOrganization": {
+              "@type": "Organization",
+              "name": "SciSchool"
+            }
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 19,
           "item": {
             "@type": "CreativeWork",
             "name": "COMPPHYSICS WORKSHOP",
@@ -5624,7 +5936,7 @@ loadContent();
         },
         {
           "@type": "ListItem",
-          "position": 18,
+          "position": 20,
           "item": {
             "@type": "CreativeWork",
             "name": "NINTH SAMPOL",
@@ -5644,7 +5956,7 @@ loadContent();
         },
         {
           "@type": "ListItem",
-          "position": 19,
+          "position": 21,
           "item": {
             "@type": "CreativeWork",
             "name": "APPEAR",
@@ -5664,7 +5976,7 @@ loadContent();
         },
         {
           "@type": "ListItem",
-          "position": 20,
+          "position": 22,
           "item": {
             "@type": "CreativeWork",
             "name": "MACBOOK PRO WALLPAPER",
@@ -5680,7 +5992,7 @@ loadContent();
         },
         {
           "@type": "ListItem",
-          "position": 21,
+          "position": 23,
           "item": {
             "@type": "CreativeWork",
             "name": "PERIODIC KEYBOARD",
@@ -5696,7 +6008,7 @@ loadContent();
         },
         {
           "@type": "ListItem",
-          "position": 22,
+          "position": 24,
           "item": {
             "@type": "CreativeWork",
             "name": "3D THREADS LOGO",
@@ -5712,7 +6024,7 @@ loadContent();
         },
         {
           "@type": "ListItem",
-          "position": 23,
+          "position": 25,
           "item": {
             "@type": "CreativeWork",
             "name": "GRAVITAS+",
@@ -5731,7 +6043,7 @@ loadContent();
         },
         {
           "@type": "ListItem",
-          "position": 24,
+          "position": 26,
           "item": {
             "@type": "CreativeWork",
             "name": "ARCHA",
@@ -5750,7 +6062,7 @@ loadContent();
         },
         {
           "@type": "ListItem",
-          "position": 25,
+          "position": 27,
           "item": {
             "@type": "CreativeWork",
             "name": "RUSHIN",
@@ -5769,7 +6081,7 @@ loadContent();
         },
         {
           "@type": "ListItem",
-          "position": 26,
+          "position": 28,
           "item": {
             "@type": "CreativeWork",
             "name": "XENSE",
@@ -5788,7 +6100,7 @@ loadContent();
         },
         {
           "@type": "ListItem",
-          "position": 27,
+          "position": 29,
           "item": {
             "@type": "CreativeWork",
             "name": "TROID",
@@ -5807,7 +6119,7 @@ loadContent();
         },
         {
           "@type": "ListItem",
-          "position": 28,
+          "position": 30,
           "item": {
             "@type": "CreativeWork",
             "name": "MOLKO",
