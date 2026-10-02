@@ -503,18 +503,6 @@
       <image:title>RUSHIN WORKSHOPS — posters</image:title>
     </image:image>
     <image:image>
-      <image:loc>https://kiarad.space/projects/02-posters/mathematica/cover.webp</image:loc>
-      <image:title>AN ADVANCED INTRODUCTION TO MATHEMATICA — posters</image:title>
-    </image:image>
-    <image:image>
-      <image:loc>https://kiarad.space/projects/02-posters/mathematica/02.webp</image:loc>
-      <image:title>AN ADVANCED INTRODUCTION TO MATHEMATICA — posters</image:title>
-    </image:image>
-    <image:image>
-      <image:loc>https://kiarad.space/projects/02-posters/mathematica/03.webp</image:loc>
-      <image:title>AN ADVANCED INTRODUCTION TO MATHEMATICA — posters</image:title>
-    </image:image>
-    <image:image>
       <image:loc>https://kiarad.space/projects/02-posters/blockchain-iot/cover.webp</image:loc>
       <image:title>BLOCKCHAIN &amp; IOT WORKSHOP — posters</image:title>
     </image:image>
@@ -537,6 +525,18 @@
     <image:image>
       <image:loc>https://kiarad.space/projects/02-posters/julia/03.webp</image:loc>
       <image:title>JULIA WORKSHOP — posters</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://kiarad.space/projects/02-posters/mathematica/cover.webp</image:loc>
+      <image:title>MATHEMATICA WORKSHOP — posters</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://kiarad.space/projects/02-posters/mathematica/02.webp</image:loc>
+      <image:title>MATHEMATICA WORKSHOP — posters</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://kiarad.space/projects/02-posters/mathematica/03.webp</image:loc>
+      <image:title>MATHEMATICA WORKSHOP — posters</image:title>
     </image:image>
     <image:image>
       <image:loc>https://kiarad.space/projects/02-posters/compphysics/cover.webp</image:loc>

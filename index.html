@@ -1099,7 +1099,7 @@ const STRINGS = {
     shapes: { LOBE:'LOBE', STELLA:'STELLA', FACET:'FACETTE', FLUTE:'CANNELURE',
               SPINE:'ARÊTE', STUD:'PLOT', CROSS:'CROIX', COIL:'SPIRE',
               GEM:'GEMME', HELIX:'HÉLICE', SHARD:'ÉCLAT', DIMPLE:'FOSSETTE',
-              CUBE:'CUBE', TETRA:'TÉTRA', PRISM:'PRISME', ATOM:'ATOME',
+              CUBE:'CUBE', TETRA:'TÉTRA', OCTANT:'OCTANT', ATOM:'ATOME',
               JACK:'TÉTRAPODE', KEPLER:'KEPLER', ORBIT:'ORBITE', CROWN:'COURONNE',
               GEAR:'ROUAGE', RHOMB:'RHOMBE', SPOOL:'BOBINE', STEP:'GRADIN' },
     cue: { hold: 'APPUYEZ & MAINTENEZ',
@@ -2273,15 +2273,29 @@ const SHAPES = [
       [-1,-1,-1,1],[-1,1,1,1],[1,-1,1,1],[1,1,-1,1]
     ], 0.10) },
 
-  // three sides and two ends, stood upright: the only column in the set
-  // whose section has a corner pointing straight at the viewer
-  { key:'PRISM', nsmooth:NSM(0), rf:(function(){
-      const P = [[0,1,0,1.05],[0,-1,0,1.05]];
-      for(let i=0;i<3;i++){
-        const a = Math.PI/2 + i*Math.PI*2/3;
-        P.push([Math.cos(a), 0, Math.sin(a), 0.56]);
-      }
-      return softPoly(P, 0.12);
+  /* A ball cut along three great circles into eight segments, like a fruit
+     scored to be peeled. DIMPLE's pits and FLUTE's ribs are relief on a
+     ball; these grooves are deep and wide enough to divide it, so what is
+     read is eight separate pieces held together.
+
+     The three grooves are joined by a product rather than a max. A max
+     leaves a crease wherever two grooves overlap, which here is the six
+     points where the circles cross; the product carries each groove
+     through the others with no edge anywhere. The profile is DIMPLE's
+     quintic, taken over the angle from the cutting plane for the same
+     reason. On a coarse mesh the grooves widen, so they still read on a
+     weak device instead of thinning out into a plain ball. */
+  { key:'OCTANT', nsmooth:NSM(2), rf:(function(){
+      const A = DETAIL >= 5 ? 0.24 : 0.40, IA = 1/A, D = 0.30;
+      return d=>{
+        let keep = 1;
+        for(let i=0;i<3;i++){
+          const t = 1 - Math.asin(Math.min(1, Math.abs(d[i])))*IA;
+          if(t <= 0) continue;
+          keep *= 1 - t*t*t*(t*(t*6 - 15) + 10);
+        }
+        return 1 - D*(1 - keep);
+      };
     })() },
 
   /* LOBE again, with six balls on the axes instead of four on a tetrahedron,
@@ -5412,9 +5426,9 @@ loadContent();
 <li><img src="projects/02-posters/divar-hackathon2025/cover.webp" alt="DIVAR'S HACKATHON 2025 — Divar, 2025" loading="lazy" decoding="async" width="240"><span>DIVAR'S HACKATHON 2025 — Divar, 2025</span></li>
 <li><img src="projects/02-posters/divar-yalda2024/cover.webp" alt="DIVAR'S YALDA 2024 — Divar, 2024" loading="lazy" decoding="async" width="240"><span>DIVAR'S YALDA 2024 — Divar, 2024</span></li>
 <li><img src="projects/02-posters/rushin-workshops/cover.webp" alt="RUSHIN WORKSHOPS — Rushin, 2024" loading="lazy" decoding="async" width="240"><span>RUSHIN WORKSHOPS — Rushin, 2024</span></li>
-<li><img src="projects/02-posters/mathematica/cover.webp" alt="AN ADVANCED INTRODUCTION TO MATHEMATICA — SciSchool, 2023" loading="lazy" decoding="async" width="240"><span>AN ADVANCED INTRODUCTION TO MATHEMATICA — SciSchool, 2023</span></li>
 <li><img src="projects/02-posters/blockchain-iot/cover.webp" alt="BLOCKCHAIN &amp; IOT WORKSHOP — SciSchool, 2023" loading="lazy" decoding="async" width="240"><span>BLOCKCHAIN &amp; IOT WORKSHOP — SciSchool, 2023</span></li>
 <li><img src="projects/02-posters/julia/cover.webp" alt="JULIA WORKSHOP — SciSchool, 2023" loading="lazy" decoding="async" width="240"><span>JULIA WORKSHOP — SciSchool, 2023</span></li>
+<li><img src="projects/02-posters/mathematica/cover.webp" alt="MATHEMATICA WORKSHOP — SciSchool, 2023" loading="lazy" decoding="async" width="240"><span>MATHEMATICA WORKSHOP — SciSchool, 2023</span></li>
 <li><img src="projects/02-posters/compphysics/cover.webp" alt="COMPPHYSICS WORKSHOP — SciSchool, 2022" loading="lazy" decoding="async" width="240"><span>COMPPHYSICS WORKSHOP — SciSchool, 2022</span></li>
 <li><img src="projects/02-posters/ninthsampol/cover.webp" alt="NINTH SAMPOL — Nodet, 2020" loading="lazy" decoding="async" width="240"><span>NINTH SAMPOL — Nodet, 2020</span></li>
 </ul>
@@ -5859,26 +5873,6 @@ loadContent();
           "position": 16,
           "item": {
             "@type": "CreativeWork",
-            "name": "AN ADVANCED INTRODUCTION TO MATHEMATICA",
-            "genre": "posters",
-            "creator": {
-              "@id": "https://kiarad.space/#person"
-            },
-            "url": "https://kiarad.space/",
-            "dateCreated": "2023",
-            "image": "https://kiarad.space/projects/02-posters/mathematica/cover.webp",
-            "abstract": "An Advanced Introduction to Mathematica is a workshop on Wolfram Mathematica, the computational environment used across mathematics, physics, and engineering for symbolic computation, numerical analysis, and visualization.",
-            "sourceOrganization": {
-              "@type": "Organization",
-              "name": "SciSchool"
-            }
-          }
-        },
-        {
-          "@type": "ListItem",
-          "position": 17,
-          "item": {
-            "@type": "CreativeWork",
             "name": "BLOCKCHAIN & IOT WORKSHOP",
             "genre": "posters",
             "creator": {
@@ -5896,7 +5890,7 @@ loadContent();
         },
         {
           "@type": "ListItem",
-          "position": 18,
+          "position": 17,
           "item": {
             "@type": "CreativeWork",
             "name": "JULIA WORKSHOP",
@@ -5908,6 +5902,26 @@ loadContent();
             "dateCreated": "2023",
             "image": "https://kiarad.space/projects/02-posters/julia/cover.webp",
             "abstract": "The Julia Workshop introduces participants to the Julia programming language, known for its performance and ease of use and widely adopted in data science, machine learning, and scientific computing. The poster had to communicate both the technical and the creative side of the language while keeping",
+            "sourceOrganization": {
+              "@type": "Organization",
+              "name": "SciSchool"
+            }
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 18,
+          "item": {
+            "@type": "CreativeWork",
+            "name": "MATHEMATICA WORKSHOP",
+            "genre": "posters",
+            "creator": {
+              "@id": "https://kiarad.space/#person"
+            },
+            "url": "https://kiarad.space/",
+            "dateCreated": "2023",
+            "image": "https://kiarad.space/projects/02-posters/mathematica/cover.webp",
+            "abstract": "An Advanced Introduction to Mathematica is a workshop on Wolfram Mathematica, the computational environment used across mathematics, physics, and engineering for symbolic computation, numerical analysis, and visualization.",
             "sourceOrganization": {
               "@type": "Organization",
               "name": "SciSchool"
