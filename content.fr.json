@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-02T20:46:03.897Z",
+  "generated": "2026-10-03T18:10:57.639Z",
   "lang": "fr",
   "site": {
     "name": "Kiarash Farahmandrad",
@@ -896,7 +896,7 @@
           "lb": null,
           "la": null,
           "b": "Une introduction avancée à Mathematica est un atelier consacré à Wolfram Mathematica, l'environnement de calcul utilisé en mathématiques, en physique et en ingénierie pour le calcul symbolique, l'analyse numérique et la visualisation.",
-          "a": "J'ai reconstruit le logo de Mathematica, l'étoile à facettes surnommée Spikey, en objet 3D dans Blender, et j'ai appliqué des formules mathématiques sur ses surfaces, afin que le symbole lui-même porte le type de travail pour lequel le logiciel est conçu.\nJ'ai réalisé le rendu de la scène dans Blender, puis importé le rendu dans Adobe Illustrator afin d'y composer la typographie et la mise en page de l'affiche.",
+          "a": "J'ai reconstruit le logo de Mathematica, l'étoile à facettes surnommée Spikey, en objet 3D dans Blender, afin que le symbole même du logiciel devienne la pièce centrale de l'affiche.\nJ'ai réalisé le rendu de la scène dans Blender, puis importé le rendu dans Adobe Illustrator afin d'y composer la typographie et la mise en page de l'affiche.",
           "credit": null,
           "roles": [
             "Direction de création",

@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-02T20:46:03.897Z",
+  "generated": "2026-10-03T18:10:57.639Z",
   "lang": "en",
   "site": {
     "name": "Kiarash Farahmandrad",
@@ -896,7 +896,7 @@
           "lb": null,
           "la": null,
           "b": "An Advanced Introduction to Mathematica is a workshop on Wolfram Mathematica, the computational environment used across mathematics, physics, and engineering for symbolic computation, numerical analysis, and visualization.",
-          "a": "I rebuilt Mathematica's logo, the faceted star known as Spikey, as a 3D object in Blender and mapped mathematical formulas across its surfaces, so that the mark itself carries the kind of work the software is made for.\nI rendered the scene in Blender, then brought the render into Adobe Illustrator to set the typography and layout of the poster.",
+          "a": "I rebuilt Mathematica's logo, the faceted star known as Spikey, as a 3D object in Blender, so that the software's own mark became the centrepiece of the poster.\nI rendered the scene in Blender, then brought the render into Adobe Illustrator to set the typography and layout of the poster.",
           "credit": null,
           "roles": [
             "Creative Direction",
