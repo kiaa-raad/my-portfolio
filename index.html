@@ -1100,7 +1100,7 @@ const STRINGS = {
               SPINE:'ARÊTE', STUD:'PLOT', CROSS:'CROIX', COIL:'SPIRE',
               GEM:'GEMME', HELIX:'HÉLICE', SHARD:'ÉCLAT', DIMPLE:'FOSSETTE',
               CUBE:'CUBE', TETRA:'TÉTRA', OCTANT:'OCTANT', ATOM:'ATOME',
-              JACK:'TÉTRAPODE', KEPLER:'KEPLER', ORBIT:'ORBITE', CROWN:'COURONNE',
+              JACK:'TÉTRAPODE', QUARTZ:'QUARTZ', ORBIT:'ORBITE', CROWN:'COURONNE',
               GEAR:'ROUAGE', RHOMB:'RHOMBE', SPOOL:'BOBINE', STEP:'GRADIN' },
     cue: { hold: 'APPUYEZ & MAINTENEZ',
            creed: "D'ABORD BRUT, PUIS FIGÉ.\nCOMME CHAQUE PROJET ICI.",
@@ -2330,18 +2330,22 @@ const SHAPES = [
       };
     })() },
 
-  /* Two tetrahedra pushed through each other, one the other turned inside
-     out — Kepler's stella octangula, eight points where STELLA has twelve.
-     STELLA's arms fall off by angle, so it reads as a soft star; this one
-     is nothing but planes, and reads as a cut one. Each tetrahedron holds
-     the centre, so their union is still one radius, and the soft max puts
-     a fillet in the six valleys where their faces cross. */
-  { key:'KEPLER', nsmooth:NSM(0), rf:(function(){
-      const N = [[-1,-1,-1],[-1,1,1],[1,-1,1],[1,1,-1]];
-      const a = softPoly(N.map(n => [n[0], n[1], n[2], 1]), 0.07);
-      const b = softPoly(N.map(n => [-n[0], -n[1], -n[2], 1]), 0.07);
-      const K = VSPACE*2.6;
-      return d => smax(a(d), b(d), K);
+  /* A quartz point: a hexagonal column closing to a pyramid at each end, the
+     upper one taller, the way a crystal grows off its matrix. It is the only
+     solid here longer than it is wide — the cube and the faceted ball read as
+     masses, this reads as an axis. Every face is a plane through the column,
+     so it is softPoly with eighteen of them: six walls, and six faces at
+     each end leaning in at 40° to meet on the axis. */
+  { key:'QUARTZ', nsmooth:NSM(0), rf:(function(){
+      const W = 0.56, E = 40*Math.PI/180, HT = 1.50, HB = 1.12, P = [];
+      const ce = Math.cos(E), se = Math.sin(E);
+      for(let i=0;i<6;i++){
+        const c = Math.cos(i*Math.PI/3), s = Math.sin(i*Math.PI/3);
+        P.push([c, 0, s, W]);
+        P.push([c*ce,  se, s*ce, HT*se]);
+        P.push([c*ce, -se, s*ce, HB*se]);
+      }
+      return softPoly(P, 0.06);
     })() },
 
   /* A ball with a flat ring around it, tipped off the horizontal. The ring is
