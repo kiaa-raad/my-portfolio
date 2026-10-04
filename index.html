@@ -1098,7 +1098,7 @@ const STRINGS = {
     ],
     shapes: { LOBE:'LOBE', STELLA:'STELLA', FACET:'FACETTE', FLUTE:'CANNELURE',
               SPINE:'ARÊTE', STUD:'PLOT', CROSS:'CROIX', COIL:'SPIRE',
-              GEM:'GEMME', HELIX:'HÉLICE', SHARD:'ÉCLAT', DIMPLE:'FOSSETTE',
+              GEM:'GEMME', HELIX:'HÉLICE', TRIPLANE:'TRIPLAN', DIMPLE:'FOSSETTE',
               CUBE:'CUBE', TETRA:'TÉTRA', OCTANT:'OCTANT', ATOM:'ATOME',
               JACK:'TÉTRAPODE', QUARTZ:'QUARTZ', ORBIT:'ORBITE', CROWN:'COURONNE',
               GEAR:'ROUAGE', RHOMB:'RHOMBE', SPOOL:'BOBINE', STEP:'GRADIN' },
@@ -2211,12 +2211,17 @@ const SHAPES = [
       };
     })() },
 
-  /* A crystal — the same superellipsoid with the exponent taken below two,
-     which pulls the faces in and turns the axes into points, then stretched
-     on one of them. Next to the faceted solid it is the opposite reading:
-     that one is a ball with edges on it, this one is edges with barely any
-     ball left. */
-  { key:'SHARD', rf: sellip(0.74, 1.30, 0.74, 1.5) },
+  /* Three discs through one another on the three axis planes — ORBIT's
+     ring taken three times, with nothing in the middle but where they cross,
+     so the form is read as eight open quadrants rather than as a ball. Each
+     disc is srev laid on a different axis by permuting the direction, and
+     the union is soft so every crossing carries a fillet. It took the place
+     of a stretched superellipsoid that read as QUARTZ's crystal a second
+     time. */
+  { key:'TRIPLANE', nsmooth:NSM(2), rf:(function(){
+      const disc = srev(1.20, DETAIL >= 5 ? 0.17 : 0.22, 3), K = VSPACE*3.0*KSCALE;
+      return d => smax(smax(disc(d), disc([d[1], d[0], d[2]]), K), disc([d[0], d[2], d[1]]), K);
+    })() },
 
   /* Craters, not studs. Every other relief in this set is added to the body,
      and a form is just as recognisable for what has been taken out of it —
