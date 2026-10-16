@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-03T18:10:57.639Z",
+  "generated": "2026-10-16T20:30:57.633Z",
   "lang": "fr",
   "site": {
     "name": "Kiarash Farahmandrad",
@@ -258,7 +258,7 @@
     ],
     "engagements": [
       {
-        "name": "GRAVITAS+",
+        "name": "GRAVIQUEST",
         "scope": "DIRECTION CRÉATIVE",
         "year": "2026"
       },
@@ -362,27 +362,27 @@
       "order": 0,
       "works": [
         {
-          "slug": "gravitas+",
-          "t": "GRAVITAS+",
-          "c": "Gravitas+",
+          "slug": "graviquest",
+          "t": "GRAVIQUEST",
+          "c": "GraviQuest",
           "y": "2026",
           "r": "Directeur de création & designer",
-          "img": "projects/01-logos/gravitas+/cover.webp",
+          "img": "projects/01-logos/graviquest/cover.webp",
           "video": null,
           "gallery": [
-            "projects/01-logos/gravitas+/01.webp",
-            "projects/01-logos/gravitas+/02.webp",
-            "projects/01-logos/gravitas+/03.webp",
-            "projects/01-logos/gravitas+/04.webp",
-            "projects/01-logos/gravitas+/05.webp",
-            "projects/01-logos/gravitas+/06.webp",
-            "projects/01-logos/gravitas+/07.webp"
+            "projects/01-logos/graviquest/01.webp",
+            "projects/01-logos/graviquest/02.webp",
+            "projects/01-logos/graviquest/03.webp",
+            "projects/01-logos/graviquest/04.webp",
+            "projects/01-logos/graviquest/05.webp",
+            "projects/01-logos/graviquest/06.webp",
+            "projects/01-logos/graviquest/07.webp"
           ],
           "link": null,
           "tag": "LOGO & IDENTITÉ VISUELLE",
           "lb": null,
           "la": null,
-          "b": "<a href=\"https://gravitasplus.com/\" target=\"_blank\" rel=\"noopener\" data-tag=\"GRAVITAS\">Gravitas+</a> est une chaîne YouTube et un site consacrés à des contenus pédagogiques et analytiques au croisement des compétences computationnelles, de la physique et de la pensée scientifique contemporaine. La plateforme vise à rendre accessibles des concepts complexes sans rien céder sur la profondeur ni sur la rigueur.\nL'identité visuelle a été développée pour traduire clarté, précision et exigence intellectuelle, en équilibrant une esthétique moderne et technologique avec la profondeur et la curiosité propres à la science fondamentale et à l'exploration de l'univers.",
+          "b": "<a href=\"https://graviquest.com/\" target=\"_blank\" rel=\"noopener\" data-tag=\"GRAVIQUEST\">GraviQuest</a> est une chaîne YouTube et un site consacrés à des contenus pédagogiques et analytiques au croisement des compétences computationnelles, de la physique et de la pensée scientifique contemporaine. La plateforme vise à rendre accessibles des concepts complexes sans rien céder sur la profondeur ni sur la rigueur.\nL'identité visuelle a été développée pour traduire clarté, précision et exigence intellectuelle, en équilibrant une esthétique moderne et technologique avec la profondeur et la curiosité propres à la science fondamentale et à l'exploration de l'univers.",
           "a": "J'ai pris en charge le logo, le site, la bannière YouTube et le système d'identité visuelle de l'ensemble de la plateforme. L'identité s'inspire du mot latin « gravitas », la pesanteur, et du concept de gravité — en particulier de la courbure de l'espace-temps sous l'effet gravitationnel.\nL'initiale « G » constitue l'élément visuel central : elle explore le rapport entre la forme de la lettre, la gravité, la courbure et l'espace, pour produire une identité distinctive et portée par son concept.",
           "credit": null,
           "roles": [
@@ -1085,19 +1085,19 @@
       "order": 3,
       "works": [
         {
-          "slug": "gravitas+",
-          "t": "GRAVITAS+",
-          "c": "Gravitas+",
+          "slug": "graviquest",
+          "t": "GRAVIQUEST",
+          "c": "GraviQuest",
           "y": "2026",
           "r": "Directeur de création & designer",
           "img": null,
-          "video": "projects/04-motion/gravitas+/motion.mp4",
+          "video": "projects/04-motion/graviquest/motion.mp4",
           "gallery": [],
           "link": null,
           "tag": "LOGO & IDENTITÉ VISUELLE",
           "lb": null,
           "la": null,
-          "b": "<a href=\"https://gravitasplus.com/\" target=\"_blank\" rel=\"noopener\" data-tag=\"GRAVITAS\">Gravitas+</a> est une chaîne YouTube et un site consacrés à des contenus pédagogiques et analytiques au croisement des compétences computationnelles, de la physique et de la pensée scientifique contemporaine. La plateforme vise à rendre accessibles des concepts complexes sans rien céder sur la profondeur ni sur la rigueur.\nL'identité visuelle a été développée pour traduire clarté, précision et exigence intellectuelle, en équilibrant une esthétique moderne et technologique avec la profondeur et la curiosité propres à la science fondamentale et à l'exploration de l'univers.",
+          "b": "<a href=\"https://graviquest.com/\" target=\"_blank\" rel=\"noopener\" data-tag=\"GRAVIQUEST\">GraviQuest</a> est une chaîne YouTube et un site consacrés à des contenus pédagogiques et analytiques au croisement des compétences computationnelles, de la physique et de la pensée scientifique contemporaine. La plateforme vise à rendre accessibles des concepts complexes sans rien céder sur la profondeur ni sur la rigueur.\nL'identité visuelle a été développée pour traduire clarté, précision et exigence intellectuelle, en équilibrant une esthétique moderne et technologique avec la profondeur et la curiosité propres à la science fondamentale et à l'exploration de l'univers.",
           "a": "J'ai pris en charge le logo, le site, la bannière YouTube et le système d'identité visuelle de l'ensemble de la plateforme. L'identité s'inspire du mot latin « gravitas », la pesanteur, et du concept de gravité — en particulier de la courbure de l'espace-temps sous l'effet gravitationnel.\nL'initiale « G » constitue l'élément visuel central : elle explore le rapport entre la forme de la lettre, la gravité, la courbure et l'espace, pour produire une identité distinctive et portée par son concept.",
           "credit": null,
           "roles": [

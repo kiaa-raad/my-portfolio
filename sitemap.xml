@@ -4,43 +4,43 @@
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://kiarad.space/</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-10-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://kiarad.space/"/>
     <xhtml:link rel="alternate" hreflang="fr" href="https://kiarad.space/?lang=fr"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://kiarad.space/"/>
     <image:image>
-      <image:loc>https://kiarad.space/projects/01-logos/gravitas+/cover.webp</image:loc>
-      <image:title>GRAVITAS+ — logos</image:title>
+      <image:loc>https://kiarad.space/projects/01-logos/graviquest/cover.webp</image:loc>
+      <image:title>GRAVIQUEST — logos</image:title>
     </image:image>
     <image:image>
-      <image:loc>https://kiarad.space/projects/01-logos/gravitas+/01.webp</image:loc>
-      <image:title>GRAVITAS+ — logos</image:title>
+      <image:loc>https://kiarad.space/projects/01-logos/graviquest/01.webp</image:loc>
+      <image:title>GRAVIQUEST — logos</image:title>
     </image:image>
     <image:image>
-      <image:loc>https://kiarad.space/projects/01-logos/gravitas+/02.webp</image:loc>
-      <image:title>GRAVITAS+ — logos</image:title>
+      <image:loc>https://kiarad.space/projects/01-logos/graviquest/02.webp</image:loc>
+      <image:title>GRAVIQUEST — logos</image:title>
     </image:image>
     <image:image>
-      <image:loc>https://kiarad.space/projects/01-logos/gravitas+/03.webp</image:loc>
-      <image:title>GRAVITAS+ — logos</image:title>
+      <image:loc>https://kiarad.space/projects/01-logos/graviquest/03.webp</image:loc>
+      <image:title>GRAVIQUEST — logos</image:title>
     </image:image>
     <image:image>
-      <image:loc>https://kiarad.space/projects/01-logos/gravitas+/04.webp</image:loc>
-      <image:title>GRAVITAS+ — logos</image:title>
+      <image:loc>https://kiarad.space/projects/01-logos/graviquest/04.webp</image:loc>
+      <image:title>GRAVIQUEST — logos</image:title>
     </image:image>
     <image:image>
-      <image:loc>https://kiarad.space/projects/01-logos/gravitas+/05.webp</image:loc>
-      <image:title>GRAVITAS+ — logos</image:title>
+      <image:loc>https://kiarad.space/projects/01-logos/graviquest/05.webp</image:loc>
+      <image:title>GRAVIQUEST — logos</image:title>
     </image:image>
     <image:image>
-      <image:loc>https://kiarad.space/projects/01-logos/gravitas+/06.webp</image:loc>
-      <image:title>GRAVITAS+ — logos</image:title>
+      <image:loc>https://kiarad.space/projects/01-logos/graviquest/06.webp</image:loc>
+      <image:title>GRAVIQUEST — logos</image:title>
     </image:image>
     <image:image>
-      <image:loc>https://kiarad.space/projects/01-logos/gravitas+/07.webp</image:loc>
-      <image:title>GRAVITAS+ — logos</image:title>
+      <image:loc>https://kiarad.space/projects/01-logos/graviquest/07.webp</image:loc>
+      <image:title>GRAVIQUEST — logos</image:title>
     </image:image>
     <image:image>
       <image:loc>https://kiarad.space/projects/01-logos/archa/cover.webp</image:loc>
@@ -629,7 +629,7 @@
   </url>
   <url>
     <loc>https://kiarad.space/?lang=fr</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-10-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://kiarad.space/"/>

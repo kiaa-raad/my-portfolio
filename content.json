@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-03T18:10:57.639Z",
+  "generated": "2026-10-16T20:30:57.633Z",
   "lang": "en",
   "site": {
     "name": "Kiarash Farahmandrad",
@@ -258,7 +258,7 @@
     ],
     "engagements": [
       {
-        "name": "GRAVITAS+",
+        "name": "GRAVIQUEST",
         "scope": "CREATIVE DIRECTION",
         "year": "2026"
       },
@@ -362,27 +362,27 @@
       "order": 0,
       "works": [
         {
-          "slug": "gravitas+",
-          "t": "GRAVITAS+",
-          "c": "Gravitas+",
+          "slug": "graviquest",
+          "t": "GRAVIQUEST",
+          "c": "GraviQuest",
           "y": "2026",
           "r": "Creative Director & Designer",
-          "img": "projects/01-logos/gravitas+/cover.webp",
+          "img": "projects/01-logos/graviquest/cover.webp",
           "video": null,
           "gallery": [
-            "projects/01-logos/gravitas+/01.webp",
-            "projects/01-logos/gravitas+/02.webp",
-            "projects/01-logos/gravitas+/03.webp",
-            "projects/01-logos/gravitas+/04.webp",
-            "projects/01-logos/gravitas+/05.webp",
-            "projects/01-logos/gravitas+/06.webp",
-            "projects/01-logos/gravitas+/07.webp"
+            "projects/01-logos/graviquest/01.webp",
+            "projects/01-logos/graviquest/02.webp",
+            "projects/01-logos/graviquest/03.webp",
+            "projects/01-logos/graviquest/04.webp",
+            "projects/01-logos/graviquest/05.webp",
+            "projects/01-logos/graviquest/06.webp",
+            "projects/01-logos/graviquest/07.webp"
           ],
           "link": null,
           "tag": "LOGO & VISUAL IDENTITY",
           "lb": null,
           "la": null,
-          "b": "<a href=\"https://gravitasplus.com/\" target=\"_blank\" rel=\"noopener\" data-tag=\"GRAVITAS\">Gravitas+</a> is a YouTube channel and website dedicated to educational and analytical content at the intersection of computational skills, physics, and modern scientific thought. The platform aims to make complex concepts accessible while maintaining intellectual depth and rigor.\nThe visual identity was developed to reflect clarity, precision, and intellectual sophistication, while balancing a modern, technology-oriented aesthetic with the depth and curiosity associated with fundamental science and the exploration of the universe.",
+          "b": "<a href=\"https://graviquest.com/\" target=\"_blank\" rel=\"noopener\" data-tag=\"GRAVIQUEST\">GraviQuest</a> is a YouTube channel and website dedicated to educational and analytical content at the intersection of computational skills, physics, and modern scientific thought. The platform aims to make complex concepts accessible while maintaining intellectual depth and rigor.\nThe visual identity was developed to reflect clarity, precision, and intellectual sophistication, while balancing a modern, technology-oriented aesthetic with the depth and curiosity associated with fundamental science and the exploration of the universe.",
           "a": "I was responsible for developing the logo, website, YouTube banner, and cohesive visual identity system across the platform. The identity is inspired by the Latin word “gravitas”, meaning heaviness, and the concept of gravity, particularly the bending of spacetime under gravitational force. The initial “G” serves as the core visual element, exploring the relationship between letterform, gravity, curvature, and space to create a distinctive and conceptually driven identity.",
           "credit": null,
           "roles": [
@@ -1085,19 +1085,19 @@
       "order": 3,
       "works": [
         {
-          "slug": "gravitas+",
-          "t": "GRAVITAS+",
-          "c": "Gravitas+",
+          "slug": "graviquest",
+          "t": "GRAVIQUEST",
+          "c": "GraviQuest",
           "y": "2026",
           "r": "Creative Director & Designer",
           "img": null,
-          "video": "projects/04-motion/gravitas+/motion.mp4",
+          "video": "projects/04-motion/graviquest/motion.mp4",
           "gallery": [],
           "link": null,
           "tag": "LOGO & VISUAL IDENTITY",
           "lb": null,
           "la": null,
-          "b": "<a href=\"https://gravitasplus.com/\" target=\"_blank\" rel=\"noopener\" data-tag=\"GRAVITAS\">Gravitas+</a> is a YouTube channel and website dedicated to educational and analytical content at the intersection of computational skills, physics, and modern scientific thought. The platform aims to make complex concepts accessible while maintaining intellectual depth and rigor.\nThe visual identity was developed to reflect clarity, precision, and intellectual sophistication, while balancing a modern, technology-oriented aesthetic with the depth and curiosity associated with fundamental science and the exploration of the universe.",
+          "b": "<a href=\"https://graviquest.com/\" target=\"_blank\" rel=\"noopener\" data-tag=\"GRAVIQUEST\">GraviQuest</a> is a YouTube channel and website dedicated to educational and analytical content at the intersection of computational skills, physics, and modern scientific thought. The platform aims to make complex concepts accessible while maintaining intellectual depth and rigor.\nThe visual identity was developed to reflect clarity, precision, and intellectual sophistication, while balancing a modern, technology-oriented aesthetic with the depth and curiosity associated with fundamental science and the exploration of the universe.",
           "a": "I was responsible for developing the logo, website, YouTube banner, and cohesive visual identity system across the platform. The identity is inspired by the Latin word “gravitas”, meaning heaviness, and the concept of gravity, particularly the bending of spacetime under gravitational force. The initial “G” serves as the core visual element, exploring the relationship between letterform, gravity, curvature, and space to create a distinctive and conceptually driven identity.",
           "credit": null,
           "roles": [
