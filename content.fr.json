@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-16T20:30:57.633Z",
+  "generated": "2026-10-16T23:26:45.822Z",
   "lang": "fr",
   "site": {
     "name": "Kiarash Farahmandrad",
@@ -370,13 +370,14 @@
           "img": "projects/01-logos/graviquest/cover.webp",
           "video": null,
           "gallery": [
-            "projects/01-logos/graviquest/01.webp",
             "projects/01-logos/graviquest/02.webp",
             "projects/01-logos/graviquest/03.webp",
             "projects/01-logos/graviquest/04.webp",
             "projects/01-logos/graviquest/05.webp",
             "projects/01-logos/graviquest/06.webp",
-            "projects/01-logos/graviquest/07.webp"
+            "projects/01-logos/graviquest/07.webp",
+            "projects/01-logos/graviquest/08.webp",
+            "projects/01-logos/graviquest/09.webp"
           ],
           "link": null,
           "tag": "LOGO & IDENTITÉ VISUELLE",
